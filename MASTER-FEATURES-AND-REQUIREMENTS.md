@@ -600,4 +600,8 @@ Source: commit after `0377aeb` in this working tree. Files: `.github/workflows/c
 
 - 🆕 **One-tap Dars group invitations**: each group’s invite panel now has dedicated **WhatsApp** and **Facebook** buttons alongside the existing device share sheet. Both share the secure group join link, so invitees land directly on the Dars join flow.
 
+### Added 2026-07-30 — GitHub Pages static mode
+
+- 🆕 **GitHub Pages fallback**: the heyzaido07.github.io deployment automatically uses the browser-only demo data, and Dars invite links retain the repository path when shared.
+
 *End of master list. For canonical commit-by-commit history see `git log origin/main`; for per-feature deep-dives see `FEATURES.md`.*

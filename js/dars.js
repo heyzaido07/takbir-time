@@ -187,7 +187,7 @@ const dars = (() => {
 
   // ─── Share link ─────────────────────────────────────────────────────
   function shareUrl(code) {
-    return `${location.origin}/#dars/join/${code}`;
+    return `${location.href.split("#")[0]}#dars/join/${code}`;
   }
   function inviteDetails(group) {
     const url = shareUrl(group.shareCode);

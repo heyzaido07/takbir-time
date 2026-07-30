@@ -33,6 +33,7 @@ window.JAMAT_CONFIG = {
   // walkthrough — handy for demoing UI like Dars without Postgres running.
   useMockData: (() => {
     try {
+      if (location.hostname === 'heyzaido07.github.io') return true;
       if (new URLSearchParams(location.search).has('mock')) return true;
       if (localStorage.getItem('jamat_force_mock') === '1') return true;
     } catch {}
