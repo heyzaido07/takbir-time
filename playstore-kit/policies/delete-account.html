@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0F2A1E" />
+  <title>Request account deletion — Takbeer Time</title>
+  <meta name="description" content="Request deletion of your Takbeer Time account. Signed-in users can delete in-app; this form is for users who can't access the app anymore." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/jamat.css?v=37" />
+  <style>
+    .legal-page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: clamp(1rem, 4vw, 2.5rem) var(--pad) 4rem;
+      font-family: var(--ui);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    .legal-page h1 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(2rem, 6vw, 2.6rem);
+      line-height: 1.1;
+      margin: 0 0 0.6rem;
+      color: var(--green);
+      letter-spacing: -0.01em;
+    }
+    .legal-page h2 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 1.4rem;
+      color: var(--green);
+      margin: 2rem 0 0.5rem;
+    }
+    .legal-page p { margin: 0 0 0.9rem; }
+    .legal-page ul { margin: 0 0 1rem 0; padding-left: 1.2rem; list-style: disc; }
+    .legal-page a { color: var(--green); border-bottom: 1px solid color-mix(in srgb, var(--green) 35%, transparent); }
+    .legal-page a:hover { border-bottom-color: var(--green); }
+    .legal-back {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.88rem; color: var(--ink-2); margin-bottom: 1.8rem;
+      text-decoration: none; border-bottom: 0;
+    }
+    .callout {
+      background: var(--paper-2);
+      border-left: 3px solid var(--brass);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      margin: 1.2rem 0;
+      font-size: 0.95rem;
+    }
+    .callout strong { color: var(--green); }
+
+    .delete-form {
+      display: flex; flex-direction: column; gap: 1rem;
+      margin-top: 1.5rem;
+      padding: 1.4rem;
+      background: var(--paper-2);
+      border-radius: var(--radius);
+    }
+    .delete-form label {
+      display: flex; flex-direction: column; gap: 0.3rem;
+      font-size: 0.88rem;
+      color: var(--ink-2);
+      font-weight: 500;
+    }
+    .delete-form input,
+    .delete-form textarea {
+      padding: 0.7rem 0.8rem;
+      border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+      border-radius: var(--radius-sm);
+      background: var(--paper);
+      font-family: var(--ui);
+      font-size: 1rem;
+      color: var(--ink);
+      transition: border-color 120ms ease;
+    }
+    .delete-form input:focus,
+    .delete-form textarea:focus {
+      outline: 0;
+      border-color: var(--green);
+    }
+    .delete-form textarea { resize: vertical; min-height: 88px; }
+    .delete-form button {
+      align-self: flex-start;
+      padding: 0.65rem 1.2rem;
+      background: var(--green);
+      color: var(--paper);
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: background 120ms ease, opacity 120ms ease;
+    }
+    .delete-form button:hover { background: var(--green-2); }
+    .delete-form button:disabled { opacity: 0.6; cursor: progress; }
+    .delete-form-status {
+      font-size: 0.92rem;
+      margin: 0;
+    }
+    .delete-form-status.is-ok { color: var(--green); }
+    .delete-form-status.is-err { color: var(--crimson); }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/" aria-label="Takbeer Time — home">
+    <span class="brand__mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="24" height="24">
+        <path d="M16 3.5 a3 3 0 1 0 2.4 4.9 a2.4 2.4 0 1 1 -2.4 -4.9z" fill="currentColor"/>
+        <line x1="5" y1="15" x2="5" y2="27" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <circle cx="5" cy="13" r="1.2" fill="currentColor"/>
+        <line x1="27" y1="15" x2="27" y2="27" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <circle cx="27" cy="13" r="1.2" fill="currentColor"/>
+        <path d="M9 27 V20 Q9 13 16 13 Q23 13 23 20 V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M14 27 V22 Q14 20.4 16 20.4 Q18 20.4 18 22 V27 Z" fill="currentColor"/>
+        <line x1="2.5" y1="27" x2="29.5" y2="27" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <span class="brand__name">Takbeer Time</span>
+  </a>
+</header>
+
+<main class="legal-page">
+  <a class="legal-back" href="/">← Back to the app</a>
+
+  <h1>Request account deletion</h1>
+
+  <div class="callout">
+    <strong>Already signed in?</strong> The fastest way is in the app: open <a href="/">Takbeer Time</a>, sign in if you aren't, then tap "Delete my account" in the footer. Your account is removed immediately.
+  </div>
+
+  <p>This form is for users who <strong>can't access the app anymore</strong> — for example, you've lost the device, can't sign in, or never set up email/password.</p>
+
+  <h2>What gets deleted</h2>
+  <ul>
+    <li>Your account row (email, name, password hash, Firebase ID, last-login timestamp).</li>
+    <li>Your favourites, default-masjid setting, and preferred-keeper choices.</li>
+    <li>Your reminder preferences.</li>
+    <li>Suggestions you've sent to time-keepers.</li>
+  </ul>
+
+  <h2>What's kept (anonymously)</h2>
+  <ul>
+    <li>Your submitted prayer timings, re-attributed as "Deleted user." This is so the community keeps seeing the times they're relying on tomorrow morning.</li>
+    <li>Suggestions sent <em>to</em> you (the senders should still see what they sent and to whom).</li>
+  </ul>
+
+  <p>If you want a specific submitted timing removed too, mention it in the reason field below and we'll handle it manually.</p>
+
+  <h2>Submit the request</h2>
+
+  <p>We'll process the deletion within <strong>7 days</strong>. We won't confirm whether the email belongs to a real account (so attackers can't use this form to enumerate users) — but if it does, the account will be deleted; if it doesn't, the request is safely discarded.</p>
+
+  <form class="delete-form" id="delete-form">
+    <label>
+      <span>Email associated with your account</span>
+      <input type="email" name="email" autocomplete="email" required maxlength="255" placeholder="you@example.com" />
+    </label>
+    <label>
+      <span>Reason (optional)</span>
+      <textarea name="reason" maxlength="2000" rows="4" placeholder="Anything we should know — e.g. specific submissions to remove, why you're leaving"></textarea>
+    </label>
+    <button type="submit" id="delete-submit">Submit deletion request</button>
+    <p class="delete-form-status" id="delete-status" hidden></p>
+  </form>
+
+  <p style="margin-top: 2.2rem; font-size: 0.88rem; color: var(--ink-3);">
+    Privacy details are in our <a href="/privacy.html">Privacy Policy</a>. If you have questions, email <a href="mailto:qazi.junaid@gmail.com">qazi.junaid@gmail.com</a>.
+  </p>
+</main>
+
+<script src="js/config.js?v=3"></script>
+<script>
+  // Submits to POST /api/account-deletion-request. The endpoint is
+  // intentionally rate-limited and never reveals whether the email
+  // exists — see server/src/routes/accountDeletion.ts.
+  (() => {
+    const form = document.getElementById('delete-form');
+    const status = document.getElementById('delete-status');
+    const button = document.getElementById('delete-submit');
+
+    function setStatus(msg, kind) {
+      status.textContent = msg;
+      status.hidden = false;
+      status.classList.remove('is-ok', 'is-err');
+      if (kind) status.classList.add(kind);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim().toLowerCase();
+      const reason = form.reason.value.trim();
+      if (!email) return;
+
+      const apiBase = window.JAMAT_CONFIG?.apiBase || '/api';
+      button.disabled = true;
+      setStatus('Submitting…');
+
+      try {
+        const res = await fetch(apiBase + '/account-deletion-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, reason }),
+        });
+        if (res.ok) {
+          form.reset();
+          setStatus(
+            "Request received. If that email matches an account, we'll delete it within 7 days. You won't get a confirmation email — that's deliberate, so this form can't be used to figure out which addresses are registered.",
+            'is-ok'
+          );
+        } else if (res.status === 429) {
+          setStatus("You've already submitted a request recently. Please wait an hour and try again, or email qazi.junaid@gmail.com.", 'is-err');
+        } else {
+          setStatus("Couldn't submit the request. Please email qazi.junaid@gmail.com instead.", 'is-err');
+        }
+      } catch {
+        setStatus("Network error. Please try again, or email qazi.junaid@gmail.com.", 'is-err');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

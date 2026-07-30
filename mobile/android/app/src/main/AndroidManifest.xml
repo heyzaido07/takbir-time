@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation"
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBarLaunch"
+            android:launchMode="singleTask"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
+        <!-- FCM small-icon. Without this meta-data the Firebase Messaging
+             SDK falls back to the launcher icon, which Android renders in
+             the status bar as a flat white square (the system tints away
+             the colour, leaving an unreadable blob). The Capacitor
+             LocalNotifications plugin has its own `smallIcon` config in
+             capacitor.config — these two paths are separate, so we wire
+             the FCM half here. The drawable is `ic_stat_icon`, defined
+             in res/drawable/ as a white-on-transparent silhouette. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_icon" />
+    </application>
+
+    <!-- Permissions -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Geolocation: needed for "Find mosques near me" -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- Local notifications: prayer reminders that fire when the app is closed.
+         POST_NOTIFICATIONS is required on Android 13+ (API 33). SCHEDULE_EXACT_ALARM
+         lets us fire reminders at the precise minute set by the user — Android
+         shows the user an "Alarms & reminders" toggle in app settings on first
+         attempt. We deliberately do NOT declare USE_EXACT_ALARM: that one is
+         restricted by Play policy (May 2024) to alarm-clock / calendar /
+         timer apps, and listing it in a directory app like ours triggers
+         policy rejection. SCHEDULE_EXACT_ALARM gives us the same precision
+         with the user-consent flow Google expects. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+</manifest>

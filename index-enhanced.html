@@ -1,0 +1,3550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jamat - Find Mosque Prayer Timings (Enhanced)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32x32.png?v=2" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16x16.png?v=2" />
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png?v=2" />
+  <style>
+    /* Typography & Reset */
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, #10b98122, transparent 50%),
+        radial-gradient(circle at bottom right, #06b6d422, transparent 55%),
+        linear-gradient(135deg, #0f172a, #020617);
+      color: #e5e7eb;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :root {
+      --primary: #10b981;
+      --primary-soft: rgba(16, 185, 129, 0.12);
+      --primary-strong: #059669;
+      --secondary: #06b6d4;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.3);
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --glass: rgba(15, 23, 42, 0.75);
+      --glass-soft: rgba(15, 23, 42, 0.9);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 20px 50px rgba(0, 0, 0, 0.5);
+      --shadow-pill: 0 12px 35px rgba(16, 185, 129, 0.4);
+      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+      /* ✨ NEW: Consistent spacing scale (8px grid) */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+    }
+
+    /* ✨ Sign-In Modal */
+    .signin-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 10001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-lg);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .signin-modal.show {
+      display: flex;
+    }
+
+    .signin-content {
+      max-width: 400px;
+      width: 100%;
+      background: var(--glass-soft);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: var(--space-xl);
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+    .google-signin-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 24px;
+      background: white;
+      color: #1f2937;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 20px;
+    }
+
+    .google-signin-btn:hover {
+      background: #f9fafb;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .google-signin-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ✨ NEW: Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        background: rgba(16,185,129,0.15);
+      }
+      50% {
+        background: rgba(16,185,129,0.25);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .app-shell {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: var(--space-lg) var(--space-md) var(--space-xl);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    /* Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.1))
+        ,var(--glass-soft);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      box-shadow: var(--shadow-pill);
+      backdrop-filter: blur(20px);
+    }
+
+    .app-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .app-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 20%, #d1fae5, transparent 40%),
+        radial-gradient(circle at bottom, #10b981, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-pill);
+      font-size: 28px;
+    }
+
+    .app-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .app-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .app-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.4);
+      font-size: 13px;
+      color: #d1fae5;
+      font-weight: 500;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 4px rgba(16,185,129,0.25);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    nav.app-nav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 4px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .nav-btn {
+      border-radius: var(--radius-pill);
+      border: none;
+      padding: var(--space-sm) 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .nav-btn:hover {
+      color: #f9fafb;
+      background: rgba(15,23,42,0.9);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn.active {
+      color: #ecfdf5;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
+    }
+
+    /* Layout main */
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: var(--space-lg);
+      align-items: flex-start;
+    }
+
+    @media (max-width: 1024px) {
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+        border-radius: var(--radius-lg);
+      }
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      nav.app-nav {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .nav-btn span.label {
+        display: none;
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--glass-soft);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: var(--space-lg) 22px;
+      color: var(--text-main);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition-fast);
+      animation: fadeIn 0.3s ease-out; /* ✨ NEW: Fade in animation */
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(16,185,129,0.12), transparent 70%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card + .card {
+      margin-top: var(--space-md);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-md);
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      letter-spacing: -0.01em;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: var(--space-xs);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: var(--space-xs) 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .chip-primary {
+      background: rgba(16,185,129,0.2);
+      border-color: rgba(16,185,129,0.6);
+      color: #d1fae5;
+    }
+
+    .chip-accent {
+      background: rgba(245,158,11,0.2);
+      border-color: rgba(245,158,11,0.6);
+      color: #fef3c7;
+    }
+
+    /* Map Container */
+    #map {
+      width: 100%;
+      height: 500px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-subtle);
+    }
+
+    @media (max-width: 768px) {
+      #map {
+        height: 400px;
+      }
+    }
+
+    /* Inputs */
+    .input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: var(--space-md);
+      align-items: center;
+    }
+
+    .input-row label {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 150px;
+      font-weight: 500;
+    }
+
+    .input,
+    select,
+    textarea.input {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(55,65,81,0.8);
+      padding: 10px var(--space-md);
+      font-size: 14px;
+      min-width: 0;
+      background: rgba(15,23,42,0.95);
+      color: var(--text-main);
+      outline: none;
+      transition: all var(--transition-fast);
+      font-family: inherit;
+    }
+
+    .input::placeholder {
+      color: #6b7280;
+    }
+
+    .input:focus,
+    select:focus,
+    textarea.input:focus {
+      border-color: var(--primary);
+      background: rgba(15,23,42,1);
+      box-shadow: 0 0 0 1px rgba(16,185,129,0.6), 0 0 0 6px rgba(16,185,129,0.15);
+      transform: translateY(-1px);
+    }
+
+    textarea.input {
+      border-radius: var(--radius-md);
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    select {
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #9ca3af 50%), linear-gradient(135deg, #9ca3af 50%, transparent 50%);
+      background-position: calc(100% - 14px) calc(50% - 3px), calc(100% - 8px) calc(50% - 3px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      padding-right: 32px;
+    }
+
+    /* Buttons */
+    .btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      transition: all var(--transition-fast);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: #ecfdf5;
+      border-color: rgba(16,185,129,0.8);
+      box-shadow: 0 10px 30px rgba(16,185,129,0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 12px 35px rgba(16,185,129,0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      border-color: var(--border-subtle);
+      color: #e5e7eb;
+      background: rgba(15,23,42,0.7);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.95);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+    }
+
+    .btn-ghost:hover {
+      color: #e5e7eb;
+      background: rgba(15,23,42,0.9);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .btn-lg {
+      padding: 12px var(--space-lg);
+      font-size: 14px;
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .favorite-toggle {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(245,158,11,0.3);
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15,23,42,0.9);
+      color: #fef3c7;
+      transition: all var(--transition-fast);
+      font-weight: 600;
+    }
+
+    .favorite-toggle:hover {
+      background: rgba(245,158,11,0.1);
+      box-shadow: 0 10px 25px rgba(245,158,11,0.2);
+      transform: translateY(-1px);
+    }
+
+    .favorite-toggle.active {
+      background: rgba(245,158,11,0.25);
+      border-color: rgba(245,158,11,0.8);
+      box-shadow: 0 10px 30px rgba(245,158,11,0.35);
+    }
+
+    /* Mosque list */
+    .mosque-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(75,85,99,0.8) transparent;
+    }
+    .mosque-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .mosque-list::-webkit-scrollbar-thumb {
+      background: rgba(75,85,99,0.8);
+      border-radius: var(--radius-pill);
+    }
+
+    .mosque-card {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(51,65,85,0.8);
+      padding: 14px var(--space-md);
+      background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.95));
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) auto;
+      gap: var(--space-md);
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      animation: fadeIn 0.3s ease-out;
+      animation-fill-mode: both;
+    }
+
+    /* ✨ NEW: Staggered animation */
+    .mosque-card:nth-child(1) { animation-delay: 0.05s; }
+    .mosque-card:nth-child(2) { animation-delay: 0.1s; }
+    .mosque-card:nth-child(3) { animation-delay: 0.15s; }
+    .mosque-card:nth-child(4) { animation-delay: 0.2s; }
+    .mosque-card:nth-child(5) { animation-delay: 0.25s; }
+
+    .mosque-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 10% 0%, rgba(16,185,129,0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    .mosque-card:hover {
+      border-color: rgba(16,185,129,0.6);
+      box-shadow: 0 12px 30px rgba(15,23,42,0.8);
+      transform: translateY(-2px);
+    }
+
+    .mosque-card.active {
+      border-color: rgba(16,185,129,0.9);
+      box-shadow: 0 12px 35px rgba(16,185,129,0.5);
+      background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(15,23,42,0.98));
+    }
+
+    /* ✨ Default mosque highlighting */
+    .mosque-card.default-mosque {
+      border-color: rgba(251, 191, 36, 0.9) !important;
+      box-shadow: 0 12px 35px rgba(251, 191, 36, 0.3) !important;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(15,23,42,0.98)) !important;
+    }
+
+    .mosque-card.default-mosque::before {
+      background: radial-gradient(circle at 10% 0%, rgba(251, 191, 36, 0.15), transparent 70%);
+    }
+
+    .mosque-card.default-mosque:hover {
+      border-color: rgba(251, 191, 36, 1);
+      box-shadow: 0 14px 40px rgba(251, 191, 36, 0.4);
+    }
+
+    @media (max-width: 640px) {
+      .mosque-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .mosque-name {
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      letter-spacing: -0.01em;
+    }
+
+    .mosque-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: var(--space-xs);
+      margin-bottom: 6px;
+    }
+
+    .mosque-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Tag pills */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-sm);
+    }
+
+    .tag-pill {
+      padding: var(--space-xs) 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(75,85,99,0.8);
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .pill {
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(75, 85, 99, 0.8);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #e5e7eb;
+      background: rgba(15,23,42,0.95);
+      font-weight: 500;
+    }
+
+    /* Views */
+    .view {
+      display: none;
+    }
+
+    .view.is-active {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    /* ✨ NEW: Detail Tabs */
+    .detail-tabs {
+      display: flex;
+      gap: var(--space-xs);
+      margin: var(--space-md) 0;
+      padding: var(--space-xs);
+      background: rgba(15,23,42,0.95);
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .detail-tab {
+      flex: 1;
+      padding: var(--space-sm) var(--space-md);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .detail-tab:hover {
+      color: var(--text-main);
+      background: rgba(148,163,184,0.1);
+    }
+
+    .detail-tab.active {
+      color: #ecfdf5;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+    }
+
+    .tab-panel {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    /* Amenities List */
+    .amenities-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .amenity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.3);
+      font-size: 12px;
+      color: var(--text-main);
+    }
+
+    .amenity-badge .icon {
+      font-size: 16px;
+    }
+
+    /* Timings table */
+    .timings-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-md);
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: rgba(15,23,42,0.98);
+    }
+
+    .timings-table th,
+    .timings-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(51,65,85,0.8);
+      text-align: left;
+    }
+
+    .timings-table th {
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 12px;
+      background: rgba(15,23,42,1);
+    }
+
+    .timings-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .timings-table tr.highlight {
+      background: rgba(16,185,129,0.15);
+      animation: pulse 2s ease-in-out infinite; /* ✨ NEW: Pulse animation */
+    }
+
+    .timings-table tr.highlight td {
+      border-bottom-color: rgba(16,185,129,0.4);
+      font-weight: 600;
+    }
+
+    /* ✨ NEW: Reminder timer indicator (clock-style) */
+    .reminder-timer {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      vertical-align: middle;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .reminder-timer svg {
+      width: 32px;
+      height: 32px;
+      transition: all 0.2s ease;
+    }
+
+    /* Active state - bright and visible */
+    .reminder-timer.active:hover svg {
+      transform: scale(1.15);
+      filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.4));
+    }
+
+    /* Inactive state - subtle hover effect */
+    .reminder-timer.inactive:hover svg {
+      transform: scale(1.1);
+      opacity: 0.8 !important;
+    }
+
+    .reminder-timer .minutes-label {
+      position: absolute;
+      font-size: 9px;
+      font-weight: 700;
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    /* Add subtle pulse animation for active reminders */
+    @keyframes reminder-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .reminder-timer.active .minutes-label {
+      animation: reminder-pulse 2s ease-in-out infinite;
+    }
+
+    .reminder-timer-input {
+      position: absolute;
+      width: 40px;
+      padding: 4px;
+      font-size: 11px;
+      text-align: center;
+      border: 1px solid var(--primary);
+      border-radius: 4px;
+      background: var(--glass-soft);
+      color: var(--text-main);
+      z-index: 100;
+    }
+
+    /* Countdown */
+    .countdown {
+      border-radius: var(--radius-md);
+      padding: var(--space-md) var(--space-md);
+      margin-top: 14px;
+      background: linear-gradient(135deg, #fbbf2466, #10b98166);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #0f172a;
+      position: relative;
+      overflow: hidden;
+      font-weight: 600;
+    }
+
+    .countdown::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(245,158,11,0.5), transparent 60%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .countdown-main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .countdown-time {
+      position: relative;
+      z-index: 1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    /* Submissions */
+    .submissions-list {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scrollbar-width: thin;
+    }
+
+    .submissions-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .submissions-list::-webkit-scrollbar-thumb {
+      background: rgba(55,65,81,0.8);
+      border-radius: var(--radius-pill);
+    }
+
+    .submission-card {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(55,65,81,0.8);
+      padding: 10px 12px;
+      background: rgba(15,23,42,0.98);
+      font-size: 13px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submission-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(59,130,246,0.1), transparent 65%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .submission-card .inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .submission-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      gap: var(--space-sm);
+    }
+
+    .submission-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: var(--space-sm);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(16,185,129,0.9);
+      font-size: 11px;
+      color: #ecfdf5;
+      font-weight: 600;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: var(--space-lg);
+      right: var(--space-lg);
+      max-width: 320px;
+      border-radius: var(--radius-md);
+      padding: var(--space-md) 18px;
+      font-size: 13px;
+      background: rgba(15,23,42,0.98);
+      color: #d1fae5;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      display: none;
+      z-index: 9999;
+      border: 1px solid rgba(16,185,129,0.6);
+      backdrop-filter: blur(20px);
+      font-weight: 500;
+    }
+
+    .toast.show {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Helpers */
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .flex-gap {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .small-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    dl {
+      margin: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      row-gap: var(--space-sm);
+      column-gap: var(--space-md);
+      font-size: 13px;
+    }
+
+    dt {
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    dd {
+      margin: 0;
+      color: var(--text-main);
+    }
+
+    /* ========================================
+       ✨ NEW: ONBOARDING MODAL STYLES
+       ======================================== */
+    .onboarding-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-lg);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .onboarding-modal.show {
+      display: flex;
+    }
+
+    .onboarding-content {
+      max-width: 500px;
+      width: 100%;
+      background: var(--glass-soft);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: var(--space-xl);
+      position: relative;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+    .onboarding-progress {
+      margin-bottom: var(--space-lg);
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: rgba(148,163,184,0.2);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      margin-bottom: var(--space-sm);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.3s ease-out;
+    }
+
+    .progress-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .onboarding-skip {
+      position: absolute;
+      top: var(--space-lg);
+      right: var(--space-lg);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      padding: var(--space-sm);
+      transition: color 0.2s;
+      font-family: inherit;
+    }
+
+    .onboarding-skip:hover {
+      color: var(--text-main);
+    }
+
+    .onboarding-step {
+      text-align: center;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .onboarding-icon {
+      font-size: 64px;
+      margin-bottom: var(--space-md);
+    }
+
+    .onboarding-step h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: var(--space-md);
+      color: var(--text-main);
+    }
+
+    .onboarding-step p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: var(--space-lg);
+      line-height: 1.6;
+    }
+
+    .onboarding-step .btn {
+      min-width: 200px;
+      margin: var(--space-sm) auto;
+      display: block;
+    }
+
+    .onboarding-mosque-list {
+      max-height: 300px;
+      overflow-y: auto;
+      margin: var(--space-lg) 0;
+      text-align: left;
+    }
+
+    .onboarding-mosque-card {
+      padding: var(--space-md);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .onboarding-mosque-card:hover {
+      border-color: var(--primary);
+      background: rgba(16,185,129,0.1);
+    }
+
+    .onboarding-mosque-card.selected {
+      border-color: var(--primary);
+      background: rgba(16,185,129,0.15);
+    }
+
+    .reminder-options {
+      margin: var(--space-lg) 0;
+      text-align: left;
+    }
+
+    .reminder-checkbox {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-sm);
+      cursor: pointer;
+    }
+
+    .reminder-checkbox input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .reminder-checkbox span {
+      flex: 1;
+      font-weight: 600;
+    }
+
+    .reminder-offset {
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: rgba(15,23,42,0.9);
+      color: var(--text-main);
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    .onboarding-tips {
+      text-align: left;
+      margin: var(--space-lg) 0;
+    }
+
+    .tip {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-sm);
+      background: rgba(16,185,129,0.1);
+      border-radius: var(--radius-md);
+    }
+
+    .tip-icon {
+      font-size: 24px;
+    }
+
+    .tip span:last-child {
+      flex: 1;
+      font-size: 14px;
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="app-brand">
+        <div class="app-logo">🕌</div>
+        <div class="app-title-wrap">
+          <div class="app-title">Jamat - Prayer Timings</div>
+          <div class="app-subtitle">Find mosques and jamaat timings near you</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span id="location-status">Detecting location…</span>
+        </div>
+
+        <!-- ✨ User Profile / Sign In Button -->
+        <div id="user-profile-btn" style="display: none; cursor: pointer;" onclick="switchView('profile')">
+          <div style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: rgba(15,23,42,0.8); border-radius: var(--radius-pill); border: 1px solid var(--border-subtle);">
+            <img id="user-avatar" src="" alt="User" style="width: 28px; height: 28px; border-radius: 50%;">
+            <span id="user-name-header" style="font-size: 13px; font-weight: 500; color: var(--text-main);"></span>
+          </div>
+        </div>
+
+        <button id="signin-btn" class="btn btn-primary btn-sm" onclick="showSignInModal()" style="display: flex;">
+          Sign In
+        </button>
+
+        <nav class="app-nav">
+          <button class="nav-btn" data-view="map" type="button">
+            <span>🗺️</span><span class="label">Map</span>
+          </button>
+          <button class="nav-btn active" data-view="list" type="button">
+            <span>📋</span><span class="label">List</span>
+          </button>
+          <button class="nav-btn" data-view="favorites" type="button">
+            <span>⭐</span><span class="label">Favorites</span>
+          </button>
+          <button class="nav-btn" data-view="profile" type="button" style="position: relative;">
+            <span>👤</span><span class="label">Profile</span>
+            <span id="notification-badge" style="position: absolute; top: 4px; right: 4px; background: var(--danger); color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; display: none;">0</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- LEFT COLUMN -->
+      <section id="left-column">
+        <!-- MAP VIEW -->
+        <div id="view-map" class="view">
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">
+                    <span>🗺️</span>
+                    Find mosques on the map
+                  </div>
+                  <div class="card-subtitle">Click on any mosque marker to see jamaat timings</div>
+                </div>
+                <span class="chip-primary">Live map</span>
+              </div>
+
+              <div class="input-row">
+                <label style="flex: 2;">
+                  Search location or mosque
+                  <input class="input" id="map-search-input" type="search" placeholder="Search for mosques, areas, or landmarks..." />
+                </label>
+                <button class="btn btn-primary" id="btn-my-location" type="button">
+                  📍 My Location
+                </button>
+              </div>
+
+              <!-- Map Placeholder (shown until user clicks to load) -->
+              <div id="map-placeholder" style="width: 100%; height: 500px; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-soft); border: 1px solid var(--border-subtle); display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.85)); cursor: pointer;" onclick="loadGoogleMaps()">
+                <div style="font-size: 48px; margin-bottom: 16px;">🗺️</div>
+                <h3 style="margin-bottom: 8px; color: var(--text-main);">Interactive Map</h3>
+                <p style="color: var(--text-muted); margin-bottom: 16px; text-align: center; max-width: 300px;">Click to load the map and explore mosques near you</p>
+                <button class="btn btn-primary" style="pointer-events: none;">
+                  🗺️ Load Map
+                </button>
+              </div>
+
+              <!-- Actual map container (hidden until loaded) -->
+              <div id="map" style="display: none;"></div>
+
+              <div class="flex-between" style="margin-top: 14px;">
+                <div class="small-label">
+                  <strong>Tip:</strong> Use the list view to browse mosques without loading the map
+                </div>
+                <button class="btn btn-outline btn-sm" id="btn-add-mosque" type="button">
+                  ➕ Add Mosque
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIST VIEW -->
+        <div id="view-list" class="view is-active">
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">
+                    <span>📍</span>
+                    Nearby mosques
+                  </div>
+                  <div class="card-subtitle" id="list-location-label">Browse mosques in your area</div>
+                </div>
+                <div class="chip-primary">
+                  Next: <strong id="list-next-prayer">–</strong>
+                </div>
+              </div>
+
+              <div class="input-row">
+                <label style="flex: 2;">
+                  Search
+                  <input class="input" id="list-search-input" type="search" placeholder="Mosque name, area, landmark…" />
+                </label>
+                <label style="flex: 1; min-width: 160px;">
+                  Sort by
+                  <select id="filter-select">
+                    <option value="distance">Closest first</option>
+                    <option value="rating">Highest rated</option>
+                    <option value="recent">Recently updated</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="tag-list">
+                <span class="tag-pill">Radius: <span id="radius-label">5km</span></span>
+                <span class="tag-pill">Community verified</span>
+              </div>
+
+              <div class="mosque-list" id="mosque-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAVORITES VIEW -->
+        <div id="view-favorites" class="view">
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">
+                    <span>⭐</span>
+                    Favorite mosques
+                  </div>
+                  <div class="card-subtitle">Quick access to your frequently visited mosques</div>
+                </div>
+                <span class="chip-accent">Saved</span>
+              </div>
+
+              <!-- ✨ Default Mosque Info -->
+              <div id="default-mosque-info" style="margin-bottom: 16px; padding: 12px; border-radius: var(--radius-md); background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.3); display: none;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                  <span style="font-size: 16px;">🏠</span>
+                  <span style="font-size: 12px; font-weight: 600; color: rgba(251, 191, 36, 1);">DEFAULT MOSQUE</span>
+                </div>
+                <div style="font-size: 14px; font-weight: 600; color: var(--text-main);" id="default-mosque-name">–</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">This mosque loads automatically when you open the app</div>
+              </div>
+
+              <div class="mosque-list" id="favorites-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE VIEW -->
+        <div id="view-profile" class="view">
+          <div class="card">
+            <div class="card-inner">
+              <!-- ✨ Profile Header with User Info -->
+              <div class="card-header" style="flex-direction: column; align-items: flex-start; gap: 16px;">
+                <div style="width: 100%;">
+                  <div class="card-title">
+                    <span>👤</span>
+                    <span id="profile-title">Your profile</span>
+                  </div>
+                  <div class="card-subtitle">Contributions and activity</div>
+                </div>
+
+                <!-- User Info (shown when logged in) -->
+                <div id="profile-user-info" style="display: none; width: 100%;">
+                  <div style="display: flex; align-items: center; gap: 16px;">
+                    <img id="profile-user-avatar" src="" alt="User" style="width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--primary);">
+                    <div style="flex: 1;">
+                      <div style="font-size: 18px; font-weight: 700; color: var(--text-main);" id="profile-user-name"></div>
+                      <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;" id="profile-user-email"></div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="handleSignOut()">
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Guest Prompt (shown when not logged in) -->
+                <div id="profile-guest-prompt" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 40px 20px; width: 100%;">
+                  <div style="font-size: 64px; margin-bottom: 16px;">🔒</div>
+                  <h3 style="margin-bottom: 8px; color: var(--text-main);">Sign in to unlock your profile</h3>
+                  <p style="color: var(--text-muted); margin-bottom: 20px; max-width: 400px;">
+                    Sign in to save favorites, submit timings, earn reputation, and get personalized notifications.
+                  </p>
+                  <button class="btn btn-primary" onclick="showSignInModal()">
+                    Sign in with Google
+                  </button>
+                </div>
+              </div>
+
+              <!-- Profile Content (only shown when logged in) -->
+              <div id="profile-content" style="display: none;">
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 12px;">
+                <div style="border-radius: var(--radius-md); padding: 12px; background: rgba(15,23,42,0.98); border: 1px solid rgba(51,65,85,0.8);">
+                  <div class="small-label">Favorites</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px;" id="profile-favorites-count">0</div>
+                </div>
+                <div style="border-radius: var(--radius-md); padding: 12px; background: rgba(15,23,42,0.98); border: 1px solid rgba(51,65,85,0.8);">
+                  <div class="small-label">Submissions</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px;" id="profile-submissions-count">0</div>
+                </div>
+                <div style="border-radius: var(--radius-md); padding: 12px; background: rgba(15,23,42,0.98); border: 1px solid rgba(51,65,85,0.8);">
+                  <div class="small-label">Reputation</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: var(--primary);" id="profile-reputation">0</div>
+                </div>
+              </div>
+
+              <!-- ✨ Badges Section -->
+              <div style="margin-top: 20px;">
+                <div class="small-label" style="margin-bottom: 8px;">🏆 Your Badges</div>
+                <div id="profile-badges" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+
+              <!-- ✨ Notifications Section -->
+              <div style="margin-top: 20px;">
+                <div class="small-label" style="margin-bottom: 8px;">🔔 Notifications</div>
+                <div id="profile-notifications" style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto;">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+
+              </div>
+              <!-- End profile-content -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN - DETAILS WITH TABS ✨ -->
+      <aside id="right-column">
+        <div class="card" id="detail-card">
+          <div class="card-inner">
+            <div class="card-header">
+              <div>
+                <div class="card-title">
+                  <span>🕌</span>
+                  <span id="detail-mosque-name">Select a mosque</span>
+                </div>
+                <div class="card-subtitle" id="detail-mosque-address">Click on a mosque to view details</div>
+              </div>
+              <button class="favorite-toggle" id="detail-favorite-toggle" style="display: none;">
+                <span>⭐</span><span>Favorite</span>
+              </button>
+            </div>
+
+            <!-- ✨ NEW: Tab Navigation -->
+            <div class="detail-tabs" id="detail-tabs" style="display: none;">
+              <button class="detail-tab active" data-tab="timings">
+                🕰️ Timings
+              </button>
+              <button class="detail-tab" data-tab="updates">
+                📊 Updates
+              </button>
+              <button class="detail-tab" data-tab="info">
+                ℹ️ Info
+              </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="detail-content" style="display: none;">
+              <!-- Timings Tab -->
+              <div class="tab-panel active" data-panel="timings">
+                <table class="timings-table">
+                  <thead>
+                    <tr>
+                      <th>Prayer</th>
+                      <th>Jamaat</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="timings-body"></tbody>
+                </table>
+
+                <div class="countdown">
+                  <div class="countdown-main">
+                    Next: <span id="next-prayer-name">–</span>
+                  </div>
+                  <div>
+                    in <span class="countdown-time" id="next-prayer-countdown">--:--:--</span>
+                  </div>
+                </div>
+
+                <div class="flex-between" style="margin-top: 16px;">
+                  <div class="flex-gap">
+                    <button class="btn btn-outline btn-sm" id="btn-view-map">
+                      🗺️ View
+                    </button>
+                    <button class="btn btn-outline btn-sm" id="btn-directions">
+                      🚗 Directions
+                    </button>
+                  </div>
+                  <button class="btn btn-primary btn-sm" id="btn-update-timings">
+                    ✏️ Update
+                  </button>
+                </div>
+              </div>
+
+              <!-- Updates Tab -->
+              <div class="tab-panel" data-panel="updates" style="display: none;">
+                <div class="submissions-list" id="submissions-list"></div>
+              </div>
+
+              <!-- Info Tab -->
+              <div class="tab-panel" data-panel="info" style="display: none;">
+                <dl>
+                  <dt>Distance</dt>
+                  <dd id="detail-distance">–</dd>
+                  <dt>Rating</dt>
+                  <dd><span id="detail-rating"></span> · <span id="detail-contributors"></span> contributors</dd>
+                  <dt>Last updated</dt>
+                  <dd id="detail-last-updated">–</dd>
+                  <dt>Contact</dt>
+                  <dd id="detail-contact">–</dd>
+                </dl>
+
+                <!-- Amenities Section -->
+                <div style="margin-top: 16px;">
+                  <div class="small-label" style="margin-bottom: 8px;">Amenities</div>
+                  <div id="amenities-list" class="amenities-list">
+                    <!-- Populated dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Placeholder (when no mosque selected) -->
+            <div id="detail-placeholder" style="text-align: center; padding: 40px 20px;">
+              <div style="font-size: 48px; margin-bottom: 12px;">🕌</div>
+              <p class="small-label">Select a mosque to view details</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructions Card -->
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-header">
+              <div class="card-title">
+                <span>💡</span>
+                How to use
+              </div>
+            </div>
+            <ul style="font-size: 13px; color: var(--text-muted); padding-left: 20px; margin: 0; position: relative; z-index: 1;">
+              <li style="margin-bottom: 8px;">Click on mosque markers on the map to view timings</li>
+              <li style="margin-bottom: 8px;">Search for locations or mosques using the search box</li>
+              <li style="margin-bottom: 8px;">Add mosques to favorites for quick access</li>
+              <li style="margin-bottom: 8px;">View directions to any mosque in Google Maps</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Update Form Modal -->
+  <div id="update-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px;">
+    <div class="card" style="max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;">
+      <div class="card-inner">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span>📤</span>
+              Update jamaat timings
+            </div>
+            <div class="card-subtitle">Help keep timings accurate for the community</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="btn-close-modal" type="button">
+            ✕
+          </button>
+        </div>
+
+        <form id="update-form">
+          <div class="input-row">
+            <label>Fajr
+              <input class="input" type="time" name="fajr" required />
+            </label>
+            <label>Zuhr
+              <input class="input" type="time" name="zuhr" required />
+            </label>
+          </div>
+          <div class="input-row">
+            <label>Asr
+              <input class="input" type="time" name="asr" required />
+            </label>
+            <label>Maghrib
+              <input class="input" type="time" name="maghrib" required />
+            </label>
+          </div>
+          <div class="input-row">
+            <label>Isha
+              <input class="input" type="time" name="isha" required />
+            </label>
+            <label>Jummah
+              <input class="input" type="time" name="jummah" />
+            </label>
+          </div>
+          <div class="input-row">
+            <label style="flex: 1;">
+              Notes (optional)
+              <textarea class="input" name="notes" placeholder="e.g., Ramadan schedule, winter timing, etc."></textarea>
+            </label>
+          </div>
+          <div class="input-row">
+            <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); margin-top: 6px;">
+              <input type="checkbox" name="verified" required />
+              I verified these timings from the mosque board or attended jamaat
+            </label>
+          </div>
+          <div class="flex-between" style="margin-top: 12px;">
+            <span class="small-label">Updates are visible immediately</span>
+            <button class="btn btn-primary btn-lg" type="submit">
+              📤 Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✨ SIGN-IN MODAL -->
+  <div id="signin-modal" class="signin-modal">
+    <div class="signin-content">
+      <div style="font-size: 64px; margin-bottom: 16px;">🕌</div>
+      <h2 style="margin-bottom: 8px; color: var(--text-main);">Sign in to Jamat</h2>
+      <p style="color: var(--text-muted); margin-bottom: 24px;">
+        Sign in to submit prayer timings, save favorites, and help the community
+      </p>
+
+      <button class="google-signin-btn" id="google-signin-btn" onclick="handleGoogleSignIn()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <p style="margin-top: 16px; font-size: 12px; color: var(--text-muted);">
+        By signing in, you agree to our Terms of Service and Privacy Policy
+      </p>
+
+      <button class="btn btn-ghost" style="margin-top: 12px;" onclick="closeSignInModal()">
+        Browse as Guest
+      </button>
+    </div>
+  </div>
+
+  <!-- ✨ NEW: ONBOARDING MODAL -->
+  <div id="onboarding-modal" class="onboarding-modal">
+    <div class="onboarding-content">
+      <!-- Progress indicator -->
+      <div class="onboarding-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="onboarding-progress-fill" style="width: 20%;"></div>
+        </div>
+        <div class="progress-text">
+          Step <span id="current-step">1</span> of 5
+        </div>
+      </div>
+
+      <button class="onboarding-skip" id="onboarding-skip">Skip →</button>
+
+      <!-- Step 1: Welcome -->
+      <div class="onboarding-step" data-step="1">
+        <div class="onboarding-icon">🕌</div>
+        <h2>Welcome to Jamat!</h2>
+        <p>Find accurate prayer timings for mosques near you, powered by the community.</p>
+        <button class="btn btn-primary btn-lg" onclick="onboarding.next()">
+          Get Started
+        </button>
+      </div>
+
+      <!-- Step 2: Location -->
+      <div class="onboarding-step" data-step="2" style="display: none;">
+        <div class="onboarding-icon">📍</div>
+        <h2>Detect your location?</h2>
+        <p>We'll show you mosques in your area</p>
+        <button class="btn btn-primary btn-lg" onclick="onboarding.requestLocation()">
+          📍 Allow Location
+        </button>
+        <button class="btn btn-ghost" onclick="onboarding.next()">
+          Enter Manually
+        </button>
+      </div>
+
+      <!-- Step 3: Home Mosque -->
+      <div class="onboarding-step" data-step="3" style="display: none;">
+        <div class="onboarding-icon">🏠</div>
+        <h2>Pick your home mosque</h2>
+        <p>This mosque will show automatically when you open the app</p>
+        <div id="onboarding-mosque-list" class="onboarding-mosque-list">
+          <!-- Populated dynamically -->
+        </div>
+        <button class="btn btn-ghost" onclick="onboarding.next()">
+          Skip for Now
+        </button>
+      </div>
+
+      <!-- Step 4: Reminders -->
+      <div class="onboarding-step" data-step="4" style="display: none;">
+        <div class="onboarding-icon">🔔</div>
+        <h2>Turn on prayer reminders?</h2>
+        <p>Get notified before jamaat times</p>
+
+        <div class="reminder-options">
+          <label class="reminder-checkbox">
+            <input type="checkbox" name="reminder-fajr" checked />
+            <span>Fajr</span>
+            <select class="reminder-offset">
+              <option value="15" selected>15 min before</option>
+              <option value="10">10 min before</option>
+              <option value="20">20 min before</option>
+              <option value="30">30 min before</option>
+            </select>
+          </label>
+
+          <label class="reminder-checkbox">
+            <input type="checkbox" name="reminder-maghrib" checked />
+            <span>Maghrib</span>
+            <select class="reminder-offset">
+              <option value="10" selected>10 min before</option>
+              <option value="15">15 min before</option>
+              <option value="20">20 min before</option>
+            </select>
+          </label>
+
+          <label class="reminder-checkbox">
+            <input type="checkbox" name="reminder-isha" />
+            <span>Isha</span>
+            <select class="reminder-offset">
+              <option value="15" selected>15 min before</option>
+              <option value="10">10 min before</option>
+              <option value="20">20 min before</option>
+            </select>
+          </label>
+
+          <label class="reminder-checkbox">
+            <input type="checkbox" name="reminder-jummah" checked />
+            <span>Jummah</span>
+            <select class="reminder-offset">
+              <option value="30" selected>30 min before</option>
+              <option value="45">45 min before</option>
+              <option value="60">60 min before</option>
+              <option value="20">20 min before</option>
+            </select>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg" onclick="onboarding.complete()">
+          ✓ Enable Reminders
+        </button>
+        <button class="btn btn-ghost" onclick="onboarding.complete()">
+          Skip for Now
+        </button>
+      </div>
+
+      <!-- Step 5: Done -->
+      <div class="onboarding-step" data-step="5" style="display: none;">
+        <div class="onboarding-icon">✨</div>
+        <h2>You're all set!</h2>
+        <p>Here's how to get the most out of Jamat:</p>
+
+        <div class="onboarding-tips">
+          <div class="tip">
+            <span class="tip-icon">🗺️</span>
+            <span>Tap mosque markers to see prayer timings</span>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">⭐</span>
+            <span>Star your favorite mosques for quick access</span>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">✏️</span>
+            <span>Update timings to help the community</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg" onclick="onboarding.finish()">
+          🚀 Start Using Jamat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========================================
+    // ✨ API SERVICE LAYER
+    // ========================================
+    const API_BASE = '/api'; // Change this to your backend URL
+
+    const api = {
+      async getNearbyMosques(lat, lng, radius = 5) {
+        // TODO: Replace with real API call
+        // return await fetch(`${API_BASE}/mosques/nearby?lat=${lat}&lng=${lng}&radius=${radius}`).then(r => r.json());
+        return state.mosques; // Mock data for now
+      },
+
+      async getMosque(id) {
+        return state.mosques.find(m => m.id === id);
+      },
+
+      async toggleFavorite(mosqueId) {
+        // TODO: API call
+        // Mock implementation
+        const index = state.user.favoriteMosques.indexOf(mosqueId);
+        if (index === -1) {
+          state.user.favoriteMosques.push(mosqueId);
+        } else {
+          state.user.favoriteMosques.splice(index, 1);
+        }
+        storage.saveFavorites(state.user.favoriteMosques);
+        return { success: true };
+      }
+    };
+
+    // ========================================
+    // ✨ LOCALSTORAGE UTILITIES
+    // ========================================
+    const storage = {
+      saveFavorites(favorites) {
+        localStorage.setItem('jamat_favorites', JSON.stringify(favorites));
+      },
+
+      getFavorites() {
+        const stored = localStorage.getItem('jamat_favorites');
+        return stored ? JSON.parse(stored) : [];
+      },
+
+      saveDefaultMosque(mosqueId) {
+        localStorage.setItem('jamat_default_mosque', mosqueId);
+      },
+
+      getDefaultMosque() {
+        return localStorage.getItem('jamat_default_mosque');
+      },
+
+      markOnboardingComplete() {
+        localStorage.setItem('jamat_onboarding_done', 'true');
+      },
+
+      hasCompletedOnboarding() {
+        return localStorage.getItem('jamat_onboarding_done') === 'true';
+      },
+
+      // ✨ Auth storage
+      saveAuth(user) {
+        localStorage.setItem('jamat_auth', JSON.stringify(user));
+      },
+
+      getAuth() {
+        const stored = localStorage.getItem('jamat_auth');
+        return stored ? JSON.parse(stored) : null;
+      },
+
+      clearAuth() {
+        localStorage.removeItem('jamat_auth');
+      }
+    };
+
+    // ========================================
+    // ✨ AUTHENTICATION SYSTEM
+    // ========================================
+    function showSignInModal() {
+      document.getElementById('signin-modal').classList.add('show');
+    }
+
+    function closeSignInModal() {
+      document.getElementById('signin-modal').classList.remove('show');
+    }
+
+    // ✨ Google Sign-In (Simulated for now - requires real OAuth integration)
+    async function handleGoogleSignIn() {
+      // TODO: Replace with real Google OAuth
+      // For now, simulate a successful sign-in
+
+      // Simulate Google Sign-In delay
+      const btn = document.getElementById('google-signin-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span style="display: inline-block; width: 20px; height: 20px; border: 2px solid #1f2937; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite;"></span> Signing in...';
+
+      setTimeout(() => {
+        // Mock Google user data (in production, this comes from Google OAuth)
+        const googleUser = {
+          id: 'google_' + Date.now(),
+          name: 'Ahmed Khan', // Would come from Google profile
+          email: 'ahmed.khan@gmail.com', // Would come from Google
+          picture: 'https://ui-avatars.com/api/?name=Ahmed+Khan&background=10b981&color=fff&size=128' // Would come from Google
+        };
+
+        // Save auth state
+        state.auth.isLoggedIn = true;
+        state.auth.user = googleUser;
+        storage.saveAuth(googleUser);
+
+        // Update UI
+        updateAuthUI();
+        closeSignInModal();
+
+        showToast(`Welcome, ${googleUser.name}! 👋`);
+
+        // Reset button
+        btn.disabled = false;
+        btn.innerHTML = `
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        `;
+      }, 1500);
+    }
+
+    function handleSignOut() {
+      if (confirm('Are you sure you want to sign out?')) {
+        state.auth.isLoggedIn = false;
+        state.auth.user = null;
+        storage.clearAuth();
+
+        updateAuthUI();
+        showToast('Signed out successfully');
+
+        // Return to list view
+        switchView('list');
+      }
+    }
+
+    function updateAuthUI() {
+      const isLoggedIn = state.auth.isLoggedIn;
+      const user = state.auth.user;
+
+      // Update header buttons
+      document.getElementById('signin-btn').style.display = isLoggedIn ? 'none' : 'flex';
+      document.getElementById('user-profile-btn').style.display = isLoggedIn ? 'block' : 'none';
+
+      if (isLoggedIn && user) {
+        // Update header profile button
+        document.getElementById('user-avatar').src = user.picture;
+        document.getElementById('user-name-header').textContent = user.name.split(' ')[0]; // First name only
+
+        // Update profile view
+        document.getElementById('profile-user-info').style.display = 'block';
+        document.getElementById('profile-guest-prompt').style.display = 'none';
+        document.getElementById('profile-content').style.display = 'block';
+
+        document.getElementById('profile-user-avatar').src = user.picture;
+        document.getElementById('profile-user-name').textContent = user.name;
+        document.getElementById('profile-user-email').textContent = user.email;
+        document.getElementById('profile-title').textContent = `${user.name.split(' ')[0]}'s Profile`;
+      } else {
+        // Guest mode
+        document.getElementById('profile-user-info').style.display = 'none';
+        document.getElementById('profile-guest-prompt').style.display = 'flex';
+        document.getElementById('profile-content').style.display = 'none';
+        document.getElementById('profile-title').textContent = 'Your Profile';
+      }
+    }
+
+    // Check auth on page load
+    function initAuth() {
+      const savedAuth = storage.getAuth();
+      if (savedAuth) {
+        state.auth.isLoggedIn = true;
+        state.auth.user = savedAuth;
+      }
+      updateAuthUI();
+    }
+
+    // ========================================
+    // ✨ ONBOARDING SYSTEM
+    // ========================================
+    const onboarding = {
+      currentStep: 1,
+      totalSteps: 5,
+      selectedMosque: null,
+
+      init() {
+        if (storage.hasCompletedOnboarding()) {
+          return;
+        }
+        document.getElementById('onboarding-modal').classList.add('show');
+        this.updateProgress();
+      },
+
+      next() {
+        if (this.currentStep < this.totalSteps) {
+          document.querySelector(`.onboarding-step[data-step="${this.currentStep}"]`).style.display = 'none';
+          this.currentStep++;
+          document.querySelector(`.onboarding-step[data-step="${this.currentStep}"]`).style.display = 'block';
+
+          if (this.currentStep === 3) {
+            this.loadNearbyMosques();
+          }
+
+          this.updateProgress();
+        }
+      },
+
+      updateProgress() {
+        const progress = (this.currentStep / this.totalSteps) * 100;
+        document.getElementById('onboarding-progress-fill').style.width = progress + '%';
+        document.getElementById('current-step').textContent = this.currentStep;
+      },
+
+      async requestLocation() {
+        if (navigator.geolocation) {
+          try {
+            const position = await new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+
+            state.userLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            showToast('Location detected!');
+            this.next();
+          } catch (error) {
+            showToast('Location access denied');
+            this.next();
+          }
+        } else {
+          showToast('Geolocation not supported');
+          this.next();
+        }
+      },
+
+      loadNearbyMosques() {
+        const container = document.getElementById('onboarding-mosque-list');
+        container.innerHTML = '';
+
+        const mosques = state.mosques
+          .sort((a, b) => a.distanceKm - b.distanceKm)
+          .slice(0, 5);
+
+        mosques.forEach(mosque => {
+          const card = document.createElement('div');
+          card.className = 'onboarding-mosque-card';
+          card.innerHTML = `
+            <strong>${mosque.name}</strong>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+              ${mosque.address}, ${mosque.city} · ${formatDistance(mosque.distanceKm)}
+            </div>
+          `;
+          card.onclick = () => this.selectMosque(mosque, card);
+          container.appendChild(card);
+        });
+      },
+
+      selectMosque(mosque, cardElement) {
+        this.selectedMosque = mosque.id;
+
+        document.querySelectorAll('.onboarding-mosque-card').forEach(card => {
+          card.classList.remove('selected');
+        });
+        cardElement.classList.add('selected');
+
+        setTimeout(() => this.next(), 500);
+      },
+
+      complete() {
+        const reminders = {
+          fajr: {
+            enabled: document.querySelector('input[name="reminder-fajr"]')?.checked || false,
+            minutes: parseInt(document.querySelector('input[name="reminder-fajr"]')?.closest('.reminder-checkbox')?.querySelector('.reminder-offset')?.value || 15)
+          },
+          maghrib: {
+            enabled: document.querySelector('input[name="reminder-maghrib"]')?.checked || false,
+            minutes: parseInt(document.querySelector('input[name="reminder-maghrib"]')?.closest('.reminder-checkbox')?.querySelector('.reminder-offset')?.value || 10)
+          },
+          isha: {
+            enabled: document.querySelector('input[name="reminder-isha"]')?.checked || false,
+            minutes: parseInt(document.querySelector('input[name="reminder-isha"]')?.closest('.reminder-checkbox')?.querySelector('.reminder-offset')?.value || 15)
+          },
+          jummah: {
+            enabled: document.querySelector('input[name="reminder-jummah"]')?.checked || false,
+            minutes: parseInt(document.querySelector('input[name="reminder-jummah"]')?.closest('.reminder-checkbox')?.querySelector('.reminder-offset')?.value || 30)
+          }
+        };
+        localStorage.setItem('reminder_preferences', JSON.stringify(reminders));
+        this.next();
+      },
+
+      finish() {
+        storage.markOnboardingComplete();
+
+        if (this.selectedMosque) {
+          storage.saveDefaultMosque(this.selectedMosque);
+          state.selectedMosqueId = this.selectedMosque;
+        }
+
+        document.getElementById('onboarding-modal').classList.remove('show');
+        showToast('Welcome to Jamat! 🎉');
+
+        if (this.selectedMosque) {
+          setTimeout(() => {
+            selectMosque(this.selectedMosque);
+          }, 300);
+        }
+      },
+
+      skip() {
+        if (confirm('Skip onboarding? You can always access settings later.')) {
+          storage.markOnboardingComplete();
+          document.getElementById('onboarding-modal').classList.remove('show');
+        }
+      }
+    };
+
+    // ========================================
+    // STATE MANAGEMENT
+    // ========================================
+    const state = {
+      currentView: "list",
+      selectedMosqueId: null,
+      userLocation: null,
+      map: null,
+      markers: [],
+      countdownIntervalId: null,
+      mosques: [
+        {
+          id: "m1",
+          name: "Central Jamia Masjid",
+          address: "Main Boulevard, Block A",
+          city: "Lahore",
+          country: "Pakistan",
+          coordinates: { lat: 31.5204, lng: 74.3587 },
+          distanceKm: 1.2,
+          rating: 4.7,
+          contributorCount: 18,
+          lastUpdated: "2025-11-10T18:20:00Z",
+          phoneNumber: "+92-300-1234567",
+          amenities: ['parking', 'wudu_facilities', 'womens_section', 'wheelchair_accessible'],
+          defaultJamaatTimings: {
+            fajr: "05:15",
+            zuhr: "13:30",
+            asr: "16:15",
+            maghrib: "17:10",
+            isha: "19:30",
+            jummah: "13:45"
+          }
+        },
+        {
+          id: "m2",
+          name: "Jamia Masjid Noor",
+          address: "Street 12, Garden Town",
+          city: "Lahore",
+          country: "Pakistan",
+          coordinates: { lat: 31.5044, lng: 74.3327 },
+          distanceKm: 3.4,
+          rating: 4.3,
+          contributorCount: 9,
+          lastUpdated: "2025-11-09T17:45:00Z",
+          phoneNumber: "",
+          amenities: ['wudu_facilities', 'womens_section', 'library'],
+          defaultJamaatTimings: {
+            fajr: "05:10",
+            zuhr: "13:15",
+            asr: "16:05",
+            maghrib: "17:08",
+            isha: "19:20",
+            jummah: "13:30"
+          }
+        },
+        {
+          id: "m3",
+          name: "Masjid Bilal",
+          address: "Near City Park, Block C",
+          city: "Lahore",
+          country: "Pakistan",
+          coordinates: { lat: 31.5304, lng: 74.3487 },
+          distanceKm: 4.9,
+          rating: 4.9,
+          contributorCount: 27,
+          lastUpdated: "2025-11-11T05:55:00Z",
+          phoneNumber: "+92-333-9876543",
+          amenities: ['parking', 'wudu_facilities', 'womens_section', 'wheelchair_accessible', 'school', 'ac'],
+          defaultJamaatTimings: {
+            fajr: "05:05",
+            zuhr: "13:20",
+            asr: "16:00",
+            maghrib: "17:06",
+            isha: "19:25",
+            jummah: "13:15"
+          }
+        }
+      ],
+      // ✨ Community submissions for each mosque
+      submissions: {
+        m1: [
+          {
+            id: "sub1",
+            userId: "user123",
+            userName: "Ahmed Khan",
+            userReputation: 450,
+            isTopContributor: true,
+            submittedAt: "2025-11-16T07:30:00Z",
+            timings: { fajr: "05:15", zuhr: "13:30", asr: "16:15", maghrib: "17:10", isha: "19:30", jummah: "13:45" },
+            notes: "Verified from mosque board",
+            verified: true,
+            verifiedBy: 5,
+            status: "active"
+          },
+          {
+            id: "sub2",
+            userId: "user456",
+            userName: "Fatima Ali",
+            userReputation: 280,
+            isTopContributor: true,
+            submittedAt: "2025-11-15T18:20:00Z",
+            timings: { fajr: "05:10", zuhr: "13:25", asr: "16:10", maghrib: "17:08", isha: "19:25", jummah: "13:40" },
+            notes: "Winter schedule - attended Maghrib jamaat",
+            verified: true,
+            verifiedBy: 3,
+            status: "outdated"
+          },
+          {
+            id: "sub3",
+            userId: "user789",
+            userName: "Omar Hassan",
+            userReputation: 120,
+            isTopContributor: false,
+            submittedAt: "2025-11-16T06:00:00Z",
+            timings: { fajr: "05:20", zuhr: "13:35", asr: "16:20", maghrib: "17:12", isha: "19:35", jummah: "13:50" },
+            notes: "Times may have changed",
+            verified: false,
+            verifiedBy: 0,
+            status: "pending_verification"
+          }
+        ],
+        m2: [
+          {
+            id: "sub4",
+            userId: "user234",
+            userName: "Aisha Rahman",
+            userReputation: 520,
+            isTopContributor: true,
+            submittedAt: "2025-11-14T12:00:00Z",
+            timings: { fajr: "05:10", zuhr: "13:15", asr: "16:05", maghrib: "17:08", isha: "19:20", jummah: "13:30" },
+            notes: "Confirmed with mosque administration",
+            verified: true,
+            verifiedBy: 7,
+            status: "active"
+          }
+        ],
+        m3: [
+          {
+            id: "sub5",
+            userId: "user567",
+            userName: "Ibrahim Malik",
+            userReputation: 650,
+            isTopContributor: true,
+            submittedAt: "2025-11-16T05:30:00Z",
+            timings: { fajr: "05:05", zuhr: "13:20", asr: "16:00", maghrib: "17:06", isha: "19:25", jummah: "13:15" },
+            notes: "Updated today - attended Fajr",
+            verified: true,
+            verifiedBy: 8,
+            status: "active"
+          }
+        ]
+      },
+      // ✨ User contribution stats per mosque
+      userContributions: {
+        m1: { totalSubmissions: 12, approvedSubmissions: 10, trustScore: 85, isTopContributor: true },
+        m2: { totalSubmissions: 5, approvedSubmissions: 4, trustScore: 70, isTopContributor: false }
+      },
+      // ✨ Pending notifications
+      notifications: [
+        {
+          id: "notif1",
+          type: "verification_request",
+          mosqueId: "m1",
+          mosqueName: "Central Jamia Masjid",
+          submissionId: "sub3",
+          submitterName: "Omar Hassan",
+          createdAt: "2025-11-16T06:00:00Z",
+          read: false
+        },
+        {
+          id: "notif2",
+          type: "timing_update",
+          mosqueId: "m2",
+          mosqueName: "Jamia Masjid Noor",
+          message: "Prayer timings updated by Aisha Rahman",
+          createdAt: "2025-11-15T12:00:00Z",
+          read: false
+        }
+      ],
+      user: {
+        favoriteMosques: storage.getFavorites(),
+        totalSubmissions: 17,
+        reputation: 485,
+        badges: ["Top Contributor", "Early Adopter", "Verified Helper"]
+      },
+      // ✨ Authentication state
+      auth: {
+        isLoggedIn: false,
+        user: null // Will contain: { name, email, picture, id }
+      }
+    };
+
+    // Helper functions
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    function formatDistance(km) {
+      return km < 1 ? `${(km * 1000).toFixed(0)}m` : `${km.toFixed(1)}km`;
+    }
+
+    function formatDateTime(isoString) {
+      if (!isoString) return "–";
+      return new Date(isoString).toLocaleString();
+    }
+
+    function getMosqueById(id) {
+      return state.mosques.find(m => m.id === id) || null;
+    }
+
+    function isFavorite(mosqueId) {
+      return state.user.favoriteMosques.includes(mosqueId);
+    }
+
+    async function toggleFavorite(mosqueId) {
+      await api.toggleFavorite(mosqueId);
+      renderMosqueList();
+      renderFavorites();
+      updateDetailFavoriteButton();
+      updateProfile();
+      showToast(isFavorite(mosqueId) ? "Added to favorites" : "Removed from favorites");
+    }
+
+    // View switching
+    function switchView(viewName) {
+      state.currentView = viewName;
+      document.querySelectorAll(".view").forEach(v => {
+        v.classList.toggle("is-active", v.id === "view-" + viewName);
+      });
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.view === viewName);
+      });
+
+      if (viewName === "favorites") {
+        renderFavorites();
+      } else if (viewName === "profile") {
+        updateProfile();
+      }
+    }
+
+    // ✨ Tab switching
+    function initTabs() {
+      document.querySelectorAll('.detail-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const tabName = tab.dataset.tab;
+
+          document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          document.querySelectorAll('.tab-panel').forEach(panel => {
+            panel.style.display = panel.dataset.panel === tabName ? 'block' : 'none';
+          });
+        });
+      });
+    }
+
+    // ✨ NEW: Lazy load Google Maps to reduce API hits
+    let mapsLoaded = false;
+    let mapsLoading = false;
+
+    function loadGoogleMaps() {
+      if (mapsLoaded || mapsLoading) return;
+
+      mapsLoading = true;
+      const placeholder = document.getElementById('map-placeholder');
+      placeholder.innerHTML = `
+        <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+        <p style="color: var(--text-muted);">Loading map...</p>
+      `;
+
+      const script = document.createElement('script');
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap';
+      script.async = true;
+      script.defer = true;
+      script.onerror = () => {
+        placeholder.innerHTML = `
+          <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+          <p style="color: var(--danger);">Failed to load map. Check your API key.</p>
+        `;
+        mapsLoading = false;
+      };
+      document.head.appendChild(script);
+    }
+
+    // Google Maps initialization
+    function initMap() {
+      mapsLoaded = true;
+      const placeholder = document.getElementById('map-placeholder');
+      const mapElement = document.getElementById('map');
+
+      // Hide placeholder, show map
+      placeholder.style.display = 'none';
+      mapElement.style.display = 'block';
+
+      const defaultCenter = { lat: 31.5204, lng: 74.3587 };
+
+      state.map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 13,
+        center: defaultCenter,
+        styles: [
+          {
+            "featureType": "all",
+            "elementType": "geometry",
+            "stylers": [{ "color": "#242f3e" }]
+          },
+          {
+            "featureType": "all",
+            "elementType": "labels.text.stroke",
+            "stylers": [{ "color": "#242f3e" }]
+          },
+          {
+            "featureType": "all",
+            "elementType": "labels.text.fill",
+            "stylers": [{ "color": "#746855" }]
+          },
+          {
+            "featureType": "water",
+            "elementType": "geometry",
+            "stylers": [{ "color": "#17263c" }]
+          }
+        ]
+      });
+
+      // Add mosque markers with staggered animation
+      state.mosques.forEach((mosque, index) => {
+        const marker = new google.maps.Marker({
+          position: mosque.coordinates,
+          map: state.map,
+          title: mosque.name,
+          animation: google.maps.Animation.DROP,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            fillColor: "#10b981",
+            fillOpacity: 1,
+            strokeColor: "#ffffff",
+            strokeWeight: 2
+          }
+        });
+
+        // Staggered drop animation
+        setTimeout(() => {
+          marker.setAnimation(google.maps.Animation.DROP);
+        }, index * 100);
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `
+            <div class="custom-info-window">
+              <h3>${mosque.name}</h3>
+              <p><strong>Address:</strong> ${mosque.address}</p>
+              <p><strong>Distance:</strong> ${formatDistance(mosque.distanceKm)}</p>
+              <p><strong>Rating:</strong> ⭐ ${mosque.rating.toFixed(1)}</p>
+              <button class="btn btn-primary btn-sm" onclick="selectMosque('${mosque.id}')">View Timings</button>
+            </div>
+          `
+        });
+
+        marker.addListener("click", () => {
+          state.markers.forEach(m => m.infoWindow.close());
+          infoWindow.open(state.map, marker);
+          selectMosque(mosque.id);
+        });
+
+        state.markers.push({ marker, infoWindow, mosqueId: mosque.id });
+      });
+
+      // Search box
+      const searchInput = document.getElementById("map-search-input");
+      const searchBox = new google.maps.places.SearchBox(searchInput);
+
+      state.map.addListener("bounds_changed", () => {
+        searchBox.setBounds(state.map.getBounds());
+      });
+
+      searchBox.addListener("places_changed", () => {
+        const places = searchBox.getPlaces();
+        if (places.length === 0) return;
+
+        const place = places[0];
+        if (!place.geometry || !place.geometry.location) return;
+
+        state.map.setCenter(place.geometry.location);
+        state.map.setZoom(15);
+      });
+
+      // Get user location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userPos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            state.userLocation = userPos;
+            state.map.setCenter(userPos);
+
+            new google.maps.Marker({
+              position: userPos,
+              map: state.map,
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8,
+                fillColor: "#3b82f6",
+                fillOpacity: 1,
+                strokeColor: "#ffffff",
+                strokeWeight: 2
+              },
+              title: "Your location"
+            });
+
+            document.getElementById("location-status").textContent = "Location detected";
+          },
+          () => {
+            document.getElementById("location-status").textContent = "Using default location";
+          }
+        );
+      }
+    }
+
+    // Mosque selection and detail view
+    function selectMosque(mosqueId) {
+      state.selectedMosqueId = mosqueId;
+      const mosque = getMosqueById(mosqueId);
+      if (!mosque) return;
+
+      // Update detail panel
+      document.getElementById("detail-mosque-name").textContent = mosque.name;
+      document.getElementById("detail-mosque-address").textContent =
+        `${mosque.address}, ${mosque.city}, ${mosque.country}`;
+      document.getElementById("detail-distance").textContent = formatDistance(mosque.distanceKm);
+      document.getElementById("detail-rating").textContent = `⭐ ${mosque.rating.toFixed(1)}`;
+      document.getElementById("detail-contributors").textContent = mosque.contributorCount;
+      document.getElementById("detail-last-updated").textContent = formatDateTime(mosque.lastUpdated);
+      document.getElementById("detail-contact").textContent = mosque.phoneNumber || "Not provided";
+
+      // Show tabs and content
+      document.getElementById("detail-tabs").style.display = "flex";
+      document.getElementById("detail-content").style.display = "block";
+      document.getElementById("detail-placeholder").style.display = "none";
+      document.getElementById("detail-favorite-toggle").style.display = "flex";
+
+      // Render components
+      renderTimingsTable(mosque.defaultJamaatTimings);
+      renderAmenities(mosque.amenities);
+      renderSubmissions(mosqueId);
+      updateDetailFavoriteButton();
+      startCountdown(mosque.defaultJamaatTimings);
+
+      // Highlight mosque card
+      document.querySelectorAll(".mosque-card").forEach(card => {
+        card.classList.toggle("active", card.dataset.id === mosqueId);
+      });
+
+      // Scroll detail into view on mobile
+      if (window.innerWidth < 1024) {
+        document.getElementById('detail-card').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // ✨ Create SVG clock timer for reminders
+    function createReminderClock(minutes, prayerKey, enabled) {
+      // Calculate angle: 0 min = top (12 o'clock), rotates clockwise
+      // 15 min = 90deg (3 o'clock), 30 min = 180deg (6 o'clock), etc.
+      const angle = (minutes / 60) * 360 - 90; // -90 to start from top instead of right
+
+      // Visual states: active (enabled) vs inactive (disabled)
+      const color = enabled ? '#10b981' : '#9ca3af';
+      const fillOpacity = enabled ? 0.08 : 0.03;
+      const strokeWidth = enabled ? '1.5' : '1';
+      const opacity = enabled ? '1' : '0.5';
+
+      const svg = `
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="opacity: ${opacity}">
+          <!-- Dashed circle -->
+          <circle cx="16" cy="16" r="14" fill="rgba(${enabled ? '16, 185, 129' : '156, 163, 175'}, ${fillOpacity})"
+                  stroke="${color}" stroke-width="${strokeWidth}"
+                  stroke-dasharray="2,2" />
+
+          <!-- Clock hand (arrow) pointing from center outward -->
+          <g transform="rotate(${angle} 16 16)">
+            <line x1="16" y1="16" x2="16" y2="6"
+                  stroke="${color}" stroke-width="2"
+                  stroke-linecap="round" />
+            <!-- Arrowhead -->
+            <path d="M 16 6 L 14 9 L 18 9 Z" fill="${color}" />
+          </g>
+
+          <!-- Center dot -->
+          <circle cx="16" cy="16" r="2" fill="${color}" />
+        </svg>
+        <span class="minutes-label" style="color: ${color}; opacity: ${opacity}">${minutes}</span>
+      `;
+
+      const title = enabled
+        ? `Click to disable - ${minutes} min before ${prayerKey}. Double-click to edit minutes.`
+        : `Click to enable ${minutes} min reminder. Double-click to edit minutes.`;
+
+      return `<span class="reminder-timer ${enabled ? 'active' : 'inactive'}"
+                    onclick="toggleReminder('${prayerKey}')"
+                    ondblclick="event.stopPropagation(); editReminderMinutes('${prayerKey}', ${minutes})"
+                    title="${title}">${svg}</span>`;
+    }
+
+    function renderTimingsTable(timings) {
+      const tbody = document.getElementById("timings-body");
+      tbody.innerHTML = "";
+      const entries = [
+        { key: "fajr", label: "Fajr" },
+        { key: "zuhr", label: "Zuhr" },
+        { key: "asr", label: "Asr" },
+        { key: "maghrib", label: "Maghrib" },
+        { key: "isha", label: "Isha" },
+        { key: "jummah", label: "Jummah" }
+      ];
+
+      // Get reminder preferences
+      const reminderPrefs = JSON.parse(localStorage.getItem('reminder_preferences') || '{}');
+
+      const next = computeNextPrayer(timings);
+      entries.forEach(entry => {
+        const tr = document.createElement("tr");
+        if (next.nextPrayerKey === entry.key) tr.classList.add("highlight");
+
+        // ✨ Always show reminder clock for ALL prayers, with visual states
+        const reminder = reminderPrefs[entry.key] || { enabled: false, minutes: 15 };
+        const reminderIndicator = createReminderClock(reminder.minutes, entry.key, reminder.enabled);
+
+        tr.innerHTML = `
+          <td>${entry.label}${reminderIndicator}</td>
+          <td style="font-weight: 600;">${timings[entry.key] || '–'}</td>
+          <td>${next.nextPrayerKey === entry.key ? "Next prayer" : "–"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById("next-prayer-name").textContent = next.nextPrayerName || "All completed";
+    }
+
+    // ✨ Toggle reminder on/off
+    function toggleReminder(prayerKey) {
+      const reminderPrefs = JSON.parse(localStorage.getItem('reminder_preferences') || '{}');
+
+      // If preference doesn't exist, create it
+      if (!reminderPrefs[prayerKey]) {
+        reminderPrefs[prayerKey] = { enabled: false, minutes: 15 };
+      }
+
+      // Toggle the enabled state
+      reminderPrefs[prayerKey].enabled = !reminderPrefs[prayerKey].enabled;
+      localStorage.setItem('reminder_preferences', JSON.stringify(reminderPrefs));
+
+      // Re-render timings table to show updated state
+      const mosque = getMosqueById(state.selectedMosqueId);
+      if (mosque) {
+        renderTimingsTable(mosque.defaultJamaatTimings);
+      }
+
+      // Show toast notification
+      const prayerName = prayerKey.charAt(0).toUpperCase() + prayerKey.slice(1);
+      const message = reminderPrefs[prayerKey].enabled
+        ? `✓ Reminder enabled for ${prayerName} (${reminderPrefs[prayerKey].minutes} min before)`
+        : `Reminder disabled for ${prayerName}`;
+      showToast(message);
+    }
+
+    // ✨ Edit reminder minutes inline
+    function editReminderMinutes(prayerKey, currentMinutes) {
+      const newMinutes = prompt(`Set reminder minutes before ${prayerKey} prayer:`, currentMinutes);
+      if (newMinutes === null || newMinutes === '') return;
+
+      const minutes = parseInt(newMinutes);
+      if (isNaN(minutes) || minutes < 1 || minutes > 120) {
+        showToast('Please enter a valid number between 1 and 120 minutes');
+        return;
+      }
+
+      // Update localStorage
+      const reminderPrefs = JSON.parse(localStorage.getItem('reminder_preferences') || '{}');
+      if (!reminderPrefs[prayerKey]) {
+        reminderPrefs[prayerKey] = { enabled: false, minutes: 15 };
+      }
+
+      reminderPrefs[prayerKey].minutes = minutes;
+      localStorage.setItem('reminder_preferences', JSON.stringify(reminderPrefs));
+
+      // Re-render timings table
+      const mosque = getMosqueById(state.selectedMosqueId);
+      if (mosque) {
+        renderTimingsTable(mosque.defaultJamaatTimings);
+      }
+
+      const prayerName = prayerKey.charAt(0).toUpperCase() + prayerKey.slice(1);
+      showToast(`Reminder updated: ${minutes} min before ${prayerName}`);
+    }
+
+    // ✨ Render amenities with icons
+    function renderAmenities(amenities) {
+      const container = document.getElementById('amenities-list');
+      container.innerHTML = '';
+
+      const amenityIcons = {
+        'parking': '🅿️',
+        'wudu_facilities': '🚰',
+        'womens_section': '🧕',
+        'wheelchair_accessible': '♿',
+        'library': '📚',
+        'school': '🏫',
+        'ac': '❄️'
+      };
+
+      amenities.forEach(amenity => {
+        const badge = document.createElement('div');
+        badge.className = 'amenity-badge';
+        badge.innerHTML = `
+          <span class="icon">${amenityIcons[amenity] || '✓'}</span>
+          <span>${amenity.replace(/_/g, ' ')}</span>
+        `;
+        container.appendChild(badge);
+      });
+    }
+
+    // ✨ Render community submissions in Updates tab
+    function renderSubmissions(mosqueId) {
+      const container = document.getElementById('submissions-list');
+      const submissions = state.submissions[mosqueId] || [];
+
+      if (submissions.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+            <div style="font-size: 48px; margin-bottom: 12px;">📊</div>
+            <p>No timing submissions yet</p>
+            <p style="font-size: 12px; margin-top: 8px;">Be the first to contribute!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = '';
+
+      // Sort: pending first, then active, then outdated
+      const sortedSubmissions = [...submissions].sort((a, b) => {
+        const order = { pending_verification: 0, active: 1, outdated: 2 };
+        return order[a.status] - order[b.status];
+      });
+
+      sortedSubmissions.forEach(sub => {
+        const card = document.createElement('div');
+        card.className = 'submission-card';
+
+        // Status badge
+        let statusBadge = '';
+        let statusColor = '';
+        if (sub.status === 'active') {
+          statusBadge = '✓ Active';
+          statusColor = 'var(--primary)';
+        } else if (sub.status === 'pending_verification') {
+          statusBadge = '⏳ Pending Verification';
+          statusColor = 'var(--accent)';
+        } else {
+          statusBadge = '⌛ Outdated';
+          statusColor = 'var(--text-muted)';
+        }
+
+        // Top contributor badge
+        const contributorBadge = sub.isTopContributor
+          ? '<span style="background: rgba(16,185,129,0.2); color: var(--primary); padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-left: 6px;">⭐ Top Contributor</span>'
+          : '';
+
+        // Time ago
+        const timeAgo = formatTimeAgo(sub.submittedAt);
+
+        // Verification count
+        const verificationInfo = sub.verified
+          ? `<span style="color: var(--primary); font-size: 12px;">✓ Verified by ${sub.verifiedBy} contributor${sub.verifiedBy !== 1 ? 's' : ''}</span>`
+          : `<span style="color: var(--accent); font-size: 12px;">⏳ Needs verification</span>`;
+
+        // Check if current user is top contributor for this mosque
+        const userContrib = state.userContributions[mosqueId];
+        const canVerify = userContrib && userContrib.isTopContributor && sub.status === 'pending_verification';
+
+        // Actions
+        let actionsHTML = '';
+        if (canVerify) {
+          actionsHTML = `
+            <div style="display: flex; gap: 6px; margin-top: 12px;">
+              <button class="btn btn-primary btn-sm" onclick="verifySubmission('${sub.id}', '${mosqueId}')">
+                ✓ Verify
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="copyTimings('${sub.id}', '${mosqueId}')">
+                📋 Copy to My Submission
+              </button>
+              <button class="btn btn-ghost btn-sm" onclick="reportSubmission('${sub.id}')">
+                🚫 Report
+              </button>
+            </div>
+          `;
+        } else {
+          actionsHTML = `
+            <div style="display: flex; gap: 6px; margin-top: 12px;">
+              <button class="btn btn-outline btn-sm" onclick="copyTimings('${sub.id}', '${mosqueId}')">
+                📋 Use These Timings
+              </button>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+            <div>
+              <div style="font-weight: 600; color: var(--text-main);">
+                ${sub.userName}
+                ${contributorBadge}
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+                Reputation: ${sub.userReputation} · ${timeAgo}
+              </div>
+            </div>
+            <span style="color: ${statusColor}; font-size: 12px; font-weight: 600;">${statusBadge}</span>
+          </div>
+
+          <div style="background: rgba(15,23,42,0.5); border-radius: 8px; padding: 10px; margin: 8px 0;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 12px;">
+              <div><strong>Fajr:</strong> ${sub.timings.fajr}</div>
+              <div><strong>Zuhr:</strong> ${sub.timings.zuhr}</div>
+              <div><strong>Asr:</strong> ${sub.timings.asr}</div>
+              <div><strong>Maghrib:</strong> ${sub.timings.maghrib}</div>
+              <div><strong>Isha:</strong> ${sub.timings.isha}</div>
+              <div><strong>Jummah:</strong> ${sub.timings.jummah || '–'}</div>
+            </div>
+          </div>
+
+          ${sub.notes ? `<div style="font-size: 12px; color: var(--text-muted); font-style: italic; margin: 8px 0;">📝 "${sub.notes}"</div>` : ''}
+
+          <div style="margin-top: 8px;">
+            ${verificationInfo}
+          </div>
+
+          ${actionsHTML}
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    // ✨ Format time ago
+    function formatTimeAgo(timestamp) {
+      const now = new Date();
+      const then = new Date(timestamp);
+      const diffMs = now - then;
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMs / 3600000);
+      const diffDays = Math.floor(diffMs / 86400000);
+
+      if (diffMins < 1) return 'Just now';
+      if (diffMins < 60) return `${diffMins} min ago`;
+      if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+      if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+      return then.toLocaleDateString();
+    }
+
+    // ✨ Verify submission (top contributor action)
+    function verifySubmission(submissionId, mosqueId) {
+      const submissions = state.submissions[mosqueId];
+      const submission = submissions.find(s => s.id === submissionId);
+
+      if (!submission) return;
+
+      submission.verified = true;
+      submission.verifiedBy += 1;
+      submission.status = 'active';
+
+      // Update mosque default timings if enough verifications
+      if (submission.verifiedBy >= 3) {
+        const mosque = getMosqueById(mosqueId);
+        if (mosque) {
+          mosque.defaultJamaatTimings = { ...submission.timings };
+          renderTimingsTable(mosque.defaultJamaatTimings);
+          startCountdown(mosque.defaultJamaatTimings);
+        }
+      }
+
+      renderSubmissions(mosqueId);
+      showToast('✓ Submission verified! You earned +15 reputation');
+      state.user.reputation += 15;
+      updateProfile();
+    }
+
+    // ✨ Copy timings from submission
+    function copyTimings(submissionId, mosqueId) {
+      const submissions = state.submissions[mosqueId];
+      const submission = submissions.find(s => s.id === submissionId);
+
+      if (!submission) return;
+
+      // Pre-fill update form with these timings
+      document.getElementById('update-form').elements['fajr'].value = submission.timings.fajr;
+      document.getElementById('update-form').elements['zuhr'].value = submission.timings.zuhr;
+      document.getElementById('update-form').elements['asr'].value = submission.timings.asr;
+      document.getElementById('update-form').elements['maghrib'].value = submission.timings.maghrib;
+      document.getElementById('update-form').elements['isha'].value = submission.timings.isha;
+      document.getElementById('update-form').elements['jummah'].value = submission.timings.jummah || '';
+
+      // Open update modal
+      document.getElementById("update-modal").style.display = "flex";
+
+      showToast('📋 Timings copied! Review and submit');
+    }
+
+    // ✨ Report submission
+    function reportSubmission(submissionId) {
+      const reason = prompt('Why are you reporting this submission?\n\n1. Incorrect timings\n2. Spam\n3. Outdated\n4. Other');
+      if (reason) {
+        showToast('🚫 Submission reported. Our team will review it.');
+      }
+    }
+
+    function updateDetailFavoriteButton() {
+      const btn = document.getElementById("detail-favorite-toggle");
+      if (!state.selectedMosqueId) return;
+      const active = isFavorite(state.selectedMosqueId);
+      btn.classList.toggle("active", active);
+      btn.innerHTML = `<span>⭐</span><span>${active ? "Favorited" : "Favorite"}</span>`;
+    }
+
+    function computeNextPrayer(timings) {
+      const now = new Date();
+      const todayStr = now.toISOString().split("T")[0];
+      const isFriday = now.getDay() === 5; // Friday is day 5
+
+      // Build prayer list - include Jummah only on Fridays
+      const keys = ["fajr", "zuhr", "asr", "maghrib", "isha"];
+      if (isFriday && timings.jummah) {
+        // Insert Jummah after Fajr but check it alongside Zuhr
+        keys.splice(1, 0, "jummah");
+      }
+
+      const labels = {
+        fajr: "Fajr",
+        zuhr: "Zuhr",
+        asr: "Asr",
+        maghrib: "Maghrib",
+        isha: "Isha",
+        jummah: "Jummah"
+      };
+
+      for (const key of keys) {
+        const time = timings[key];
+        if (!time) continue;
+        const [h, m] = time.split(":");
+        const dt = new Date(`${todayStr}T${h.padStart(2, "0")}:${m.padStart(2, "0")}:00`);
+        if (dt > now) {
+          return { nextPrayerKey: key, nextPrayerName: labels[key], nextPrayerTime: dt };
+        }
+      }
+      return { nextPrayerKey: null, nextPrayerName: null, nextPrayerTime: null };
+    }
+
+    function startCountdown(timings) {
+      if (state.countdownIntervalId) {
+        clearInterval(state.countdownIntervalId);
+      }
+
+      function tick() {
+        const res = computeNextPrayer(timings);
+        const nameEl = document.getElementById("next-prayer-name");
+        const countdownEl = document.getElementById("next-prayer-countdown");
+
+        if (!res.nextPrayerTime) {
+          nameEl.textContent = "All prayers completed";
+          countdownEl.textContent = "--:--:--";
+          return;
+        }
+
+        nameEl.textContent = res.nextPrayerName;
+        const now = new Date();
+        const diffMs = res.nextPrayerTime - now;
+
+        if (diffMs <= 0) {
+          countdownEl.textContent = "00:00:00";
+          return;
+        }
+
+        const totalSeconds = Math.floor(diffMs / 1000);
+        const h = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+        const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+        const s = String(totalSeconds % 60).padStart(2, "0");
+        countdownEl.textContent = `${h}:${m}:${s}`;
+      }
+
+      tick();
+      state.countdownIntervalId = setInterval(tick, 1000);
+    }
+
+    // Mosque list rendering
+    function renderMosqueList() {
+      const listEl = document.getElementById("mosque-list");
+      const searchValue = (document.getElementById("list-search-input").value || "").toLowerCase();
+      const sortValue = document.getElementById("filter-select").value;
+
+      let items = [...state.mosques];
+
+      if (searchValue) {
+        items = items.filter(m => {
+          const haystack = (m.name + " " + m.address + " " + m.city).toLowerCase();
+          return haystack.includes(searchValue);
+        });
+      }
+
+      if (sortValue === "distance") {
+        items.sort((a, b) => a.distanceKm - b.distanceKm);
+      } else if (sortValue === "rating") {
+        items.sort((a, b) => b.rating - a.rating);
+      } else if (sortValue === "recent") {
+        items.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+      }
+
+      listEl.innerHTML = "";
+
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.className = "small-label";
+        empty.textContent = "No mosques found matching your search.";
+        listEl.appendChild(empty);
+        return;
+      }
+
+      items.forEach(mosque => {
+        const card = document.createElement("div");
+        card.className = "mosque-card";
+        if (state.selectedMosqueId === mosque.id) {
+          card.classList.add("active");
+        }
+        card.dataset.id = mosque.id;
+        card.innerHTML = `
+          <div>
+            <div class="mosque-name">${mosque.name}</div>
+            <div class="mosque-meta">${mosque.address}, ${mosque.city}</div>
+            <div class="flex-gap">
+              <span class="pill">📏 ${formatDistance(mosque.distanceKm)}</span>
+              <span class="pill">⭐ ${mosque.rating.toFixed(1)}</span>
+            </div>
+          </div>
+          <div class="mosque-actions">
+            <button type="button" class="btn btn-sm btn-outline" onclick="selectMosque('${mosque.id}')">
+              🕰️ View
+            </button>
+            <button type="button" class="favorite-toggle ${isFavorite(mosque.id) ? "active" : ""}"
+              onclick="event.stopPropagation(); toggleFavorite('${mosque.id}')">
+              <span>⭐</span>
+            </button>
+          </div>
+        `;
+        card.addEventListener("click", () => selectMosque(mosque.id));
+        listEl.appendChild(card);
+      });
+    }
+
+    function renderFavorites() {
+      const container = document.getElementById("favorites-list");
+      container.innerHTML = "";
+
+      const favorites = state.user.favoriteMosques
+        .map(id => getMosqueById(id))
+        .filter(Boolean);
+
+      const defaultMosqueId = storage.getDefaultMosque();
+
+      // ✨ Update default mosque info box
+      const defaultMosque = getMosqueById(defaultMosqueId);
+      const defaultInfoBox = document.getElementById('default-mosque-info');
+      const defaultMosqueName = document.getElementById('default-mosque-name');
+
+      if (defaultMosque) {
+        defaultInfoBox.style.display = 'block';
+        defaultMosqueName.textContent = defaultMosque.name;
+      } else {
+        defaultInfoBox.style.display = 'none';
+      }
+
+      if (!favorites.length) {
+        const empty = document.createElement("div");
+        empty.className = "small-label";
+        empty.textContent = "You haven't added any favorites yet. Click ⭐ on mosques to add them here.";
+        container.appendChild(empty);
+        return;
+      }
+
+      favorites.forEach(mosque => {
+        const isDefault = mosque.id === defaultMosqueId;
+        const card = document.createElement("div");
+        card.className = `mosque-card active ${isDefault ? 'default-mosque' : ''}`;
+        card.dataset.id = mosque.id;
+        card.innerHTML = `
+          <div style="flex: 1;">
+            <div class="mosque-name">
+              ${mosque.name}
+              ${isDefault ? '<span class="chip-accent" style="margin-left: 8px; font-size: 11px; padding: 2px 8px;">🏠 Default</span>' : ''}
+            </div>
+            <div class="mosque-meta">${mosque.address}, ${mosque.city}</div>
+            <div class="flex-gap">
+              <span class="pill">📏 ${formatDistance(mosque.distanceKm)}</span>
+              <span class="pill">⭐ ${mosque.rating.toFixed(1)}</span>
+            </div>
+          </div>
+          <div class="mosque-actions">
+            ${!isDefault ? `
+              <button type="button" class="btn btn-sm btn-outline"
+                onclick="event.stopPropagation(); setAsDefaultMosque('${mosque.id}')"
+                title="Set as default mosque">
+                🏠 Set Default
+              </button>
+            ` : ''}
+            <button type="button" class="btn btn-sm btn-outline" onclick="selectMosque('${mosque.id}')">
+              🕰️ View
+            </button>
+            <button type="button" class="favorite-toggle active"
+              onclick="event.stopPropagation(); toggleFavorite('${mosque.id}')">
+              <span>⭐</span>
+            </button>
+          </div>
+        `;
+        card.addEventListener("click", () => selectMosque(mosque.id));
+        container.appendChild(card);
+      });
+    }
+
+    // ✨ Set a mosque as the default
+    function setAsDefaultMosque(mosqueId) {
+      storage.saveDefaultMosque(mosqueId);
+      const mosque = getMosqueById(mosqueId);
+      showToast(`✓ ${mosque.name} set as your default mosque`);
+      renderFavorites();
+
+      // Auto-load the new default mosque
+      selectMosque(mosqueId);
+    }
+
+    function updateProfile() {
+      document.getElementById("profile-favorites-count").textContent = state.user.favoriteMosques.length;
+      document.getElementById("profile-submissions-count").textContent = state.user.totalSubmissions;
+      document.getElementById("profile-reputation").textContent = state.user.reputation;
+
+      // ✨ Update notification badge
+      const unreadCount = state.notifications.filter(n => !n.read).length;
+      const badge = document.getElementById('notification-badge');
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.style.display = 'block';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      // ✨ Render badges
+      const badgesContainer = document.getElementById('profile-badges');
+      badgesContainer.innerHTML = '';
+
+      const badgeIcons = {
+        'Top Contributor': '⭐',
+        'Early Adopter': '🚀',
+        'Verified Helper': '✓',
+        'Community Hero': '🏆',
+        'Prayer Guardian': '🕌'
+      };
+
+      state.user.badges.forEach(badge => {
+        const badgeEl = document.createElement('div');
+        badgeEl.style.cssText = 'background: rgba(16,185,129,0.15); color: var(--primary); padding: 8px 14px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; border: 1px solid rgba(16,185,129,0.3);';
+        badgeEl.innerHTML = `${badgeIcons[badge] || '🏅'} ${badge}`;
+        badgesContainer.appendChild(badgeEl);
+      });
+
+      if (state.user.badges.length === 0) {
+        badgesContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">Earn badges by contributing to the community!</p>';
+      }
+
+      // ✨ Render notifications
+      const notifContainer = document.getElementById('profile-notifications');
+      notifContainer.innerHTML = '';
+
+      const unreadNotifications = state.notifications.filter(n => !n.read);
+
+      if (unreadNotifications.length === 0) {
+        notifContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px;">No new notifications</p>';
+      } else {
+        unreadNotifications.forEach(notif => {
+          const notifCard = document.createElement('div');
+          notifCard.style.cssText = 'background: rgba(15,23,42,0.95); border: 1px solid rgba(51,65,85,0.8); border-radius: var(--radius-md); padding: 12px; font-size: 13px; cursor: pointer;';
+          notifCard.onclick = () => handleNotificationClick(notif.id);
+
+          let icon = '';
+          let message = '';
+
+          if (notif.type === 'verification_request') {
+            icon = '⏳';
+            message = `<strong>${notif.submitterName}</strong> submitted new timings for <strong>${notif.mosqueName}</strong>. Review and verify?`;
+          } else if (notif.type === 'timing_update') {
+            icon = '🔄';
+            message = notif.message;
+          } else {
+            icon = '🔔';
+            message = notif.message || 'New notification';
+          }
+
+          notifCard.innerHTML = `
+            <div style="display: flex; gap: 10px;">
+              <div style="font-size: 24px;">${icon}</div>
+              <div style="flex: 1;">
+                <div style="color: var(--text-main);">${message}</div>
+                <div style="color: var(--text-muted); font-size: 11px; margin-top: 4px;">${formatTimeAgo(notif.createdAt)}</div>
+              </div>
+              <div style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin-top: 6px;"></div>
+            </div>
+          `;
+
+          notifContainer.appendChild(notifCard);
+        });
+      }
+    }
+
+    // ✨ Handle notification click
+    function handleNotificationClick(notifId) {
+      const notif = state.notifications.find(n => n.id === notifId);
+      if (!notif) return;
+
+      // Mark as read
+      notif.read = true;
+
+      // Navigate to appropriate view
+      if (notif.type === 'verification_request') {
+        selectMosque(notif.mosqueId);
+        // Switch to Updates tab
+        document.querySelector('.detail-tab[data-tab="updates"]').click();
+      } else if (notif.type === 'timing_update') {
+        selectMosque(notif.mosqueId);
+      }
+
+      // Refresh profile to update notifications
+      updateProfile();
+      showToast('Notification marked as read');
+    }
+
+    // Map buttons
+    document.getElementById("btn-my-location").addEventListener("click", () => {
+      if (state.userLocation) {
+        state.map.setCenter(state.userLocation);
+        state.map.setZoom(15);
+        showToast("Centered on your location");
+      } else if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = { lat: position.coords.latitude, lng: position.coords.longitude };
+            state.userLocation = pos;
+            state.map.setCenter(pos);
+            state.map.setZoom(15);
+            showToast("Location detected");
+          },
+          () => showToast("Unable to get your location")
+        );
+      } else {
+        showToast("Geolocation not supported");
+      }
+    });
+
+    document.getElementById("btn-add-mosque").addEventListener("click", () => {
+      showToast("Feature coming soon - you'll be able to add new mosques");
+    });
+
+    // Detail buttons
+    document.getElementById("detail-favorite-toggle").addEventListener("click", () => {
+      if (state.selectedMosqueId) {
+        toggleFavorite(state.selectedMosqueId);
+      }
+    });
+
+    document.getElementById("btn-view-map").addEventListener("click", () => {
+      const mosque = getMosqueById(state.selectedMosqueId);
+      if (!mosque) return;
+      const url = `https://www.google.com/maps/search/?api=1&query=${mosque.coordinates.lat},${mosque.coordinates.lng}`;
+      window.open(url, "_blank");
+    });
+
+    document.getElementById("btn-directions").addEventListener("click", () => {
+      const mosque = getMosqueById(state.selectedMosqueId);
+      if (!mosque) return;
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${mosque.coordinates.lat},${mosque.coordinates.lng}`;
+      window.open(url, "_blank");
+    });
+
+    document.getElementById("btn-update-timings").addEventListener("click", () => {
+      // ✨ Require login to submit timings
+      if (!state.auth.isLoggedIn) {
+        showToast("Please sign in to submit timing updates");
+        showSignInModal();
+        return;
+      }
+
+      if (!state.selectedMosqueId) {
+        showToast("Please select a mosque first");
+        return;
+      }
+      const mosque = getMosqueById(state.selectedMosqueId);
+      const form = document.getElementById("update-form");
+      form.fajr.value = mosque.defaultJamaatTimings.fajr;
+      form.zuhr.value = mosque.defaultJamaatTimings.zuhr;
+      form.asr.value = mosque.defaultJamaatTimings.asr;
+      form.maghrib.value = mosque.defaultJamaatTimings.maghrib;
+      form.isha.value = mosque.defaultJamaatTimings.isha;
+      form.jummah.value = mosque.defaultJamaatTimings.jummah || '';
+      form.notes.value = "";
+      form.verified.checked = false;
+      document.getElementById("update-modal").style.display = "flex";
+    });
+
+    // Update form
+    document.getElementById("btn-close-modal").addEventListener("click", () => {
+      document.getElementById("update-modal").style.display = "none";
+    });
+
+    document.getElementById("update-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const mosqueId = state.selectedMosqueId;
+      if (!mosqueId) return;
+
+      const form = e.target;
+      const timings = {
+        fajr: form.fajr.value,
+        zuhr: form.zuhr.value,
+        asr: form.asr.value,
+        maghrib: form.maghrib.value,
+        isha: form.isha.value,
+        jummah: form.jummah.value || ''
+      };
+
+      // ✨ Create new submission
+      const newSubmission = {
+        id: 'sub' + Date.now(),
+        userId: 'currentUser',
+        userName: 'You',
+        userReputation: state.user.reputation,
+        isTopContributor: state.userContributions[mosqueId]?.isTopContributor || false,
+        submittedAt: new Date().toISOString(),
+        timings: timings,
+        notes: form.notes.value || '',
+        verified: false,
+        verifiedBy: 0,
+        status: 'pending_verification'
+      };
+
+      // Add to submissions
+      if (!state.submissions[mosqueId]) {
+        state.submissions[mosqueId] = [];
+      }
+      state.submissions[mosqueId].unshift(newSubmission); // Add to beginning
+
+      // ✨ Notify top contributors for verification
+      const mosque = getMosqueById(mosqueId);
+      if (mosque) {
+        state.notifications.push({
+          id: 'notif' + Date.now(),
+          type: 'verification_request',
+          mosqueId: mosqueId,
+          mosqueName: mosque.name,
+          submissionId: newSubmission.id,
+          submitterName: 'You',
+          createdAt: new Date().toISOString(),
+          read: false
+        });
+      }
+
+      state.user.totalSubmissions += 1;
+      state.user.reputation += 10;
+
+      // Refresh the submissions display
+      renderSubmissions(mosqueId);
+
+      showToast("Timings submitted! Waiting for community verification. +10 reputation");
+      document.getElementById("update-modal").style.display = "none";
+      updateProfile();
+
+      // Switch to Updates tab to show the new submission
+      setTimeout(() => {
+        document.querySelector('.detail-tab[data-tab="updates"]').click();
+      }, 500);
+    });
+
+    // Navigation
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        switchView(btn.dataset.view);
+      });
+    });
+
+    // List search and filter
+    document.getElementById("list-search-input").addEventListener("input", renderMosqueList);
+    document.getElementById("filter-select").addEventListener("change", renderMosqueList);
+
+    // Onboarding skip button
+    document.getElementById("onboarding-skip").addEventListener("click", () => {
+      onboarding.skip();
+    });
+
+    // Make functions global
+    window.selectMosque = selectMosque;
+    window.loadGoogleMaps = loadGoogleMaps;
+    window.toggleFavorite = toggleFavorite;
+    window.toggleReminder = toggleReminder;
+    window.editReminderMinutes = editReminderMinutes;
+    window.setAsDefaultMosque = setAsDefaultMosque;
+    window.verifySubmission = verifySubmission;
+    window.copyTimings = copyTimings;
+    window.reportSubmission = reportSubmission;
+    window.handleNotificationClick = handleNotificationClick;
+    window.showSignInModal = showSignInModal;
+    window.closeSignInModal = closeSignInModal;
+    window.handleGoogleSignIn = handleGoogleSignIn;
+    window.handleSignOut = handleSignOut;
+    window.switchView = switchView;
+
+    // Initialize
+    document.addEventListener("DOMContentLoaded", () => {
+      initAuth(); // ✨ Check if user is already logged in
+      initTabs();
+      renderMosqueList();
+      updateProfile();
+
+      // Load default mosque if set
+      const defaultMosqueId = storage.getDefaultMosque();
+      if (defaultMosqueId && storage.hasCompletedOnboarding()) {
+        setTimeout(() => {
+          selectMosque(defaultMosqueId);
+        }, 1000);
+      }
+
+      // Show onboarding for first-time users
+      setTimeout(() => {
+        onboarding.init();
+      }, 500);
+    });
+  </script>
+
+  <!-- Google Maps API - Lazy loaded when needed to reduce API hits -->
+</body>
+</html>

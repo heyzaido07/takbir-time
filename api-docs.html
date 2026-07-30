@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Takbeer Time API — Masjid Jamat &amp; Iqamah Times API</title>
+<meta name="description" content="Free REST API for masjid prayer times, jamat times, jamaat times, iqamah times, timekeeper updates, and nearby mosque search." />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="https://takbeertime.com/api-docs.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Takbeer Time" />
+<meta property="og:title" content="Takbeer Time API — Masjid Jamat &amp; Iqamah Times API" />
+<meta property="og:description" content="Free REST API for masjid prayer times, jamat times, iqamah times, timekeeper updates, and nearby mosque search." />
+<meta property="og:url" content="https://takbeertime.com/api-docs.html" />
+<meta property="og:image" content="https://takbeertime.com/assets/brand/takbeer-time-icon-512.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Takbeer Time API — Masjid Jamat &amp; Iqamah Times API" />
+<meta name="twitter:description" content="Free REST API for masjid prayer times, jamat times, iqamah times, timekeeper updates, and nearby mosque search." />
+<meta name="twitter:image" content="https://takbeertime.com/assets/brand/takbeer-time-icon-512.png" />
+<script src="/js/analytics.js?v=1" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Takbeer Time API - Masjid Jamat & Iqamah Times API",
+  "description": "Free REST API for masjid prayer times, jamat times, iqamah times, timekeeper updates, and nearby mosque search.",
+  "url": "https://takbeertime.com/api-docs.html",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Takbeer Time",
+    "url": "https://takbeertime.com/",
+    "logo": "https://takbeertime.com/assets/brand/takbeer-time-icon-512.png"
+  },
+  "about": [
+    "masjid prayer times API",
+    "jamat times API",
+    "iqamah times API",
+    "nearby mosque search API"
+  ],
+  "mainEntity": {
+    "@type": "WebAPI",
+    "name": "Takbeer Time API",
+    "description": "JSON REST API for crowd-sourced masjid jamat and iqamah times.",
+    "documentation": "https://takbeertime.com/api-docs.html",
+    "provider": {
+      "@type": "Organization",
+      "name": "Takbeer Time"
+    }
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/api-docs.css?v=1" />
+</head>
+<body>
+
+<header class="docs-topbar">
+  <a class="brand-link" href="/" aria-label="Takbeer Time — home">
+    <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
+      <path d="M16 3.5 a3 3 0 1 0 2.4 4.9 a2.4 2.4 0 1 1 -2.4 -4.9z" fill="#0F2A1E"/>
+      <line x1="5" y1="15" x2="5" y2="27" stroke="#0F2A1E" stroke-width="1.7" stroke-linecap="round"/>
+      <circle cx="5" cy="13" r="1.2" fill="#0F2A1E"/>
+      <line x1="27" y1="15" x2="27" y2="27" stroke="#0F2A1E" stroke-width="1.7" stroke-linecap="round"/>
+      <circle cx="27" cy="13" r="1.2" fill="#0F2A1E"/>
+      <path d="M9 27 V20 Q9 13 16 13 Q23 13 23 20 V27" fill="none" stroke="#0F2A1E" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M14 27 V22 Q14 20.4 16 20.4 Q18 20.4 18 22 V27 Z" fill="#0F2A1E"/>
+      <line x1="2.5" y1="27" x2="29.5" y2="27" stroke="#0F2A1E" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span>Takbeer Time</span> <span style="opacity:.4">·</span> <span>API</span>
+  </a>
+  <nav>
+    <a href="/">App</a>
+  </nav>
+</header>
+
+<div class="docs-shell">
+
+  <!-- ─── Section nav ─── -->
+  <aside class="docs-side" aria-label="API sections">
+    <h4>Getting started</h4>
+    <ul>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#auth">Authentication</a></li>
+      <li><a href="#rate-limits">Rate limits</a></li>
+      <li><a href="#errors">Errors</a></li>
+      <li><a href="#response-shape">Response shape</a></li>
+    </ul>
+
+    <h4>Auth</h4>
+    <ul>
+      <li><a href="#auth-register">POST /auth/register</a></li>
+      <li><a href="#auth-login">POST /auth/login</a></li>
+      <li><a href="#auth-google">POST /auth/google</a></li>
+    </ul>
+
+    <h4>Masjids</h4>
+    <ul>
+      <li><a href="#mosques-recent">GET /mosques/recent</a></li>
+      <li><a href="#mosques-nearby">GET /mosques/nearby</a></li>
+      <li><a href="#mosques-list">GET /mosques</a></li>
+      <li><a href="#mosques-detail">GET /mosques/:id</a></li>
+      <li><a href="#mosques-keepers">GET /mosques/:id/keepers</a></li>
+      <li><a href="#mosques-consensus">GET /mosques/:id/consensus</a></li>
+      <li><a href="#mosques-reviews">GET /mosques/:id/reviews</a></li>
+      <li><a href="#mosques-create">POST /mosques</a></li>
+      <li><a href="#mosques-update">PUT /mosques/:id</a></li>
+      <li><a href="#mosques-review-create">POST /mosques/:id/reviews</a></li>
+      <li><a href="#mosques-favorite">POST /mosques/:id/favorite</a></li>
+      <li><a href="#mosques-captcha">GET /mosques/captcha</a></li>
+      <li><a href="#mosques-status">POST /mosques/:id/status</a></li>
+      <li><a href="#mosques-keeper-withdraw">POST /mosques/:id/keepers/me/withdraw</a></li>
+    </ul>
+
+    <h4>Submissions</h4>
+    <ul>
+      <li><a href="#submissions-list">GET /submissions</a></li>
+      <li><a href="#submissions-detail">GET /submissions/:id</a></li>
+      <li><a href="#submissions-create">POST /submissions</a></li>
+      <li><a href="#submissions-vote">POST /submissions/:id/vote</a></li>
+      <li><a href="#submissions-review">POST /submissions/:id/review</a></li>
+    </ul>
+
+    <h4>Suggestions</h4>
+    <ul>
+      <li><a href="#suggestions-create">POST /suggestions</a></li>
+      <li><a href="#suggestions-inbox">GET /suggestions/inbox</a></li>
+      <li><a href="#suggestions-accept">POST /suggestions/:id/accept</a></li>
+      <li><a href="#suggestions-decline">POST /suggestions/:id/decline</a></li>
+    </ul>
+
+    <h4>Users</h4>
+    <ul>
+      <li><a href="#users-me">GET /users/me</a></li>
+      <li><a href="#users-update">PUT /users/me</a></li>
+      <li><a href="#users-favorites">GET /users/me/favorites</a></li>
+      <li><a href="#users-preferred-keeper">PUT /users/me/preferred-keeper</a></li>
+      <li><a href="#users-reminder-prefs">PUT /users/me/reminder-prefs</a></li>
+      <li><a href="#users-notifications">GET /users/me/notifications</a></li>
+      <li><a href="#users-notification-read">PATCH /users/me/notifications/:id/read</a></li>
+      <li><a href="#users-notifications-read-all">POST /users/me/notifications/read-all</a></li>
+      <li><a href="#users-delete">DELETE /users/me</a></li>
+    </ul>
+
+    <h4>Qaza</h4>
+    <ul>
+      <li><a href="#qaza-list">GET /qaza</a></li>
+      <li><a href="#qaza-create">POST /qaza</a></li>
+      <li><a href="#qaza-prayed">PATCH /qaza/:id/prayed</a></li>
+    </ul>
+
+    <h4>Schedules</h4>
+    <ul>
+      <li><a href="#schedules-list">GET /schedules</a></li>
+      <li><a href="#schedules-detail">GET /schedules/:id</a></li>
+      <li><a href="#schedules-active">GET /schedules/mosque/:mosqueId/active</a></li>
+    </ul>
+
+    <h4>Compliance</h4>
+    <ul>
+      <li><a href="#account-deletion-request">POST /account-deletion-request</a></li>
+    </ul>
+  </aside>
+
+  <!-- ─── Main content ─── -->
+  <main class="docs-main">
+
+    <h1>Takbeer Time <em>API</em></h1>
+    <p class="lede">A public, JSON REST API for masjid prayer times, jamat times, jamaat times, and iqamah updates. Build a widget, a Slack bot, a dashboard, or a masjid-finder for your community website.</p>
+
+    <section id="intro">
+      <h2>Introduction</h2>
+      <p>Base URL:</p>
+      <pre><code>https://takbeertime.com/api</code></pre>
+
+      <p>The base URL returns discovery metadata for clients and uptime checks:</p>
+      <pre><code>curl "https://takbeertime.com/api"</code></pre>
+
+      <p>All requests and responses are JSON. The API is read-mostly and most endpoints don't need authentication — read paths are open so a directory app can ship without account plumbing. Write paths (creating masjids, submitting timings, voting, suggesting updates) need a signed-in user.</p>
+
+      <div class="callout"><strong>No ads, ever.</strong> The API is free for any genuine use. <em>Sadqa fe sabilillah.</em> Heavy commercial use? Drop us a note so we know what to plan capacity for.</div>
+    </section>
+
+    <section id="auth">
+      <h2>Authentication</h2>
+      <p>Pass the Takbeer Time app JWT returned by <code>/auth/register</code>, <code>/auth/login</code>, or <code>/auth/google</code> in the <code>Authorization</code> header:</p>
+      <pre><code>Authorization: Bearer &lt;app-jwt&gt;</code></pre>
+      <p>The backend also accepts a verified Firebase ID token on authenticated routes for compatibility, but the app JWT is the normal client contract. Anonymous calls to read endpoints return public fields only — calls to write or to <code>/users/me/*</code> return <code>401</code> without a token.</p>
+      <p>For local development, the server accepts an <code>X-Dev-User-Email</code> header in lieu of an <code>Authorization</code> bearer token, but only when <code>DEV_AUTH_USER_EMAIL</code> is set in the deploy. Production never accepts it.</p>
+    </section>
+
+    <article class="endpoint" id="auth-register">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/auth/register</span>
+        <span class="pill pill--public">Public</span>
+        <span class="pill pill--rate">5 / hr / IP</span>
+      </div>
+      <p class="endpoint__desc">Create an email/password account and return <code>{ token, user }</code>. If a dev-created user exists without a password, this claims the account; Google-only or deleted accounts return 409.</p>
+      <pre><code>{
+  "email": "user@example.com",
+  "password": "at-least-8-characters",
+  "fullName": "User Name"
+}</code></pre>
+    </article>
+
+    <article class="endpoint" id="auth-login">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/auth/login</span>
+        <span class="pill pill--public">Public</span>
+        <span class="pill pill--rate">10 / 15 min / IP</span>
+      </div>
+      <p class="endpoint__desc">Sign in with email/password and return <code>{ token, user }</code>.</p>
+      <pre><code>{ "email": "user@example.com", "password": "..." }</code></pre>
+    </article>
+
+    <article class="endpoint" id="auth-google">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/auth/google</span>
+        <span class="pill pill--public">Public</span>
+        <span class="pill pill--rate">20 / 15 min / IP</span>
+      </div>
+      <p class="endpoint__desc">Exchange a Firebase Google sign-in ID token for the same Takbeer Time app JWT used by email/password auth.</p>
+      <pre><code>{ "idToken": "firebase-google-id-token" }</code></pre>
+    </article>
+
+    <section id="rate-limits">
+      <h2>Rate limits</h2>
+      <p>Per-user (or per-IP for anonymous), one-hour rolling window. <code>RateLimit-*</code> headers report current state on every response.</p>
+      <table class="params">
+        <thead><tr><th>Endpoint</th><th>Cap (per hour)</th></tr></thead>
+        <tbody>
+          <tr><td class="k">POST /submissions</td><td class="d">30</td></tr>
+          <tr><td class="k">POST /submissions/:id/vote</td><td class="d">60</td></tr>
+          <tr><td class="k">POST /suggestions</td><td class="d">10</td></tr>
+          <tr><td class="k">POST /mosques</td><td class="d">5</td></tr>
+          <tr><td class="k">POST /auth/login</td><td class="d">10 per 15 minutes per IP</td></tr>
+          <tr><td class="k">POST /auth/google</td><td class="d">20 per 15 minutes per IP</td></tr>
+          <tr><td class="k">POST /auth/register</td><td class="d">5 per IP</td></tr>
+          <tr><td class="k">POST /account-deletion-request</td><td class="d">1 pending request per email per hour</td></tr>
+        </tbody>
+      </table>
+      <p>Exceeding the cap returns <code>429 Too Many Requests</code>. Read endpoints are not rate-limited at present.</p>
+    </section>
+
+    <section id="errors">
+      <h2>Errors</h2>
+      <p>Every error response is JSON with at least <code>error</code> and <code>message</code> fields.</p>
+      <pre><code>{
+  "error": "Validation Error",
+  "message": "lat is required"
+}</code></pre>
+      <table class="params">
+        <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td class="k">400</td><td class="d">Validation failed (missing/invalid params)</td></tr>
+          <tr><td class="k">401</td><td class="d">Not authenticated (missing or expired token)</td></tr>
+          <tr><td class="k">403</td><td class="d">Authenticated, but not allowed for this resource</td></tr>
+          <tr><td class="k">404</td><td class="d">Resource not found (or soft-deleted)</td></tr>
+          <tr><td class="k">429</td><td class="d">Rate limit exceeded</td></tr>
+          <tr><td class="k">500</td><td class="d">Server error — please report</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="response-shape">
+      <h2>Response shape</h2>
+      <p>Paginated endpoints return:</p>
+      <pre><code>{
+  "data": [ ... ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "totalCount": 281696,
+    "totalPages": 14085,
+    "hasMore": true
+  }
+}</code></pre>
+      <p>Times are stored and returned as 24-hour <code>HH:mm</code> strings. Maghrib is <em>not</em> stored as a clock time — it's astronomical sunset for the masjid's coordinates plus a per-masjid <code>maghribOffset</code> (number of minutes after sunset that takbeer is called). Compute Maghrib client-side; the API only carries the offset.</p>
+    </section>
+
+    <!-- ═══════════════════════════════ MASJIDS ═══════════════════════════════ -->
+    <h2>Masjids</h2>
+
+    <article class="endpoint" id="mosques-recent">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/mosques/recent</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Latest active masjids added to the directory. Returns up to 12 records for "recently added" widgets and community dashboards.</p>
+    </article>
+
+    <article class="endpoint" id="mosques-nearby">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/mosques/nearby</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Find masjids within a radius of a coordinate, sorted by distance. The active prayer schedule is included on each result so you can label markers without a second round-trip.</p>
+      <h4>Query params</h4>
+      <table class="params">
+        <thead><tr><th>Name</th><th>Type</th><th></th></tr></thead>
+        <tbody>
+          <tr><td class="k">lat</td><td class="t">number</td><td class="d">Required. Latitude (-90..90).</td></tr>
+          <tr><td class="k">lng</td><td class="t">number</td><td class="d">Required. Longitude (-180..180).</td></tr>
+          <tr><td class="k">radius</td><td class="t">number</td><td class="d">Search radius in meters. Default 5000, max 200000.</td></tr>
+          <tr><td class="k">limit</td><td class="t">number</td><td class="d">Default 20, max 100.</td></tr>
+        </tbody>
+      </table>
+      <h4>Example</h4>
+      <pre><code>curl "https://takbeertime.com/api/mosques/nearby?lat=33.7295&lng=73.0372&radius=5000"</code></pre>
+    </article>
+
+    <article class="endpoint" id="mosques-list">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/mosques</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Paginated, filterable list. Use this when you don't have coordinates — e.g. to enumerate all masjids in a city.</p>
+      <h4>Query params</h4>
+      <table class="params">
+        <tbody>
+          <tr><td class="k">city</td><td class="t">string</td><td class="d">Filter by city name (case-insensitive).</td></tr>
+          <tr><td class="k">country</td><td class="t">string</td><td class="d">Filter by country.</td></tr>
+          <tr><td class="k">search</td><td class="t">string</td><td class="d">Trigram-matched search across name + city.</td></tr>
+          <tr><td class="k">page</td><td class="t">number</td><td class="d">1-indexed. Default 1.</td></tr>
+          <tr><td class="k">limit</td><td class="t">number</td><td class="d">Default 20, max 100.</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <article class="endpoint" id="mosques-detail">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/mosques/:id</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Full masjid record: location, amenities, the active prayer schedule, the ranked keepers list, and the effective times for the calling user (their preferred keeper, or the top-rated keeper if no preference set).</p>
+      <h4>Response (excerpt)</h4>
+      <pre><code>{
+  "id": "...",
+  "name": "Faisal Mosque",
+  "latitude": 33.7295,
+  "longitude": 73.0372,
+  "city": "Islamabad",
+  "country": "Pakistan",
+  "amenities": ["parking", "wudhu", "women_section"],
+  "prayerSchedules": [{
+    "timings": { "fajr": "05:00", "dhuhr": "13:30", "maghribOffset": 3, ... },
+    "verificationStatus": "verified"
+  }],
+  "keepers": [...],
+  "effectiveTimings": { "fajr": "05:00", ... },
+  "effectiveKeeperId": "...",
+  "effectiveKeeperName": "..."
+}</code></pre>
+    </article>
+
+    <article class="endpoint" id="mosques-keepers">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/mosques/:id/keepers</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Ranked list of contributors who've submitted timings for this masjid. Each keeper's <code>rating</code> is computed as <code>voteScore × recencyWeight × verifiedBoost × repBoost × keeperBoost</code>. The top-rated keeper's submission is the default for users who haven't picked otherwise.</p>
+    </article>
+
+    <article class="endpoint" id="mosques-consensus">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/mosques/:id/consensus</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Per-prayer consensus over recent submissions. Shows the time, confidence (0..1), and contributor count for each prayer. Useful for masjids that don't yet have an active schedule — surface "the community thinks Fajr is around 05:00 (62% confidence)" instead of nothing.</p>
+    </article>
+
+    <article class="endpoint" id="mosques-reviews">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/mosques/:id/reviews</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Paginated reviews for a masjid. Sorted by helpful-count then recency.</p>
+    </article>
+
+    <article class="endpoint" id="mosques-create">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/mosques</span>
+        <span class="pill pill--auth">Auth</span>
+        <span class="pill pill--rate">5 / hr</span>
+      </div>
+      <p class="endpoint__desc">Add a new masjid to the directory. The caller must be signed in; abuse is rate-limited.</p>
+      <h4>Body</h4>
+      <pre><code>{
+  "name": "Masjid Al-Falah",
+  "latitude": 33.7295,
+  "longitude": 73.0372,
+  "city": "Islamabad",
+  "country": "Pakistan",
+  "addressLine1": "Block 4, Garden Town"   // optional
+}</code></pre>
+    </article>
+
+    <article class="endpoint" id="mosques-update">
+      <div class="endpoint__head">
+        <span class="method method--put">PUT</span>
+        <span class="path">/mosques/:id</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Edit a masjid created by the authenticated user. Returns 403 if another contributor owns the masjid record.</p>
+      <h4>Body</h4>
+      <p>Any field accepted by <code>POST /mosques</code> may be sent as a partial update. If either coordinate changes, send both <code>latitude</code> and <code>longitude</code>.</p>
+    </article>
+
+    <article class="endpoint" id="mosques-review-create">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/mosques/:id/reviews</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Create or update the authenticated user's review for a masjid.</p>
+      <pre><code>{
+  "rating": 5,
+  "timingAccuracyRating": 5,
+  "cleanlinessRating": 4,
+  "accessibilityRating": 4,
+  "title": "Reliable timings",
+  "reviewText": "The posted jamaat times match the board."
+}</code></pre>
+    </article>
+
+    <article class="endpoint" id="mosques-favorite">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/mosques/:id/favorite</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Toggle: if not already favorited, save it; if already, remove. Returns <code>{ favorite: true|false }</code>.</p>
+    </article>
+
+    <article class="endpoint" id="mosques-captcha">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/mosques/captcha</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Issue a lightweight arithmetic captcha challenge for the anonymous "add a masjid" flow. Returns <code>{ id, question, expiresAt }</code>; echo the <code>captchaId</code> + <code>captchaAnswer</code> back to <code>POST /mosques</code>.</p>
+    </article>
+
+    <article class="endpoint" id="mosques-status">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/mosques/:id/status</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Mark a masjid permanently <code>closed</code> or reactivate it (<code>active</code>). Only the masjid's current highest-rated time keeper may call this — anyone else gets <code>403</code>. Closing also withdraws the caller's keeper sources and activates a replacement keeper if one exists.</p>
+      <pre><code>{ "status": "closed" }</code></pre>
+    </article>
+
+    <article class="endpoint" id="mosques-keeper-withdraw">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/mosques/:id/keepers/me/withdraw</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Withdraw the calling user's own timings for this masjid (their submissions + schedules). Returns <code>{ mosqueId, withdrawn, withdrawnSubmissions, withdrawnSchedules, replacementKeeperId, replacementKeeperName }</code> — the next-ranked keeper is promoted automatically. <code>404</code> if you aren't a keeper for the masjid.</p>
+    </article>
+
+    <!-- ═══════════════════════════════ SUBMISSIONS ═══════════════════════════════ -->
+    <h2>Submissions</h2>
+    <p>A "submission" is a contributor's proposed jamat times for a specific masjid. Multiple users can submit; the consensus algorithm + per-keeper rating decide which becomes the active schedule.</p>
+
+    <article class="endpoint" id="submissions-list">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/submissions</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Paginated submissions, filterable by masjid id and status.</p>
+      <h4>Query params</h4>
+      <table class="params">
+        <tbody>
+          <tr><td class="k">mosqueId</td><td class="t">uuid</td><td class="d">Restrict to a single masjid.</td></tr>
+          <tr><td class="k">status</td><td class="t">string</td><td class="d">pending | approved | rejected.</td></tr>
+          <tr><td class="k">page, limit</td><td class="t">number</td><td class="d">Standard pagination.</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <article class="endpoint" id="submissions-detail">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/submissions/:id</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">A single submission with the contributor's profile (name, reputation, verified flag).</p>
+    </article>
+
+    <article class="endpoint" id="submissions-create">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/submissions</span>
+        <span class="pill pill--auth">Auth</span>
+        <span class="pill pill--rate">30 / hr</span>
+      </div>
+      <p class="endpoint__desc">Submit timings for a masjid. After creation the consensus pipeline runs — your submission may immediately become the active schedule if confidence is high enough.</p>
+      <h4>Body</h4>
+      <pre><code>{
+  "mosqueId": "uuid",
+  "timings": {
+    "fajr":   "05:00",
+    "dhuhr":  "13:30",
+    "asr":    "17:00",
+    "isha":   "20:00",
+    "jummah": ["13:30"],
+    "maghribOffset": 3        // minutes after astronomical sunset
+  },
+  "notes": "winter schedule"  // optional
+}</code></pre>
+      <div class="callout"><strong>Don't send <code>maghrib</code> as HH:MM.</strong> Maghrib is computed client-side from the masjid's coordinates + the offset you submit. The server silently strips any <code>maghrib</code> field.</div>
+    </article>
+
+    <article class="endpoint" id="submissions-vote">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/submissions/:id/vote</span>
+        <span class="pill pill--auth">Auth</span>
+        <span class="pill pill--rate">60 / hr</span>
+      </div>
+      <p class="endpoint__desc">Up- or down-vote a submission. Voting on your own submission returns 400.</p>
+      <h4>Body</h4>
+      <pre><code>{ "voteType": "upvote" | "downvote" | "report",
+  "reportReason": "..."  // required when voteType is "report" }</code></pre>
+    </article>
+
+    <article class="endpoint" id="submissions-review">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/submissions/:id/review</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Verified contributors can approve or reject a pending timing submission. Approval installs a verified active schedule and rewards the submitter.</p>
+      <h4>Body</h4>
+      <pre><code>{
+  "action": "approve" | "reject",
+  "reviewNotes": "Checked against the masjid board"
+}</code></pre>
+    </article>
+
+    <!-- ═══════════════════════════════ SUGGESTIONS ═══════════════════════════════ -->
+    <h2>Suggestions</h2>
+    <p>A direct user-to-keeper proposal: "I think Fajr should be 05:16 instead of 05:00, can you update your record?" The keeper sees it in their inbox and accepts or declines. Accepting writes the suggested values to the masjid's active schedule (the keeper is authoritative over their own record — no consensus floor needed).</p>
+
+    <article class="endpoint" id="suggestions-create">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/suggestions</span>
+        <span class="pill pill--auth">Auth</span>
+        <span class="pill pill--rate">10 / hr</span>
+      </div>
+      <p class="endpoint__desc">Send a suggestion to a specific keeper (the user whose timings are currently active for the masjid, or anyone in the keeper list).</p>
+      <h4>Body</h4>
+      <pre><code>{
+  "toUserId": "uuid",        // recipient keeper
+  "mosqueId": "uuid",
+  "timings":  { "fajr": "05:16", "maghribOffset": 5 },
+  "notes":    "Ramadan schedule starts tomorrow"
+}</code></pre>
+    </article>
+
+    <article class="endpoint" id="suggestions-inbox">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/suggestions/inbox</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Pending suggestions sent to the authenticated user. Each suggestion includes the sender, the masjid, the proposed times, AND the masjid's current active timings — so a UI can render an old → new diff in one round-trip.</p>
+    </article>
+
+    <article class="endpoint" id="suggestions-accept">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/suggestions/:id/accept</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Mark accepted, install the proposed timings on the masjid's active schedule (merged over current values), and create a TimingSubmission as the keeper for the audit trail. Returns 403 if the calling user isn't the recipient.</p>
+    </article>
+
+    <article class="endpoint" id="suggestions-decline">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/suggestions/:id/decline</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Mark declined with optional note. No schedule change.</p>
+      <h4>Body</h4>
+      <pre><code>{ "note": "These times are wrong, please re-check" }  // optional</code></pre>
+    </article>
+
+    <!-- ═══════════════════════════════ USERS ═══════════════════════════════ -->
+    <h2>Users</h2>
+
+    <article class="endpoint" id="users-me">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/users/me</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">The authenticated user's profile, default mosque, and counts.</p>
+    </article>
+
+    <article class="endpoint" id="users-update">
+      <div class="endpoint__head">
+        <span class="method method--put">PUT</span>
+        <span class="path">/users/me</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Update profile fields.</p>
+      <h4>Body (all optional)</h4>
+      <pre><code>{
+  "fullName":         "Junaid Qazi",
+  "phoneNumber":      "+92...",
+  "preferredLanguage": "ur",
+  "defaultMosqueId":   "uuid"   // null clears it
+}</code></pre>
+    </article>
+
+    <article class="endpoint" id="users-favorites">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/users/me/favorites</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Paginated list of mosques the user has favorited.</p>
+    </article>
+
+    <article class="endpoint" id="users-preferred-keeper">
+      <div class="endpoint__head">
+        <span class="method method--put">PUT</span>
+        <span class="path">/users/me/preferred-keeper</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Set or clear the user's preferred keeper for one masjid. The masjid detail's <code>effectiveTimings</code> use this keeper's submission when set.</p>
+      <pre><code>{ "mosqueId": "uuid", "keeperUserId": "uuid" | null }</code></pre>
+    </article>
+
+    <article class="endpoint" id="users-reminder-prefs">
+      <div class="endpoint__head">
+        <span class="method method--put">PUT</span>
+        <span class="path">/users/me/reminder-prefs</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Mirror the user's reminder preferences server-side so they sync across devices.</p>
+      <pre><code>{
+  "enabled":       true,
+  "perPrayer":     { "fajr": 10, "dhuhr": 10, "asr": 10, "maghrib": 10, "isha": 10, "jummah": 0 },
+  "prayerEnabled": { "fajr": true, "dhuhr": true, ... }
+}</code></pre>
+    </article>
+
+    <article class="endpoint" id="users-notifications">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/users/me/notifications</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Paginated notifications (timing changes, new keepers, etc.). Add <code>?unread=true</code> to filter.</p>
+    </article>
+
+    <article class="endpoint" id="users-notification-read">
+      <div class="endpoint__head">
+        <span class="method method--patch">PATCH</span>
+        <span class="path">/users/me/notifications/:id/read</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Mark one notification as read. Returns 404 if the notification does not belong to the authenticated user.</p>
+    </article>
+
+    <article class="endpoint" id="users-notifications-read-all">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/users/me/notifications/read-all</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Mark all unread notifications for the authenticated user as read. Returns <code>{ marked: number }</code>.</p>
+    </article>
+
+    <article class="endpoint" id="users-delete">
+      <div class="endpoint__head">
+        <span class="method method--delete">DELETE</span>
+        <span class="path">/users/me</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Self-service account deletion. Soft-deletes the user, clears favorites and reminder preferences, removes sent pending suggestions, and keeps community timing submissions for continuity.</p>
+    </article>
+
+    <!-- ═══════════════════════════════ QAZA ═══════════════════════════════ -->
+    <h2>Qaza</h2>
+    <p>Per-user missed-prayer (qaza) records. Private to the authenticated user — there are no public reads. The app keeps a local-first copy and mirrors it here so the same account sees its qaza list across devices. A record stays <em>open</em> until it's marked prayed.</p>
+
+    <article class="endpoint" id="qaza-list">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/qaza</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">List the caller's qaza records, oldest first. By default only <em>open</em> (not-yet-prayed) records are returned; pass <code>?status=all</code> to include prayed ones. Returns <code>{ records: [...] }</code>.</p>
+      <h4>Query params</h4>
+      <table class="params">
+        <thead><tr><th>Name</th><th>Type</th><th></th></tr></thead>
+        <tbody>
+          <tr><td class="k">status</td><td class="t">string</td><td class="d"><code>open</code> (default) or <code>all</code>.</td></tr>
+        </tbody>
+      </table>
+      <h4>Record shape</h4>
+      <pre><code>{
+  "id": "uuid",
+  "clientId": "2026-05-27:fajr:1716800000000",
+  "date": "2026-05-27",
+  "prayer": "fajr",
+  "recordedAt": "2026-05-29T10:00:00.000Z",
+  "prayedAt": null,
+  "createdAt": "2026-05-29T10:00:00.000Z",
+  "updatedAt": "2026-05-29T10:00:00.000Z"
+}</code></pre>
+    </article>
+
+    <article class="endpoint" id="qaza-create">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/qaza</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Record a missed prayer. Idempotent: a repeated <code>clientId</code> returns the existing record with <code>alreadyExists: true</code>, and a second open record for the same <code>date</code> + <code>prayer</code> returns the existing one with <code>alreadyOpen: true</code>. A fresh insert returns <code>201</code> with <code>{ record, created: true }</code>.</p>
+      <h4>Body</h4>
+      <table class="params">
+        <thead><tr><th>Name</th><th>Type</th><th></th></tr></thead>
+        <tbody>
+          <tr><td class="k">date</td><td class="t">string</td><td class="d">Required. The missed day, <code>YYYY-MM-DD</code>.</td></tr>
+          <tr><td class="k">prayer</td><td class="t">string</td><td class="d">Required. One of <code>fajr</code>, <code>dhuhr</code>, <code>asr</code>, <code>maghrib</code>, <code>isha</code>.</td></tr>
+          <tr><td class="k">clientId</td><td class="t">string</td><td class="d">Optional idempotency key (1–160 chars). Defaults to <code>date:prayer:timestamp</code>.</td></tr>
+          <tr><td class="k">recordedAt</td><td class="t">string</td><td class="d">Optional ISO-8601 timestamp of when it was logged. Defaults to now.</td></tr>
+          <tr><td class="k">prayedAt</td><td class="t">string|null</td><td class="d">Optional ISO-8601 timestamp if it was already made up.</td></tr>
+        </tbody>
+      </table>
+      <pre><code>{ "date": "2026-05-27", "prayer": "fajr" }</code></pre>
+    </article>
+
+    <article class="endpoint" id="qaza-prayed">
+      <div class="endpoint__head">
+        <span class="method method--patch">PATCH</span>
+        <span class="path">/qaza/:id/prayed</span>
+        <span class="pill pill--auth">Auth</span>
+      </div>
+      <p class="endpoint__desc">Mark one of the caller's qaza records as made up. Idempotent — once set, <code>prayedAt</code> is preserved. <code>404</code> if the record doesn't exist or isn't yours. Returns <code>{ record }</code>.</p>
+      <h4>Body</h4>
+      <table class="params">
+        <thead><tr><th>Name</th><th>Type</th><th></th></tr></thead>
+        <tbody>
+          <tr><td class="k">prayedAt</td><td class="t">string</td><td class="d">Optional ISO-8601 timestamp. Defaults to now.</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <!-- ═══════════════════════════════ SCHEDULES ═══════════════════════════════ -->
+    <h2>Schedules</h2>
+    <p>Prayer schedules are derived state — a snapshot of a masjid's timings at a point in time, with a verification status (<code>pending</code> or <code>verified</code>) and a validity range. Most apps don't need these endpoints; <code>/mosques/:id</code> already includes the active schedule. Use these when you want history.</p>
+
+    <article class="endpoint" id="schedules-list">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/schedules</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">Paginated list of schedules across masjids.</p>
+    </article>
+
+    <article class="endpoint" id="schedules-detail">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/schedules/:id</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">A single schedule with its verifier and contributor.</p>
+    </article>
+
+    <article class="endpoint" id="schedules-active">
+      <div class="endpoint__head">
+        <span class="method method--get">GET</span>
+        <span class="path">/schedules/mosque/:mosqueId/active</span>
+        <span class="pill pill--public">Public</span>
+      </div>
+      <p class="endpoint__desc">The currently active schedule for a masjid. 404 if the masjid has none.</p>
+    </article>
+
+    <!-- ═══════════════════════════════ COMPLIANCE ═══════════════════════════════ -->
+    <h2>Compliance</h2>
+
+    <article class="endpoint" id="account-deletion-request">
+      <div class="endpoint__head">
+        <span class="method method--post">POST</span>
+        <span class="path">/account-deletion-request</span>
+        <span class="pill pill--public">Public</span>
+        <span class="pill pill--rate">1 / hr / email</span>
+      </div>
+      <p class="endpoint__desc">Auth-less account deletion request for users who cannot access the app. The response does not reveal whether the email belongs to an account.</p>
+      <pre><code>{
+  "email": "user@example.com",
+  "reason": "I can no longer access the app"
+}</code></pre>
+    </article>
+
+    <footer class="docs-foot">
+      <p>This API powers <a href="/">takbeertime.com</a>, an Android app, and (soon) a Windows widget. Found a bug, want a new endpoint, or shipping something built on top? Email <a href="mailto:hello@takbeertime.com">hello@takbeertime.com</a>.</p>
+      <p><em>No ads. Ever. Sadqa fe sabilillah.</em></p>
+    </footer>
+
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Adaptive-icon foreground: brass mosque silhouette on transparent.
+    The same silhouette used as the brand mark in the web app's topbar
+    (index.html, .brand__mark) — minarets + crescent + onion dome +
+    mihrab door + ground line.
+
+    Source SVG is 32×32. We render it inside the inner ~66dp safe zone
+    of the 108dp adaptive-icon viewport so circular / squircular
+    launchers don't clip the minaret tips. Scale 32 → 66 ≈ 2.0625×;
+    centered via translate (108-66)/2 = 21.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="2.0625"
+        android:scaleY="2.0625"
+        android:translateX="21"
+        android:translateY="21">
+        <!-- Crescent moon centered above the dome -->
+        <path
+            android:pathData="M16,3.5 a3,3 0 1 0 2.4,4.9 a2.4,2.4 0 1 1 -2.4,-4.9 z"
+            android:fillColor="#d6b266" />
+        <!-- Left minaret + finial -->
+        <path
+            android:pathData="M5,15 L5,27"
+            android:fillColor="#00000000"
+            android:strokeColor="#d6b266"
+            android:strokeWidth="1.7"
+            android:strokeLineCap="round" />
+        <path
+            android:pathData="M3.8,13 a1.2,1.2 0 1 0 2.4,0 a1.2,1.2 0 1 0 -2.4,0 z"
+            android:fillColor="#d6b266" />
+        <!-- Right minaret + finial -->
+        <path
+            android:pathData="M27,15 L27,27"
+            android:fillColor="#00000000"
+            android:strokeColor="#d6b266"
+            android:strokeWidth="1.7"
+            android:strokeLineCap="round" />
+        <path
+            android:pathData="M25.8,13 a1.2,1.2 0 1 0 2.4,0 a1.2,1.2 0 1 0 -2.4,0 z"
+            android:fillColor="#d6b266" />
+        <!-- Onion dome (outline) -->
+        <path
+            android:pathData="M9,27 V20 Q9,13 16,13 Q23,13 23,20 V27"
+            android:fillColor="#00000000"
+            android:strokeColor="#d6b266"
+            android:strokeWidth="1.8"
+            android:strokeLineJoin="round" />
+        <!-- Big clock face filling the dome interior — replaces the
+             mihrab door so the clock is the dominant time symbol. At
+             launcher icon sizes (48–64dp) the face is large enough to
+             read as a clock at a glance. Brass outer ring + dark
+             "watchface" interior + brass hands at 10:10. -->
+        <path
+            android:pathData="M16,17 a4,4 0 1 0 0,8 a4,4 0 1 0 0,-8 z"
+            android:fillColor="#d6b266" />
+        <path
+            android:pathData="M16,17.7 a3.3,3.3 0 1 0 0,6.6 a3.3,3.3 0 1 0 0,-6.6 z"
+            android:fillColor="#0d2818" />
+        <!-- Hour hand pointing to 10 (short, thick) -->
+        <path
+            android:pathData="M16,21 L14,19.5"
+            android:fillColor="#00000000"
+            android:strokeColor="#d6b266"
+            android:strokeWidth="0.85"
+            android:strokeLineCap="round" />
+        <!-- Minute hand pointing to 2 (longer, thinner — classic 10:10) -->
+        <path
+            android:pathData="M16,21 L18.4,19.2"
+            android:fillColor="#00000000"
+            android:strokeColor="#d6b266"
+            android:strokeWidth="0.7"
+            android:strokeLineCap="round" />
+        <!-- Center pivot dot -->
+        <path
+            android:pathData="M15.5,20.5 a0.5,0.5 0 1 0 1,0 a0.5,0.5 0 1 0 -1,0 z"
+            android:fillColor="#d6b266" />
+        <!-- Ground line -->
+        <path
+            android:pathData="M2.5,27 L29.5,27"
+            android:fillColor="#00000000"
+            android:strokeColor="#d6b266"
+            android:strokeWidth="1.5"
+            android:strokeLineCap="round" />
+    </group>
+</vector>

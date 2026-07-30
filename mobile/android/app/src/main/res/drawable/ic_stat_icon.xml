@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Status-bar icon for prayer reminders + keeper-update pushes. White-on-
+  transparent silhouette per Android Material guidelines — the system
+  tints it (white in dark theme, dark in light). Same dome+minarets+
+  crescent silhouette as the brand mark in index.html, traced into
+  vector drawable form. Without this drawable in place, Capacitor
+  LocalNotifications + FCM both fall back to the launcher icon, which
+  Android renders in the status bar as a flat white square because the
+  system icon tinting masks all color detail.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+
+    <!-- Crescent moon centered above the dome -->
+    <path
+        android:pathData="M16,3.5 a3,3 0 1 0 2.4,4.9 a2.4,2.4 0 1 1 -2.4,-4.9z"
+        android:fillColor="#FFFFFFFF" />
+
+    <!-- Onion dome (filled silhouette so the system tint shows the shape) -->
+    <path
+        android:pathData="M9,27 L9,20 Q9,13 16,13 Q23,13 23,20 L23,27 Z"
+        android:fillColor="#FFFFFFFF" />
+
+    <!-- Left minaret -->
+    <path
+        android:pathData="M4.15,15 L5.85,15 L5.85,27 L4.15,27 Z"
+        android:fillColor="#FFFFFFFF" />
+    <path
+        android:pathData="M5,11.8 m-1.2,0 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0"
+        android:fillColor="#FFFFFFFF" />
+
+    <!-- Right minaret -->
+    <path
+        android:pathData="M26.15,15 L27.85,15 L27.85,27 L26.15,27 Z"
+        android:fillColor="#FFFFFFFF" />
+    <path
+        android:pathData="M27,11.8 m-1.2,0 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0"
+        android:fillColor="#FFFFFFFF" />
+
+    <!-- Ground line -->
+    <path
+        android:pathData="M2.5,26.25 L29.5,26.25 L29.5,27.75 L2.5,27.75 Z"
+        android:fillColor="#FFFFFFFF" />
+</vector>

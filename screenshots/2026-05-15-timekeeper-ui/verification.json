@@ -1,0 +1,50 @@
+{
+  "mobile": {
+    "hint": "Each card is one contributor's latest timing record for this masjid. Current powers today's table. Top rated uses votes, recency, verification, and contribution history. Follow a keeper to use their times for reminders; Suggest update sends them a correction. Maghrib is not shown here because Takbeer Time calculates it from sunset plus the masjid offset.",
+    "cardCount": 3,
+    "firstCardText": "Junaid Qazi VeemedCurrent schedule12 schedule versions38 followers★ 20.94Fajr4:40 amDhuhr1:30 pmAsr5:15 pmIsha8:45 pmJummah1:30 pmFollowSuggest update",
+    "labels": [
+      "Fajr",
+      "Dhuhr",
+      "Asr",
+      "Isha",
+      "Jummah"
+    ],
+    "values": [
+      "4:40 am",
+      "1:30 pm",
+      "5:15 pm",
+      "8:45 pm",
+      "1:30 pm"
+    ],
+    "visibleMaghribTile": false,
+    "borderWidth": "1px",
+    "borderColor": "color(srgb 0.0659608 0.144314 0.107451)",
+    "borderRadius": "8px",
+    "timesGridColumns": "65.1875px 65.2031px 65.2031px 65.2031px 65.1875px"
+  },
+  "desktop": {
+    "hint": "Each card is one contributor's latest timing record for this masjid. Current powers today's table. Top rated uses votes, recency, verification, and contribution history. Follow a keeper to use their times for reminders; Suggest update sends them a correction. Maghrib is not shown here because Takbeer Time calculates it from sunset plus the masjid offset.",
+    "cardCount": 3,
+    "firstCardText": "Junaid Qazi VeemedCurrent schedule12 schedule versions38 followers★ 20.94Fajr4:40 amDhuhr1:30 pmAsr5:15 pmIsha8:45 pmJummah1:30 pmFollowSuggest update",
+    "labels": [
+      "Fajr",
+      "Dhuhr",
+      "Asr",
+      "Isha",
+      "Jummah"
+    ],
+    "values": [
+      "4:40 am",
+      "1:30 pm",
+      "5:15 pm",
+      "8:45 pm",
+      "1:30 pm"
+    ],
+    "visibleMaghribTile": false,
+    "borderWidth": "1px",
+    "borderColor": "color(srgb 0.0659608 0.144314 0.107451)",
+    "borderRadius": "8px",
+    "timesGridColumns": "86.0312px 86.0312px 86.0469px 86.0312px 86.0312px"
+  }
+}

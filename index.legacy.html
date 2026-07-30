@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jamat - Prayer Timings</title>
+  <link rel="stylesheet" href="css/styles.css?v=2">
+  <style>
+    .mosque-card {
+      height: auto !important;
+      min-height: auto !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="app-brand">
+        <div class="app-logo">🕌</div>
+        <div class="app-title-wrap">
+          <div class="app-title">Jamat - Prayer Timings</div>
+          <div class="app-subtitle">Find mosques and jamaat timings near you</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span id="location-status">Detecting location…</span>
+        </div>
+
+        <!-- ✨ User Profile / Sign In Button -->
+        <div id="user-profile-btn" style="display: none; cursor: pointer;" onclick="switchView('profile')">
+          <div
+            style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: rgba(15,23,42,0.8); border-radius: var(--radius-pill); border: 1px solid var(--border-subtle);">
+            <img id="user-avatar" src="" alt="User" style="width: 28px; height: 28px; border-radius: 50%;">
+            <span id="user-name-header" style="font-size: 13px; font-weight: 500; color: var(--text-main);"></span>
+          </div>
+        </div>
+
+        <button id="signin-btn" class="btn btn-primary btn-sm" onclick="showSignInModal()" style="display: flex;">
+          Sign In
+        </button>
+
+        <nav class="app-nav">
+          <button class="nav-btn" data-view="map" type="button">
+            <span>🗺️</span><span class="label">Map</span>
+          </button>
+          <button class="nav-btn active" data-view="list" type="button">
+            <span>📋</span><span class="label">List</span>
+          </button>
+          <button class="nav-btn" data-view="favorites" type="button">
+            <span>⭐</span><span class="label">Favorites</span>
+          </button>
+          <button class="nav-btn" data-view="profile" type="button" style="position: relative;">
+            <span>👤</span><span class="label">Profile</span>
+            <span id="notification-badge"
+              style="position: absolute; top: 4px; right: 4px; background: var(--danger); color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; display: none;">0</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- LEFT COLUMN -->
+      <section id="left-column">
+        <!-- MAP VIEW -->
+        <div id="view-map" class="view">
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">
+                    <span>🗺️</span>
+                    Find mosques on the map
+                  </div>
+                  <div class="card-subtitle">Click on any mosque marker to see jamaat timings</div>
+                </div>
+                <span class="chip-primary">Live map</span>
+              </div>
+
+              <div class="input-row">
+                <label style="flex: 2;">
+                  Search location or mosque
+                  <input class="input" id="map-search-input" type="search"
+                    placeholder="Search for mosques, areas, or landmarks..." />
+                </label>
+                <button class="btn btn-primary" id="btn-my-location" type="button">
+                  📍 My Location
+                </button>
+              </div>
+
+              <!-- Map Placeholder (shown until user clicks to load) -->
+              <div id="map-placeholder"
+                style="width: 100%; height: 500px; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-soft); border: 1px solid var(--border-subtle); display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.85)); cursor: pointer;"
+                onclick="loadGoogleMaps()">
+                <div style="font-size: 48px; margin-bottom: 16px;">🗺️</div>
+                <h3 style="margin-bottom: 8px; color: var(--text-main);">Interactive Map</h3>
+                <p style="color: var(--text-muted); margin-bottom: 16px; text-align: center; max-width: 300px;">Click to
+                  load the map and explore mosques near you</p>
+                <button class="btn btn-primary" style="pointer-events: none;">
+                  🗺️ Load Map
+                </button>
+              </div>
+
+              <!-- Actual map container (hidden until loaded) -->
+              <div id="map" style="display: none;"></div>
+
+              <div class="flex-between" style="margin-top: 14px;">
+                <div class="small-label">
+                  <strong>Tip:</strong> Use the list view to browse mosques without loading the map
+                </div>
+                <button class="btn btn-outline btn-sm" id="btn-add-mosque" type="button">
+                  ➕ Add Mosque
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIST VIEW -->
+        <div id="view-list" class="view is-active">
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">
+                    <span>📍</span>
+                    Nearby mosques
+                  </div>
+                  <div class="card-subtitle" id="list-location-label">Browse mosques in your area</div>
+                </div>
+                <div class="chip-primary">
+                  Next: <strong id="list-next-prayer">–</strong>
+                </div>
+              </div>
+
+              <div class="input-row">
+                <label style="flex: 2;">
+                  Search
+                  <input class="input" id="list-search-input" type="search"
+                    placeholder="Mosque name, area, landmark…" />
+                </label>
+                <label style="flex: 1; min-width: 160px;">
+                  Sort by
+                  <select id="filter-select">
+                    <option value="distance">Closest first</option>
+                    <option value="rating">Highest rated</option>
+                    <option value="recent">Recently updated</option>
+                  </select>
+                </label>
+              </div>
+
+              <!-- Amenities Filter -->
+              <div class="amenities-filter" id="amenities-filter"
+                style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+                <button class="chip-outline" data-amenity="parking">Parking</button>
+                <button class="chip-outline" data-amenity="wudu_facilities">Wudu</button>
+                <button class="chip-outline" data-amenity="womens_section">Women's</button>
+                <button class="chip-outline" data-amenity="wheelchair_accessible">Wheelchair</button>
+                <button class="chip-outline" data-amenity="ac">AC</button>
+              </div>
+
+              <div class="tag-list">
+                <span class="tag-pill">Radius: <span id="radius-label">5km</span></span>
+                <span class="tag-pill">Community verified</span>
+              </div>
+
+              <!-- Divider -->
+              <div class="section-divider"></div>
+
+              <div class="mosque-list" id="mosque-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAVORITES VIEW -->
+        <div id="view-favorites" class="view">
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">
+                    <span>⭐</span>
+                    Favorite mosques
+                  </div>
+                  <div class="card-subtitle">Quick access to your frequently visited mosques</div>
+                </div>
+                <span class="chip-accent">Saved</span>
+              </div>
+
+              <!-- ✨ Default Mosque Info -->
+              <div id="default-mosque-info"
+                style="margin-bottom: 16px; padding: 12px; border-radius: var(--radius-md); background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.3); display: none;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                  <span style="font-size: 16px;">🏠</span>
+                  <span style="font-size: 12px; font-weight: 600; color: rgba(251, 191, 36, 1);">DEFAULT MOSQUE</span>
+                </div>
+                <div style="font-size: 14px; font-weight: 600; color: var(--text-main);" id="default-mosque-name">–
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">This mosque loads automatically
+                  when you open the app</div>
+              </div>
+
+              <div class="mosque-list" id="favorites-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE VIEW -->
+        <div id="view-profile" class="view">
+          <div class="card">
+            <div class="card-inner">
+              <!-- ✨ Profile Header with User Info -->
+              <div class="card-header" style="flex-direction: column; align-items: flex-start; gap: 16px;">
+                <div style="width: 100%;">
+                  <div class="card-title">
+                    <span>👤</span>
+                    <span id="profile-title">Your profile</span>
+                  </div>
+                  <div class="card-subtitle">Contributions and activity</div>
+                </div>
+
+                <!-- User Info (shown when logged in) -->
+                <div id="profile-user-info" style="display: none; width: 100%;">
+                  <div style="display: flex; align-items: center; gap: 16px;">
+                    <img id="profile-user-avatar" src="" alt="User"
+                      style="width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--primary);">
+                    <div style="flex: 1;">
+                      <div style="font-size: 18px; font-weight: 700; color: var(--text-main);" id="profile-user-name">
+                      </div>
+                      <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;" id="profile-user-email">
+                      </div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="handleSignOut()">
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Guest Prompt (shown when not logged in) -->
+                <div id="profile-guest-prompt"
+                  style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 40px 20px; width: 100%;">
+                  <div style="font-size: 64px; margin-bottom: 16px;">🔒</div>
+                  <h3 style="margin-bottom: 8px; color: var(--text-main);">Sign in to unlock your profile</h3>
+                  <p style="color: var(--text-muted); margin-bottom: 20px; max-width: 400px;">
+                    Sign in to save favorites, submit timings, earn reputation, and get personalized notifications.
+                  </p>
+                  <button class="btn btn-primary" onclick="showSignInModal()">
+                    Sign in with Google
+                  </button>
+                </div>
+              </div>
+
+              <!-- Profile Content (only shown when logged in) -->
+              <div id="profile-content" style="display: none;">
+
+                <div
+                  style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 12px;">
+                  <div
+                    style="border-radius: var(--radius-md); padding: 12px; background: rgba(15,23,42,0.98); border: 1px solid rgba(51,65,85,0.8);">
+                    <div class="small-label">Favorites</div>
+                    <div style="font-size: 20px; font-weight: 700; margin-top: 4px;" id="profile-favorites-count">0
+                    </div>
+                  </div>
+                  <div
+                    style="border-radius: var(--radius-md); padding: 12px; background: rgba(15,23,42,0.98); border: 1px solid rgba(51,65,85,0.8);">
+                    <div class="small-label">Submissions</div>
+                    <div style="font-size: 20px; font-weight: 700; margin-top: 4px;" id="profile-submissions-count">0
+                    </div>
+                  </div>
+                  <div
+                    style="border-radius: var(--radius-md); padding: 12px; background: rgba(15,23,42,0.98); border: 1px solid rgba(51,65,85,0.8);">
+                    <div class="small-label">Reputation</div>
+                    <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: var(--primary);"
+                      id="profile-reputation">0</div>
+                  </div>
+                </div>
+
+                <!-- ✨ Badges Section -->
+                <div style="margin-top: 20px;">
+                  <div class="small-label" style="margin-bottom: 8px;">🏆 Your Badges</div>
+                  <div id="profile-badges" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <!-- Populated dynamically -->
+                  </div>
+                </div>
+
+                <!-- ✨ Notifications Section -->
+                <div style="margin-top: 20px;">
+                  <div class="small-label" style="margin-bottom: 8px;">🔔 Notifications</div>
+                  <div id="profile-notifications"
+                    style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto;">
+                    <!-- Populated dynamically -->
+                  </div>
+                </div>
+
+              </div>
+              <!-- End profile-content -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN - DETAILS WITH TABS ✨ -->
+      <aside id="right-column">
+        <div class="card" id="detail-card">
+          <div class="card-inner">
+            <!-- Mosque Name and Actions Row -->
+            <div class="detail-card-top">
+              <div class="detail-mosque-title">
+                <span>🕌</span>
+                <span id="detail-mosque-name">Select a mosque</span>
+              </div>
+              <div class="detail-actions">
+                <button class="btn btn-outline btn-sm" id="detail-default-toggle" style="display: none;">
+                  <span>🏠</span><span>Set Default</span>
+                </button>
+                <button class="favorite-toggle" id="detail-favorite-toggle" style="display: none;">
+                  <span>⭐</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Address subtitle -->
+            <div class="card-subtitle" id="detail-mosque-address" style="margin-bottom: var(--space-lg);">Click on a mosque to view details</div>
+
+            <!-- ✨ NEW: Tab Navigation -->
+            <div class="detail-tabs" id="detail-tabs" style="display: none;">
+              <button class="detail-tab active" data-tab="timings">
+                🕰️ Timings
+              </button>
+              <button class="detail-tab" onclick="switchTab('contributors')" id="tab-contributors"
+                data-tab="contributors">Contributors</button>
+              <button class="detail-tab" data-tab="info">
+                ℹ️ Info
+              </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="detail-content" style="display: none;">
+              <!-- Timings Tab -->
+              <div class="tab-panel active" data-panel="timings">
+                <table class="timings-table">
+                  <thead>
+                    <tr>
+                      <th>Prayer</th>
+                      <th>Jamaat</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="timings-body"></tbody>
+                </table>
+
+                <div class="countdown">
+                  <div class="countdown-main">
+                    Next: <span id="next-prayer-name">–</span>
+                  </div>
+                  <div>
+                    in <span class="countdown-time" id="next-prayer-countdown">--:--:--</span>
+                  </div>
+                </div>
+
+                <div class="flex-between" style="margin-top: 16px;">
+                  <div class="flex-gap">
+                    <button class="btn btn-outline btn-sm" id="btn-view-map">
+                      🗺️ View
+                    </button>
+                    <button class="btn btn-outline btn-sm" id="btn-directions">
+                      🚗 Directions
+                    </button>
+                  </div>
+                  <button class="btn btn-primary btn-sm" id="btn-update-timings">
+                    ✏️ Update
+                  </button>
+                </div>
+              </div>
+
+              <!-- Updates Tab -->
+              <div id="contributors-panel" class="tab-panel" data-panel="contributors" style="display: none;">
+                <div id="submissions-list" class="submissions-list">
+                  <!-- Contributors will be populated here -->
+                </div>
+              </div>
+              <!-- Info Tab -->
+              <div class="tab-panel" data-panel="info" style="display: none;">
+                <dl>
+                  <dt>Distance</dt>
+                  <dd id="detail-distance">–</dd>
+                  <dt>Rating</dt>
+                  <dd><span id="detail-rating"></span> · <span id="detail-contributors"></span> contributors</dd>
+                  <dt>Last updated</dt>
+                  <dd id="detail-last-updated">–</dd>
+                  <dt>Contact</dt>
+                  <dd id="detail-contact">–</dd>
+                </dl>
+
+                <!-- Amenities Section -->
+                <div style="margin-top: 16px;">
+                  <div class="small-label" style="margin-bottom: 8px;">Amenities</div>
+                  <div id="amenities-list" class="amenities-list">
+                    <!-- Populated dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Placeholder (when no mosque selected) -->
+            <div id="detail-placeholder" style="text-align: center; padding: 40px 20px;">
+              <div style="font-size: 48px; margin-bottom: 12px;">🕌</div>
+              <p class="small-label">Select a mosque to view details</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructions Card -->
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-header">
+              <div class="card-title">
+                <span>💡</span>
+                How to use
+              </div>
+            </div>
+            <ul
+              style="font-size: 13px; color: var(--text-muted); padding-left: 20px; margin: 0; position: relative; z-index: 1;">
+              <li style="margin-bottom: 8px;">Click on mosque markers on the map to view timings</li>
+              <li style="margin-bottom: 8px;">Search for locations or mosques using the search box</li>
+              <li style="margin-bottom: 8px;">Add mosques to favorites for quick access</li>
+              <li style="margin-bottom: 8px;">View directions to any mosque in Google Maps</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Update Form Modal -->
+  <div id="update-modal"
+    style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px;">
+    <div class="card" style="max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;">
+      <div class="card-inner">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span>📤</span>
+              Update jamaat timings
+            </div>
+            <div class="card-subtitle">Help keep timings accurate for the community</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="btn-close-modal" type="button">
+            ✕
+          </button>
+        </div>
+
+        <form id="update-form">
+          <div class="input-row">
+            <label>Fajr
+              <input class="input" type="time" name="fajr" required />
+            </label>
+            <label>Zuhr
+              <input class="input" type="time" name="zuhr" required />
+            </label>
+          </div>
+          <div class="input-row">
+            <label>Asr
+              <input class="input" type="time" name="asr" required />
+            </label>
+            <label>Maghrib
+              <input class="input" type="time" name="maghrib" required />
+            </label>
+          </div>
+          <div class="input-row">
+            <label>Isha
+              <input class="input" type="time" name="isha" required />
+            </label>
+            <label>Jummah 1
+              <input class="input" type="time" name="jummah" />
+            </label>
+          </div>
+          <div class="input-row">
+            <label>Jummah 2 (Optional)
+              <input class="input" type="time" name="jummah_2" />
+            </label>
+            <label>Jummah 3 (Optional)
+              <input class="input" type="time" name="jummah_3" />
+            </label>
+          </div>
+          <div class="input-row">
+            <label style="flex: 1;">
+              Notes (optional)
+              <textarea class="input" name="notes" placeholder="e.g., Ramadan schedule, winter timing, etc."></textarea>
+            </label>
+          </div>
+          <div class="input-row">
+            <label
+              style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); margin-top: 6px;">
+              <input type="checkbox" name="verified" required />
+              I verified these timings from the mosque board or attended jamaat
+            </label>
+          </div>
+          <div class="flex-between" style="margin-top: 12px;">
+            <span class="small-label">Updates are visible immediately</span>
+            <button class="btn btn-primary btn-lg" type="submit">
+              📤 Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✨ SIGN-IN MODAL -->
+  <div id="signin-modal" class="signin-modal">
+    <div class="signin-content">
+      <div style="font-size: 64px; margin-bottom: 16px;">🕌</div>
+      <h2 style="margin-bottom: 8px; color: var(--text-main);">Sign in to Jamat</h2>
+      <p style="color: var(--text-muted); margin-bottom: 24px;">
+        Sign in to submit prayer timings, save favorites, and help the community
+      </p>
+
+      <button class="google-signin-btn" id="google-signin-btn" onclick="handleGoogleSignIn()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+            fill="#4285F4" />
+          <path
+            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+            fill="#34A853" />
+          <path
+            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+            fill="#FBBC05" />
+          <path
+            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+            fill="#EA4335" />
+        </svg>
+        Continue with Google
+      </button>
+
+      <p style="margin-top: 16px; font-size: 12px; color: var(--text-muted);">
+        By signing in, you agree to our Terms of Service and Privacy Policy
+      </p>
+
+      <button class="btn btn-ghost" style="margin-top: 12px;" onclick="closeSignInModal()">
+        Browse as Guest
+      </button>
+    </div>
+    <button class="btn btn-ghost" style="margin-top: 12px;" onclick="closeSignInModal()">
+      Browse as Guest
+    </button>
+  </div>
+  </div>
+
+  <!-- ✨ REMINDER EDIT MODAL -->
+  <div id="reminder-modal"
+    style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px;">
+    <div class="card" style="max-width: 400px; width: 100%;">
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="card-title">🔔 Prayer Reminder</div>
+          <button class="btn btn-ghost btn-sm" onclick="closeReminderModal()" type="button">✕</button>
+        </div>
+        <p style="color: var(--text-muted); margin-bottom: 16px;" id="reminder-modal-text">
+          Configure reminder for <strong id="reminder-prayer-name"></strong>
+        </p>
+
+        <!-- Enable/Disable Toggle -->
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(241, 245, 249, 0.6); border-radius: var(--radius-md); margin-bottom: 16px;">
+          <span style="font-weight: 600; color: var(--text-main);">Enable Reminder</span>
+          <label class="reminder-toggle">
+            <input type="checkbox" id="reminder-enabled-toggle" onchange="toggleReminderEnabled()">
+            <span class="reminder-toggle-slider"></span>
+          </label>
+        </div>
+
+        <div id="reminder-time-settings" style="display: none;">
+          <div class="input-row">
+            <label>Minutes before jamaat
+              <input class="input" type="number" id="reminder-minutes-input" min="1" max="120" value="15" />
+            </label>
+          </div>
+        </div>
+
+        <div class="flex-gap" style="margin-top: 16px; justify-content: flex-end;">
+          <button class="btn btn-ghost" onclick="closeReminderModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveReminderSettings()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✨ NEW: ONBOARDING MODAL -->
+  <div id="onboarding-modal" class="onboarding-modal">
+    <div class="onboarding-content">
+      <!-- Progress indicator -->
+      <div class="onboarding-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="onboarding-progress-fill" style="width: 20%;"></div>
+        </div>
+        <div class="progress-text">
+          Step <span id="current-step">1</span> of 5
+        </div>
+      </div>
+
+      <button class="onboarding-skip" id="onboarding-skip">Skip →</button>
+
+      <!-- Step 1: Welcome -->
+      <div class="onboarding-step" data-step="1">
+        <div class="onboarding-icon">🕌</div>
+        <h2>Welcome to Jamat!</h2>
+        <p>Find accurate prayer timings for mosques near you, powered by the community.</p>
+        <button class="btn btn-primary btn-lg" onclick="onboarding.next()">
+          Get Started
+        </button>
+      </div>
+
+      <!-- Step 2: Location -->
+      <div class="onboarding-step" data-step="2" style="display: none;">
+        <div class="onboarding-icon">📍</div>
+        <h2>Detect your location?</h2>
+        <p>We'll show you mosques in your area</p>
+        <button class="btn btn-primary btn-lg" onclick="onboarding.requestLocation()">
+          📍 Allow Location
+        </button>
+        <button class="btn btn-ghost" onclick="onboarding.next()">
+          Enter Manually
+        </button>
+      </div>
+
+      <!-- Step 3: Home Mosque -->
+      <div class="onboarding-step" data-step="3" style="display: none;">
+        <div class="onboarding-icon">🏠</div>
+        <h2>Pick your home mosque</h2>
+        <p>This mosque will show automatically when you open the app</p>
+        <div id="onboarding-mosque-list" class="onboarding-mosque-list">
+          <!-- Populated dynamically -->
+        </div>
+        <button class="btn btn-ghost" onclick="onboarding.next()">
+          Skip for Now
+        </button>
+      </div>
+
+      <!-- Step 4: Reminders -->
+      <div class="onboarding-step" data-step="4" style="display: none;">
+        <div class="onboarding-icon">🔔</div>
+        <h2>Turn on prayer reminders?</h2>
+        <p>Get notified before jamaat times</p>
+
+        <div class="reminder-options">
+          <label class="reminder-checkbox">
+            <input type="checkbox" name="reminder-fajr" checked />
+            <span>Fajr</span>
+            <select class="reminder-offset">
+              <option value="15" selected>15 min before</option>
+              <option value="10">10 min before</option>
+              <option value="20">20 min before</option>
+              <option value="30">30 min before</option>
+            </select>
+          </label>
+
+          <label class="reminder-checkbox">
+            <input type="checkbox" name="reminder-maghrib" checked />
+            <span>Maghrib</span>
+            <select class="reminder-offset">
+              <option value="10" selected>10 min before</option>
+              <option value="15">15 min before</option>
+              <option value="20">20 min before</option>
+            </select>
+          </label>
+
+          <label class="reminder-checkbox">
+            <input type="checkbox" name="reminder-isha" />
+            <span>Isha</span>
+            <select class="reminder-offset">
+              <option value="15" selected>15 min before</option>
+              <option value="10">10 min before</option>
+              <option value="20">20 min before</option>
+            </select>
+          </label>
+
+          <label class="reminder-checkbox">
+            <input type="checkbox" name="reminder-jummah" checked />
+            <span>Jummah</span>
+            <select class="reminder-offset">
+              <option value="30" selected>30 min before</option>
+              <option value="45">45 min before</option>
+              <option value="60">60 min before</option>
+              <option value="20">20 min before</option>
+            </select>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg" onclick="onboarding.complete()">
+          ✓ Enable Reminders
+        </button>
+        <button class="btn btn-ghost" onclick="onboarding.complete()">
+          Skip for Now
+        </button>
+      </div>
+
+      <!-- Step 5: Done -->
+      <div class="onboarding-step" data-step="5" style="display: none;">
+        <div class="onboarding-icon">✨</div>
+        <h2>You're all set!</h2>
+        <p>Here's how to get the most out of Jamat:</p>
+
+        <div class="onboarding-tips">
+          <div class="tip">
+            <span class="tip-icon">🗺️</span>
+            <span>Tap mosque markers to see prayer timings</span>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">⭐</span>
+            <span>Star your favorite mosques for quick access</span>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">✏️</span>
+            <span>Update timings to help the community</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg" onclick="onboarding.finish()">
+          🚀 Start Using Jamat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

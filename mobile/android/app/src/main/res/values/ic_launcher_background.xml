@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cream interior of the app-logo design — adaptive-icon background
+         behind the mark (gold arch + clock + Arabic + crescent + green minaret). -->
+    <color name="ic_launcher_background">#FCF9F5</color>
+</resources>

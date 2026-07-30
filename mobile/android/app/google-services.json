@@ -1,0 +1,108 @@
+{
+  "project_info": {
+    "project_number": "797230147137",
+    "project_id": "takbeerapp",
+    "storage_bucket": "takbeerapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797230147137:android:b0540df34d51e099af48c0",
+        "android_client_info": {
+          "package_name": "com.takbeertime.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797230147137-2d62krpmiutpl7gfu9d3ike6ksntbnbg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.takbeertime.android",
+            "certificate_hash": "2b7e272e4235401a5d2108d51569e9cb3c2a92af"
+          }
+        },
+        {
+          "client_id": "797230147137-f8ctp60fmp9tuglm4q4eoiphbbhba9r2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.takbeertime.android",
+            "certificate_hash": "a978e4b2a4dfba3ac2ada5a5a8d1ee027c008bca"
+          }
+        },
+        {
+          "client_id": "797230147137-vkmhmmi623gn847tmlqqp7d7vvjckrno.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.takbeertime.android",
+            "certificate_hash": "0cf0490aa806bb060d193d15e0bfbca545c31360"
+          }
+        },
+        {
+          "client_id": "797230147137-6nn3snruhm8loo8vt5ii4jdksj2750po.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJxvymGOB0c_AqXy7stOM1LzS53thUR_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797230147137-6nn3snruhm8loo8vt5ii4jdksj2750po.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797230147137:android:66d0cffa5b262be3af48c0",
+        "android_client_info": {
+          "package_name": "com.takbeertime.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797230147137-1l7u1le0kmf6f35l5oc0g3dvjnjcqpng.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.takbeertime.app",
+            "certificate_hash": "2b7e272e4235401a5d2108d51569e9cb3c2a92af"
+          }
+        },
+        {
+          "client_id": "797230147137-ginnfcravunp39gkb4si964ar20lp6be.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.takbeertime.app",
+            "certificate_hash": "86890897090dadc296aed203087d1216c5631bb7"
+          }
+        },
+        {
+          "client_id": "797230147137-6nn3snruhm8loo8vt5ii4jdksj2750po.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJxvymGOB0c_AqXy7stOM1LzS53thUR_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797230147137-6nn3snruhm8loo8vt5ii4jdksj2750po.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

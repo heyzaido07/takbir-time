@@ -1,0 +1,17 @@
+{
+  "name": "takbeer-time",
+  "private": true,
+  "description": "Takbeer Time — crowd-sourced jamat-times directory. E2E test harness lives here; the actual web app is plain static files (index.html, css/, js/) and the backend is in server/.",
+  "scripts": {
+    "test:e2e": "jest --runInBand --config jest.config.js",
+    "test:e2e:headed": "HEADED=1 jest --runInBand --config jest.config.js",
+    "test:e2e:watch": "jest --watch --config jest.config.js",
+    "test:unit": "jest --config jest.unit.config.js",
+    "test:unit:watch": "jest --watch --config jest.unit.config.js"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
+    "puppeteer": "^24.42.0"
+  }
+}

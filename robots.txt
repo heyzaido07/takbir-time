@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /blog/
+Allow: /css/
+Allow: /i18n/
+Allow: /js/
+Allow: /seo/
+Allow: /masjid/
+Allow: /prayer-times/
+
+Disallow: /.claude/
+Disallow: /.codex/
+Disallow: /.git/
+Disallow: /.github/
+Disallow: /database/
+Disallow: /design/
+Disallow: /docs/
+Disallow: /e2e/
+Disallow: /mobile/
+Disallow: /node_modules/
+Disallow: /plans/
+Disallow: /playstore-kit/
+Disallow: /screenshots/
+Disallow: /server/
+Disallow: /admin.html
+Disallow: /index-enhanced.html
+Disallow: /index.legacy.html
+Disallow: /*.md$
+
+Sitemap: https://takbeertime.com/sitemap-index.xml

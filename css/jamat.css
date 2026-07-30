@@ -1,0 +1,6213 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Jamat — Mobile-first crowd-sourced jamat timing app
+   Type: Inter Tight (UI) + Cormorant Garamond (display) + JetBrains Mono (numbers)
+   Palette: deep mihrab green ground, parchment paper, brass accent
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Surfaces — premium Islamic palette: warm cream + emerald + gold */
+  --cream: #FAEED4;        /* warm cream page background */
+  --beige: #FFF8E8;        /* light beige */
+  --paper: #FBF8EF;        /* warm near-white, primary card surface */
+  --paper-2: #F2ECDB;      /* slightly tinted card surface */
+  --paper-3: #E7DCC4;      /* dividers, very light */
+  --green: #0F2A1E;        /* deep mihrab green — primary brand (restored) */
+  --green-2: #1F3A2C;      /* darker green — gradients / fills */
+  --green-3: #2F5440;      /* mid green accent */
+  --green-4: #6FCF97;      /* soft mint green */
+  --green-soft: #DFE9E1;   /* tinted green wash for accents */
+  --brass: #D4AF37;        /* premium metallic gold accent */
+  --brass-2: #E5B83E;      /* warm gold */
+  --brass-soft: #EFDFAE;
+
+  --ink: #333333;          /* dark text */
+  --ink-2: #555049;
+  --ink-3: #6B6B6B;        /* muted text */
+  --ink-4: #9C988F;
+
+  --crimson: #9B2C2C;
+
+  /* Type */
+  --ui: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --brand: 'Cinzel', 'Cormorant Garamond', Georgia, serif;  /* elegant caps wordmark */
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --sans: var(--ui);
+  --paper-line: rgba(15, 42, 30, 0.12);
+  --alert: #A85A2A;
+  --alert-soft: rgba(168, 90, 42, 0.08);
+
+  /* Sizing */
+  --t-tag: 0.72rem;
+  --t-body: 1rem;
+  --t-h1: clamp(2.1rem, 8vw, 3.4rem);
+  --t-clock-num: clamp(2.4rem, 11vw, 3.6rem);
+
+  /* Layout */
+  --pad: clamp(1.1rem, 5vw, 2rem);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 6px 24px -8px rgba(15, 42, 30, 0.15);
+  --rule: 1px solid var(--paper-3);
+
+  /* ───── Material 3 design tokens ─────
+     Mapped onto the existing brass-and-green palette so M3 components
+     drop in without changing the brand's visual identity. M3 names on
+     the LEFT, Takbeer Time palette on the RIGHT — the M3 spec calls
+     for `primary`, `on-primary`, `secondary-container` etc. and we
+     resolve those to brass / green / paper. */
+
+  /* Primary = deep green (the brand colour the hero card lives in). */
+  --m3-primary: var(--green);
+  --m3-on-primary: var(--paper);
+  --m3-primary-container: var(--green-soft);
+  --m3-on-primary-container: var(--green);
+
+  /* Secondary = brass (the warm accent). */
+  --m3-secondary: var(--brass);
+  --m3-on-secondary: var(--paper);
+  --m3-secondary-container: color-mix(in srgb, var(--brass) 18%, var(--paper) 82%);
+  --m3-on-secondary-container: color-mix(in srgb, var(--brass) 70%, var(--ink) 30%);
+
+  /* Surfaces. M3 has surface tones at different elevations; we collapse
+     to the existing paper variants. */
+  --m3-surface: var(--paper);
+  --m3-on-surface: var(--ink);
+  --m3-on-surface-variant: var(--ink-2);
+  --m3-surface-variant: var(--paper-2);
+  --m3-outline: color-mix(in srgb, var(--ink-3) 50%, transparent);
+  --m3-outline-variant: var(--paper-3);
+
+  /* Error palette — for failed actions / destructive UX. */
+  --m3-error: var(--crimson);
+  --m3-on-error: var(--paper);
+
+  /* State-layer opacity (M3 spec: 8% hover, 12% focus, 16% pressed).
+     Implemented as alpha values applied to currentColor in a
+     pseudo-element overlay — see .m3-btn. */
+  --m3-state-hover: 0.08;
+  --m3-state-focus: 0.12;
+  --m3-state-press: 0.16;
+
+  /* Shape tokens. M3 uses corner roles (small/medium/large/full).
+     Buttons use full-pill = height/2; cards use medium = 12px. */
+  --m3-corner-xs: 4px;
+  --m3-corner-sm: 8px;
+  --m3-corner-md: 12px;
+  --m3-corner-lg: 16px;
+  --m3-corner-xl: 28px;
+  --m3-corner-full: 999px;
+
+  /* Elevation. M3 shadows are subtle multi-layer drops. */
+  --m3-elevation-1: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(15,42,30,0.08);
+  --m3-elevation-2: 0 1px 2px rgba(0,0,0,0.07), 0 2px 6px rgba(15,42,30,0.10);
+  --m3-elevation-3: 0 4px 8px -2px rgba(15,42,30,0.14), 0 2px 4px -1px rgba(15,42,30,0.10);
+
+  /* Typography roles used by M3 components. */
+  --m3-label-large: 600 0.875rem/1.25rem var(--ui);
+  --m3-label-medium: 600 0.75rem/1rem var(--ui);
+  --m3-body-medium: 400 0.875rem/1.25rem var(--ui);
+  --m3-body-large: 400 1rem/1.5rem var(--ui);
+}
+
+/* ───── Resets ───── */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  /* Warm cream page with the supplied seamless Islamic-geometry tile. Fixed
+     so content scrolls over a calm, steady pattern; the tile is faint enough
+     that text stays fully readable. */
+  background-color: var(--cream);
+  background-image: url('../assets/backgrounds/islamic-pattern-tile.png?v=1');
+  background-repeat: repeat;
+  background-size: 480px;
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: var(--t-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+  /* Suppress the browser's own pull-to-refresh (which would reload the
+     page) so our JS gesture in app.js can own the swipe-down at the top.
+     `contain` keeps overscroll effects local — chained scrolls into the
+     parent / the native PTR are blocked, but in-page scrolling still
+     bounces normally on iOS. */
+  overscroll-behavior-y: contain;
+}
+button { font: inherit; color: inherit; cursor: pointer; background: none; border: none; padding: 0; text-align: left; }
+input, textarea, select { font: inherit; color: inherit; }
+ol, ul { list-style: none; padding: 0; margin: 0; }
+a { color: var(--green); text-decoration: none; }
+em { font-family: var(--display); font-style: italic; font-weight: 500; }
+.muted { color: var(--ink-3); font-size: 0.9rem; margin: 0.4rem 0; }
+.muted--small { font-size: 0.78rem; }
+.is-hidden { display: none !important; }
+/* HTML5 [hidden] attribute should always win over component display rules.
+   Without !important, our class-based display:flex/grid wins by specificity. */
+[hidden] { display: none !important; }
+.link { color: var(--green); border-bottom: 1px solid currentColor; }
+
+/* ───── Top bar ───── */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem var(--pad);
+  /* Dark-cream band so the top section reads as a distinct header, not white. */
+  background: color-mix(in srgb, #E9DCBC 97%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid color-mix(in srgb, var(--green) 18%, transparent);
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: var(--green);
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+.brand__name {
+  color: var(--green-2);
+  font-family: var(--brand);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-size: 0.98rem;
+  white-space: nowrap;
+}
+.brand__mark { display: inline-block; height: 28px; width: auto; object-fit: contain; }
+
+.topbar__actions {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 0.55rem;
+}
+
+.qaza-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 28px;
+  padding: 0 0.72rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--green) 45%, transparent);
+  background: color-mix(in srgb, var(--green) 9%, var(--paper));
+  color: var(--green);
+  font-family: var(--ui);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.qaza-pill:hover,
+.qaza-pill:focus-visible {
+  background: color-mix(in srgb, var(--green) 14%, var(--paper));
+  border-color: var(--green);
+  outline: none;
+}
+.qaza-pill svg {
+  color: var(--green);
+  flex: 0 0 auto;
+}
+.qaza-pill__count {
+  min-width: 1.3rem;
+  height: 1.3rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  background: var(--green);
+  color: var(--paper);
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.share-app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  min-height: 38px;
+  padding: 0 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--green) 58%, var(--ink));
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--brass-soft);
+  font-family: var(--ui);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+.share-app-btn:hover,
+.share-app-btn:focus-visible {
+  background: color-mix(in srgb, var(--green) 92%, var(--ink));
+  border-color: var(--green);
+  outline: none;
+  transform: translateY(-1px);
+}
+.share-app-btn svg { flex: 0 0 auto; }
+
+.hero-headline-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.hero-share-btn {
+  justify-self: end;
+  margin: 0.15rem 0 0;
+  min-height: 34px;
+  padding: 0 0.62rem;
+  font-size: 0.7rem;
+  box-shadow: 0 8px 18px -16px rgba(15, 42, 30, 0.65);
+}
+
+@media (max-width: 560px) {
+  .topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.5rem;
+    row-gap: 0.6rem;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+  .brand {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    gap: 0.35rem;
+  }
+  .brand__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .brand__mark {
+    height: 24px;
+  }
+  .topbar__actions {
+    display: contents;
+  }
+  .qaza-pill {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+    width: max-content;
+    max-width: 100%;
+  }
+  .langmenu {
+    grid-column: 2;
+    grid-row: 2;
+    width: 100%;
+    min-width: 0;
+  }
+  .langmenu__trigger {
+    width: 100%;
+  }
+  .auth-btn {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+  /* The Dars pill shares .qaza-pill styling, which pins it to row 2 / col 1
+     — the same cell as the qaza pill. Move it to its own row so the two
+     don't stack on top of each other on narrow screens. */
+  .dars-pill {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    justify-self: start;
+    width: max-content;
+    max-width: 100%;
+  }
+}
+
+/* Language picker — compact trigger with a custom menu */
+.langmenu {
+  position: relative;
+  display: inline-flex;
+}
+.langmenu__trigger {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  min-height: 34px;
+  padding: 0.45rem 0.7rem;
+  border: 1.5px solid var(--green);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--green);
+  font: 600 0.8rem var(--ui);
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.langmenu__trigger:hover,
+.langmenu__trigger:focus-visible {
+  border-color: var(--green);
+  outline: none;
+}
+.langmenu__trigger svg { color: var(--brass); flex: 0 0 auto; }
+.langmenu__current {
+  max-width: 7.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.langmenu__caret { color: var(--ink-3); font-size: 0.6rem; }
+.langmenu__trigger[aria-expanded="true"] {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--paper);
+}
+.langmenu__trigger[aria-expanded="true"] svg,
+.langmenu__trigger[aria-expanded="true"] .langmenu__caret {
+  color: var(--brass-soft);
+}
+.langmenu__pop {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  width: min(17rem, calc(100vw - 1.5rem));
+  border: 1px solid var(--paper-line);
+  border-radius: 18px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 24px 60px -18px rgba(15, 42, 30, 0.45);
+  overflow: hidden;
+}
+.langmenu__pointer {
+  position: absolute;
+  top: -6px;
+  right: 1.1rem;
+  width: 12px;
+  height: 12px;
+  background: var(--paper);
+  border-left: 1px solid var(--paper-line);
+  border-top: 1px solid var(--paper-line);
+  transform: rotate(45deg);
+}
+.langmenu__head {
+  padding: 0.875rem 1.125rem 0.625rem;
+  border-bottom: 1px solid var(--paper-line);
+}
+.langmenu__eyebrow {
+  margin: 0;
+  color: var(--brass);
+  font: 700 0.62rem var(--ui);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+.langmenu__title {
+  margin: 0.15rem 0 0;
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--green);
+}
+.langmenu__list {
+  padding: 0.375rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.langmenu__opt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ink);
+  text-align: start;
+  cursor: pointer;
+}
+.langmenu__opt:hover,
+.langmenu__opt:focus-visible {
+  background: rgba(15, 42, 30, 0.04);
+  outline: none;
+}
+.langmenu__opt[aria-selected="true"] {
+  background: rgba(181, 139, 77, 0.14);
+}
+.langmenu__opt[aria-selected="true"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--brass);
+}
+.langmenu__native {
+  flex: 1;
+  min-width: 0;
+  font: 500 0.875rem var(--ui);
+  color: var(--ink);
+}
+.langmenu__opt[aria-selected="true"] .langmenu__native {
+  color: var(--green);
+  font-weight: 700;
+}
+.langmenu__opt[dir="rtl"] .langmenu__native {
+  font-family: 'Noto Naskh Arabic', var(--display);
+  font-size: 1rem;
+  text-align: right;
+}
+.langmenu__en {
+  flex: 0 0 auto;
+  color: var(--ink-3);
+  font: 500 0.69rem var(--ui);
+  white-space: nowrap;
+}
+.langmenu__check {
+  flex: 0 0 auto;
+  width: 18px;
+  text-align: center;
+  color: var(--brass);
+  font-weight: 700;
+  opacity: 0;
+}
+.langmenu__opt[aria-selected="true"] .langmenu__check {
+  opacity: 1;
+}
+[dir="rtl"] .langmenu__pop {
+  right: auto;
+  left: 0;
+}
+[dir="rtl"] .langmenu__pointer {
+  right: auto;
+  left: 1.1rem;
+}
+
+.auth-btn {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.45rem 0.7rem 0.45rem 0.45rem;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: transform 120ms ease, background 120ms ease;
+}
+.auth-btn:hover { transform: translateY(-1px); }
+.auth-btn[data-state="signed-in"] {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.auth-btn[data-state="signed-in"] .auth-btn__avatar {
+  background: var(--green); color: var(--paper);
+}
+.auth-btn__avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--brass); color: var(--ink);
+  font-family: var(--ui); font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.auth-btn__followers {
+  position: absolute;
+  top: -0.48rem;
+  right: -0.22rem;
+  min-width: 1.35rem;
+  max-width: 4.8rem;
+  padding: 0.08rem 0.32rem;
+  border: 1px solid var(--paper);
+  border-radius: 999px;
+  background: var(--brass);
+  color: var(--ink);
+  font: 700 0.62rem/1 var(--ui);
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+}
+
+.account-menu {
+  position: absolute;
+  top: calc(100% + 0.65rem);
+  right: 0;
+  width: min(18rem, calc(100vw - 1.5rem));
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 18px 40px -24px rgba(15, 42, 30, 0.45), var(--m3-elevation-2);
+  z-index: 80;
+}
+.account-menu::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 1.25rem;
+  width: 12px;
+  height: 12px;
+  background: var(--paper);
+  border-left: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  transform: rotate(45deg);
+}
+.account-menu__eyebrow {
+  margin: 0 0 0.2rem;
+  font: 700 0.65rem/1 var(--ui);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--green-3);
+}
+.account-menu__title {
+  margin: 0;
+  font: 700 1rem/1.25 var(--ui);
+}
+.account-menu__email {
+  margin: 0.28rem 0 0.85rem;
+  color: var(--ink-3);
+  font: 500 0.86rem/1.25 var(--ui);
+  overflow-wrap: anywhere;
+}
+.account-menu__stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--green-soft);
+  color: var(--green);
+}
+.account-menu__stat-number {
+  font: 800 1.8rem/1 var(--ui);
+  letter-spacing: 0;
+}
+.account-menu__stat-label {
+  font: 700 0.84rem/1.1 var(--ui);
+}
+.account-menu__logout {
+  width: 100%;
+  min-height: 42px;
+  margin-top: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--m3-corner-full);
+  background: var(--green);
+  color: var(--paper);
+  font: var(--m3-label-large);
+}
+.account-menu__logout:hover,
+.account-menu__logout:focus-visible {
+  background: var(--green-2);
+  outline: 2px solid var(--brass-soft);
+  outline-offset: 2px;
+}
+
+/* ───── Page ───── */
+.page {
+  padding: 0 var(--pad) 4rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ───── Hero ───── */
+.hero { padding: 1.6rem 0 1rem; }
+
+.kicker {
+  font-family: var(--ui);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  color: var(--green-3);
+  font-weight: 600;
+  margin: 0 0 0.6rem;
+}
+
+.headline {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: var(--t-h1);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.7rem;
+  color: var(--ink);
+}
+.headline em {
+  font-style: italic;
+  color: var(--green);
+}
+
+.subhead {
+  font-size: 1.05rem;
+  color: var(--ink-2);
+  margin: 0 0 1.4rem;
+  max-width: 32ch;
+}
+
+/* Next-prayer card — the main UX moment */
+.next-card {
+  background: var(--green);
+  color: var(--paper);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.2rem 1.4rem;
+  margin: 1.2rem 0 1.4rem;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+/* Loading-state shimmer. Applied via .is-loading on the card root while
+   the initial mosque fetch is in flight; removed once the first paint
+   has real data. Hides the empty/placeholder text that would otherwise
+   flash before content arrives. The shimmer is a moving gradient on
+   ::after — runs the full card width at low opacity so it looks like
+   a cohesive "loading" state rather than three separate boxes. */
+.next-card.is-loading .next-card__mosque,
+.next-card.is-loading .next-card__sub,
+.next-card.is-loading .next-card__keeper,
+.next-card.is-loading .next-card__keepers,
+.next-card.is-loading .next-card__clock,
+.next-card.is-loading .next-card__all,
+.next-card.is-loading .reminder-toggle,
+.next-card.is-loading .next-card__refresh,
+.next-card.is-loading .next-card__locate,
+.next-card.is-loading .next-card__go,
+.next-card.is-loading .next-card__change {
+  visibility: hidden;
+}
+.next-card.is-loading::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(253, 250, 243, 0.08) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: heroSkeletonSweep 1.4s linear infinite;
+  pointer-events: none;
+}
+@keyframes heroSkeletonSweep {
+  from { background-position: 200% 0; }
+  to   { background-position: -100% 0; }
+}
+.next-card::before {
+  /* subtle decorative arch in the corner */
+  content: "";
+  position: absolute; top: -40%; right: -20%;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(181,139,77,0.18), transparent 60%);
+  pointer-events: none;
+}
+.next-card__head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 0.4rem;
+  gap: 0.5rem;
+}
+.next-card__head-actions { display: flex; gap: 0.4rem; align-items: center; }
+
+/* Refresh button — circular icon, mirrors the bell's resting style.
+   Tap forces a fresh fetch of the default mosque from the server,
+   bypassing any local cache so users can pull current times on demand
+   (e.g. when a keeper just updated the schedule). Spins while the
+   request is in flight so the press feels responsive even on slow
+   networks. */
+.next-card__refresh {
+  /* 44×44 keeps the icon a perfect circle AND meets the 44px tap-target
+     min the global is-native button rule enforces — sizing the button at
+     38×38 only made it shorter horizontally because min-height: 44px
+     stretched it vertically into an oval. flex-shrink: 0 prevents the
+     surrounding flex container squishing the width when the header is
+     tight. */
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(253, 250, 243, 0.28);
+  background: transparent;
+  color: rgba(253, 250, 243, 0.72);
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.next-card__refresh:hover,
+.next-card__refresh:focus-visible {
+  color: var(--brass);
+  border-color: var(--brass);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brass) 22%, transparent);
+}
+.next-card__refresh { display: none !important; }
+.next-card__refresh:disabled { cursor: progress; opacity: 0.85; }
+.next-card__refresh.is-spinning .next-card__refresh-icon { animation: refreshSpin 800ms linear infinite; }
+@keyframes refreshSpin { to { transform: rotate(360deg); } }
+/* Reminder bell — circular icon-only button.
+   - Inactive (no prayers enabled): grey-ish outline, transparent background.
+     Tapping opens the panel for the user to configure.
+   - Active (one or more prayers enabled): golden filled circle with a
+     pulsing brass ring around it and a count badge in the corner. The
+     ring + badge make it obvious at a glance that reminders are armed,
+     without requiring a separate flip toggle next to it. */
+.next-card__bell {
+  position: relative;
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(253, 250, 243, 0.28);
+  background: transparent;
+  color: rgba(253, 250, 243, 0.55);
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 280ms ease;
+}
+.next-card__bell:hover,
+.next-card__bell:focus-visible {
+  color: var(--brass);
+  border-color: var(--brass);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brass) 22%, transparent);
+}
+.next-card__bell[aria-pressed="true"] {
+  background: var(--brass);
+  color: var(--ink);
+  border-color: var(--brass);
+  /* Static halo ring + slow pulse — signals "armed" without animating
+     so loud it distracts. */
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brass) 30%, transparent);
+  animation: bellPulse 2.4s ease-in-out infinite;
+}
+.next-card__bell[aria-pressed="true"] .next-card__bell-icon {
+  /* Filled bell when armed — read at a glance vs the outline state. */
+  fill: currentColor;
+  stroke: currentColor;
+}
+@keyframes bellPulse {
+  0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--brass) 30%, transparent); }
+  50%      { box-shadow: 0 0 0 5px color-mix(in srgb, var(--brass) 14%, transparent); }
+}
+.next-card__bell-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  /* Cream chip with dark text + ring: stays legible on BOTH the armed brass
+     bell and the dark card behind it (the old brass-on-brass badge washed
+     out the number when reminders were on). */
+  background: var(--paper);
+  color: var(--green);
+  font-family: var(--ui);
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-grid;
+  place-items: center;
+  border: 1.5px solid var(--green);
+  box-shadow: 0 1px 2px rgba(8, 24, 16, 0.35);
+  pointer-events: none;
+}
+[dir="rtl"] .next-card__bell-badge { right: auto; left: -5px; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* The bell + flip toggle sit side by side. The bell opens the panel,
+ * the flip enables/disables all reminders without opening anything. */
+.reminder-toggle {
+  display: inline-flex; align-items: center; gap: 0.34rem;
+  padding: 0.2rem 0.28rem 0.2rem 0.55rem;
+  border: 1px solid rgba(253, 250, 243, 0.18);
+  border-radius: 999px;
+  background: rgba(253, 250, 243, 0.08);
+}
+.reminder-toggle__hint {
+  color: rgba(253, 250, 243, 0.72);
+  font: var(--m3-label-small);
+  white-space: nowrap;
+}
+.reminder-flip {
+  position: relative;
+  width: 38px; height: 22px;
+  border: none; padding: 0;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex; align-items: center;
+}
+.reminder-flip__track {
+  position: absolute; inset: 0;
+  background: rgba(253, 250, 243, 0.18);
+  border: 1px solid rgba(253, 250, 243, 0.32);
+  border-radius: 999px;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.reminder-flip__thumb {
+  position: relative;
+  width: 16px; height: 16px;
+  background: var(--paper);
+  border-radius: 50%;
+  margin-left: 3px;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1), background 160ms ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+.reminder-flip[aria-checked="true"] .reminder-flip__track {
+  background: var(--brass);
+  border-color: var(--brass);
+}
+.reminder-flip[aria-checked="true"] .reminder-flip__thumb {
+  transform: translateX(16px);
+  background: var(--green);
+}
+/* RTL: thumb starts on the right when off, slides left when on, mirroring
+   the visual reading direction so the toggle reads naturally. */
+[dir="rtl"] .reminder-flip__thumb { margin-left: auto; margin-right: 3px; }
+[dir="rtl"] .reminder-flip[aria-checked="true"] .reminder-flip__thumb {
+  transform: translateX(-16px);
+}
+.reminder-flip:focus-visible {
+  outline: 2px dashed var(--brass-soft);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+.reminder-panel {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  background: rgba(253, 250, 243, 0.08);
+  border: 1px solid rgba(253, 250, 243, 0.15);
+  border-radius: var(--radius-sm);
+}
+.reminder-panel__line {
+  margin: 0 0 0.6rem;
+  color: rgba(253, 250, 243, 0.92);
+  font-size: 0.95rem;
+}
+/* "Next reminder fires at HH:MM" — confirms what the user just configured.
+   Darker accent stripe on the left so the line reads as a status, not a
+   secondary instruction. */
+.reminder-panel__next {
+  margin: 0 0 0.7rem;
+  padding: 0.4rem 0.6rem;
+  border-left: 3px solid var(--brass-soft);
+  background: rgba(253, 250, 243, 0.06);
+  border-radius: 0 4px 4px 0;
+  color: rgba(253, 250, 243, 0.95);
+  font-size: 0.85rem;
+}
+.reminder-panel__next strong { color: var(--brass-soft); font-weight: 700; }
+.reminder-panel__line strong { color: var(--brass-soft); }
+.reminder-panel__line--friday {
+  font-size: 0.78rem;
+  margin-top: -0.3rem;
+  color: rgba(253, 250, 243, 0.6);
+}
+.reminder-panel__line--friday em {
+  font-family: var(--display);
+  font-style: italic;
+  color: var(--brass-soft);
+}
+
+.reminder-prayer-list {
+  display: flex; flex-direction: column; gap: 0.4rem;
+  margin: 0.6rem 0 0.8rem;
+}
+.reminder-prayer-list li {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0.6rem;
+  background: rgba(253, 250, 243, 0.06);
+  border: 1px solid rgba(253, 250, 243, 0.1);
+  border-radius: var(--radius-sm);
+  transition: opacity 120ms ease, background-color 120ms ease, border-color 120ms ease;
+}
+.reminder-prayer-list li:focus-within {
+  background: rgba(253, 250, 243, 0.1);
+  border-color: rgba(229, 210, 176, 0.42);
+}
+.reminder-prayer-list li[data-enabled="false"] {
+  opacity: 0.55;
+}
+
+/* Per-prayer on/off toggle — Material 3 Switch.
+   Spec: 52×32 track, 16px thumb in off state, 24px thumb in on state
+   (the thumb grows on activation as a tactile affirmation cue), 200ms
+   transition on both position and size. The visible "thumb growth" and
+   the colour swap on the track are the two cues that make a switch
+   read as a switch even at a glance.
+   - Track radius 16px (= half height) for a perfect pill.
+   - Off: paper-with-low-alpha track + small 16px thumb centred-left at
+     8px from edge.
+   - On: brand-brass track + larger 24px thumb pushed right, leaving 4px
+     gap from the right edge.
+   - min-height: 0 !important is required because the global
+     body.is-native button { min-height: 44px } rule otherwise stretches
+     the 32px-tall pill into a 44×52 box that border-radius then turns
+     into an irregular shape. The whole LI row is tappable, so the
+     toggle itself doesn't need to meet the 44px tap target. */
+.rpl__toggle {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 52px; height: 32px;
+  min-height: 0 !important;
+  border: none; padding: 0;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.rpl__toggle-track {
+  position: absolute; inset: 0;
+  background: rgba(253, 250, 243, 0.16);
+  border: 2px solid rgba(253, 250, 243, 0.42);
+  border-radius: 16px;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+.rpl__toggle-thumb {
+  position: absolute;
+  /* (32 - 16) / 2 = 8px gap top/bottom + left at rest. */
+  top: 8px;
+  left: 8px;
+  width: 16px; height: 16px;
+  background: rgba(253, 250, 243, 0.78);
+  border-radius: 50%;
+  transition: left 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              top 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              width 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              height 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              background 200ms ease,
+              box-shadow 200ms ease;
+}
+.rpl__toggle[aria-checked="true"] .rpl__toggle-track {
+  background: var(--brass);
+  border-color: var(--brass);
+}
+.rpl__toggle[aria-checked="true"] .rpl__toggle-thumb {
+  /* On state: thumb grows from 16 to 24 and slides right. New top:
+     (32 - 24) / 2 = 4. New left: track width 52 − thumb width 24 −
+     right gap 4 = 24. */
+  top: 4px;
+  left: 24px;
+  width: 24px; height: 24px;
+  background: var(--paper);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+}
+/* RTL: mirror — off anchors right, on slides left into the brass area. */
+[dir="rtl"] .rpl__toggle-thumb { left: auto; right: 8px; }
+[dir="rtl"] .rpl__toggle[aria-checked="true"] .rpl__toggle-thumb {
+  left: auto; right: 24px;
+}
+.rpl__name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--paper);
+  letter-spacing: -0.005em;
+}
+.reminder-prayer-list input[type="number"] {
+  width: 52px;
+  height: 36px;
+  padding: 0 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid rgba(253, 250, 243, 0.2);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-feature-settings: "tnum" 1;
+  /* Override the global is-native min-height: 44px tap-target rule —
+     this input is part of a row whose total height is governed by the
+     LI's padding, and a 44px-tall input made the row much taller than
+     the toggle and pushed the suffix into a scrunch. */
+  min-height: 0 !important;
+}
+.reminder-prayer-list input[type="number"]:focus {
+  outline: 2px solid var(--brass);
+  outline-offset: -1px;
+}
+.reminder-prayer-list li[data-enabled="false"] input[type="number"] {
+  background: color-mix(in srgb, var(--paper) 82%, var(--ink-3) 18%);
+}
+/* "min before" suffix — the previous nowrap with mono type was wide
+   enough to push past the LI's right edge on a 360-px-wide phone.
+   Allow wrap, smaller UI-font copy, and a max-width so it stays
+   inside the row. Two short lines read fine ("min" / "before"). */
+.rpl__suffix {
+  font: var(--m3-label-medium);
+  font-size: 0.65rem;
+  line-height: 1.1;
+  color: rgba(253, 250, 243, 0.55);
+  white-space: normal;
+  max-width: 3.5rem;
+  text-align: left;
+}
+/* M3 DIALOG ACTION ROW pattern. Primary action (Save) is FILLED on
+   the right, secondary actions are TEXT buttons to its left. All
+   right-aligned, gap-spaced, wrap to a new line on very narrow
+   widths but never split a single button across lines.
+   - flex: 1 was forcing 3 buttons to share equal narrow width, which
+     made "Test ring" / "Turn all off" wrap to two lines. Removed.
+   - Buttons sit on the dark hero card, so the brand-default colour
+     bindings (primary green / outlined dark) wouldn't read — overrides
+     below switch to brass-filled for the primary and paper-text for
+     the ghosts so contrast holds against the green background. */
+.reminder-panel__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.reminder-panel__actions .btn {
+  /* Compact-but-still-M3 inside a tight panel: 36px tall (vs the spec
+     40), 16px horizontal padding (vs 24). M3's own dense-density
+     spec lands at 32–36 so this is in-spec for a "low" density. */
+  height: 36px;
+  padding: 0 16px;
+  font-size: 0.84rem;
+  letter-spacing: 0.02em;
+}
+/* FILLED primary — brass-on-green for readability against the dark
+   hero card. */
+.reminder-panel__actions .btn--primary {
+  background: var(--brass);
+  color: var(--green);
+  border-color: var(--brass);
+  box-shadow: var(--m3-elevation-1);
+}
+.reminder-panel__actions .btn--primary:hover { box-shadow: var(--m3-elevation-2); }
+/* TEXT ghost variant on dark background. State layer works as-is from
+   the .btn base — currentColor is paper here, so the hover overlay is
+   a paper tint over the green card. */
+.reminder-panel__actions .btn--ghost {
+  background: transparent;
+  color: var(--paper);
+  border-color: transparent;
+  padding: 0 12px;
+}
+.reminder-panel__hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.78rem;
+  color: rgba(253, 250, 243, 0.6);
+  font-style: italic;
+  min-height: 1.1em;
+}
+.next-card__eyebrow {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--brass-soft);
+  margin: 0;
+  font-weight: 600;
+}
+.next-card__change {
+  font-size: 0.75rem;
+  color: var(--brass-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.next-card__change:hover { color: var(--paper); }
+
+.next-card__name-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.2rem;
+}
+.next-card__name-text { min-width: 0; }
+.next-card__mosque {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.7rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.3rem;
+  color: var(--paper);
+}
+.next-card__sub {
+  color: rgba(253, 250, 243, 0.75);
+  margin: 0;
+  font-size: 0.95rem;
+}
+.loc-part { unicode-bidi: isolate; }
+.loc-sep { color: var(--brass-soft); }
+.next-card__locate {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: 1rem;
+  min-height: 44px;
+  padding: 0 18px;
+  border: none;
+  border-radius: var(--m3-corner-full);
+  font: var(--m3-label-large);
+  letter-spacing: 0.1px;
+  background: var(--brass);
+  color: var(--ink);
+  box-shadow: var(--m3-elevation-1);
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: box-shadow 150ms ease, background 150ms ease;
+}
+.next-card__locate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: -1;
+}
+.next-card__locate:hover::before,
+.next-card__locate:focus-visible::before { opacity: var(--m3-state-hover); }
+.next-card__locate:active::before { opacity: var(--m3-state-press); }
+.next-card__locate:hover { box-shadow: var(--m3-elevation-2); }
+.next-card__locate:focus-visible {
+  outline: 2px solid var(--brass-soft);
+  outline-offset: 3px;
+}
+.next-card__locate svg {
+  flex: 0 0 auto;
+  color: currentColor;
+}
+
+.next-card__go {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 2px;
+  width: 52px;
+  min-height: 46px;
+  margin-top: 0.15rem;
+  padding: 0.45rem 0.25rem;
+  border: 1.5px solid var(--brass-soft);
+  border-radius: 12px;
+  background: rgba(253, 250, 243, 0.04);
+  color: var(--paper);
+  box-shadow: none;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+.next-card__go::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: -1;
+}
+.next-card__go:hover,
+.next-card__go:focus-visible {
+  color: var(--paper);
+  background: rgba(229, 210, 176, 0.12);
+  border-color: var(--brass);
+  outline: none;
+}
+.next-card__go:hover::before,
+.next-card__go:focus-visible::before { opacity: var(--m3-state-hover); }
+.next-card__go:active::before { opacity: var(--m3-state-press); }
+.next-card__go svg { flex: 0 0 auto; }
+.next-card__go-label {
+  color: var(--brass-soft);
+  font: var(--m3-label-small);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Keeper-line chip — Material 3 ASSIST CHIP. The line carries an
+   action ("see other time keepers") so it should look tappable, not
+   plain prose. A subtle paper-tinted container over the hero green +
+   outline + full-pill radius reads as a chip; the existing chevron
+   reinforces it. State layer pseudo-element matches the rest of the
+   M3 component grammar. */
+.next-card__keeper {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
+  width: 100%;
+  margin: 0.7rem 0 0;
+  padding: 0.5rem 0.55rem 0.5rem 0.7rem;
+  font: 600 0.82rem/1.2 var(--ui);
+  letter-spacing: 0.1px;
+  color: rgba(253, 250, 243, 0.92);
+  background: rgba(253, 250, 243, 0.06);
+  border: 1px solid rgba(253, 250, 243, 0.28);
+  border-radius: var(--m3-corner-sm);
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.35;
+  overflow: hidden;
+  isolation: isolate;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+.next-card__keeper::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  border-radius: inherit;
+  z-index: -1;
+}
+.next-card__keeper:hover::before,
+.next-card__keeper:focus-visible::before { opacity: var(--m3-state-hover); }
+.next-card__keeper:active::before { opacity: var(--m3-state-press); }
+/* Underline-on-hover removed — the M3 state-layer pseudo-element above
+   already telegraphs hover/focus, and the underline competed with the
+   chip's outline. Strong stays brass-soft as the proper-noun emphasis. */
+.next-card__keeper:focus-visible {
+  outline: 2px solid var(--brass-soft);
+  outline-offset: 2px;
+  border-radius: var(--m3-corner-sm);
+}
+.next-card__keeper-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.next-card__keeper-prefix {
+  color: rgba(253, 250, 243, 0.55);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.next-card__keeper strong {
+  color: var(--brass-soft);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+.next-card__keeper-hint {
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 500;
+  line-height: 1.05;
+  color: rgba(253, 250, 243, 0.5);
+}
+.next-card__keeper-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 0 0 auto;
+  padding: 0.3rem 0.6rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(229, 210, 176, 0.16);
+  color: var(--brass-soft);
+  font: 700 0.68rem/1 var(--ui);
+}
+.next-card__keeper-switch svg { flex: 0 0 auto; }
+.next-card__keeper:hover .next-card__keeper-switch,
+.next-card__keeper:focus-visible .next-card__keeper-switch {
+  background: rgba(229, 210, 176, 0.28);
+}
+
+.next-card__clock { margin-top: 1rem; }
+.next-card__row {
+  display: flex; align-items: baseline; gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+  color: rgba(253, 250, 243, 0.85);
+}
+.next-card__label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--brass-soft);
+  font-weight: 600;
+}
+.next-card__prayer {
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--paper);
+  font-size: 1.15rem;
+}
+.next-card__at {
+  font-family: var(--display);
+  color: var(--paper);
+  font-weight: 500;
+  font-size: 1.25rem;
+  margin-left: auto;
+}
+.next-card__countdown {
+  display: flex; align-items: baseline; gap: 0.18rem;
+  margin-top: 0.6rem;
+  font-family: var(--mono);
+  color: var(--paper);
+  font-feature-settings: "tnum" 1;
+}
+.next-card__in {
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--brass-soft);
+  margin-right: 0.4rem;
+  align-self: center;
+}
+.cd-num { font-size: var(--t-clock-num); font-weight: 700; line-height: 1; }
+.cd-sep { font-size: var(--t-clock-num); color: var(--brass); animation: blink 1.6s ease-in-out infinite; align-self: flex-start; }
+.cd-sec { color: var(--brass); font-weight: 700; }
+/* Each countdown unit stacks the number over a tiny brass label so the
+   user can see which segment is hours / minutes / seconds. Numbers stay
+   LTR even in RTL languages — that's the universal time convention. */
+.cd-unit {
+  display: inline-flex; flex-direction: column; align-items: center;
+  line-height: 1;
+  /* Force LTR within this group so the digits don't mirror in RTL pages. */
+  direction: ltr;
+}
+.cd-label {
+  font-family: var(--ui);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--brass-soft);
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+[dir="rtl"] .cd-label { letter-spacing: 0; text-transform: none; font-size: 0.65rem; }
+
+/* Bidi isolation for time strings in RTL contexts.
+   "5:24 am" was rendering as "am 5:24" because the surrounding text
+   direction is RTL — the digits and "am/pm" tokens flipped. Force LTR
+   direction + isolate so the time reads naturally regardless of the
+   page's primary direction. Applies to: sun-card prayer cells, card
+   next-prayer time, distance text, drawer time table, and countdown digits.
+   NOTE: .next-card__at is intentionally NOT here — its "at" prefix is now
+   translated ("في"/"بوقت"), so the element must follow the page direction
+   to keep the word before the time; only the inner .next-card__at-time span
+   isolates the digits (see rule below). */
+[dir="rtl"] .sun-card__row-time,
+[dir="rtl"] .card__next-time,
+[dir="rtl"] .card__distance,
+[dir="rtl"] .next-card__countdown,
+[dir="rtl"] .times .time,
+[dir="rtl"] .leaflet-popup-content .time {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* "All takbeer times" panel under the countdown */
+.next-card__all {
+  margin-top: 1rem;
+}
+.next-card__all-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.7rem;
+  margin-bottom: 0.5rem;
+}
+.next-card__all-title {
+  color: var(--brass-soft);
+  font-family: var(--ui);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.next-card__all-count {
+  color: rgba(253, 250, 243, 0.5);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  white-space: nowrap;
+}
+.next-card__all-cols,
+.next-card__all-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 66px 62px 62px;
+  gap: 6px;
+  align-items: center;
+}
+.next-card__all-cols {
+  padding: 0 4px 6px;
+}
+.next-card__col-jamat {
+  background: var(--brass-soft);
+  border-radius: 5px;
+  color: var(--green);
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 3px 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+.next-card__col-sun {
+  color: rgba(253, 250, 243, 0.55);
+  font-size: 0.47rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: right;
+  text-transform: uppercase;
+}
+.next-card__all-list {
+  list-style: none; margin: 0; padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.next-card__all-row {
+  padding: 5px 4px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+}
+.next-card__all-row.is-next {
+  background: rgba(212, 170, 90, 0.20);
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px rgba(212, 170, 90, 0.12);
+}
+.next-card__all-name {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+  padding-left: 4px;
+  color: rgba(253, 250, 243, 0.82);
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.next-card__jamat {
+  background: rgba(229, 210, 176, 0.18);
+  border: 1px solid rgba(229, 210, 176, 0.30);
+  border-radius: 6px;
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-feature-settings: "tnum" 1;
+  padding: 4px 0;
+  text-align: center;
+  white-space: nowrap;
+}
+.next-card__sun {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  font-weight: 400;
+  font-feature-settings: "tnum" 1;
+  text-align: right;
+  white-space: nowrap;
+}
+.next-card__sun--starts { color: rgba(253, 250, 243, 0.60); }
+.next-card__sun--ends { color: rgba(253, 250, 243, 0.45); }
+/* Clock times are always written left-to-right ("4:30 am"). Without this,
+   RTL locales (Arabic/Urdu/Persian) bidi-reorder them to "am 4:30". Isolate
+   the numeric content so it stays readable while the cell keeps its RTL slot. */
+.next-card__jamat,
+.next-card__sun,
+.next-card__at-time,
+#drawer-times td.time {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.next-card__all-row.is-next .next-card__all-name {
+  color: var(--brass);
+  font-size: 1.04rem;
+  font-weight: 700;
+}
+.next-card__all-next-tag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--brass);
+  color: var(--green);
+  font: 800 0.5rem/1 var(--ui);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.next-card__all-row.is-next .next-card__jamat {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--green);
+  font-weight: 800;
+}
+.next-card__all-row.is-next .next-card__sun--starts {
+  color: rgba(229, 210, 176, 0.95);
+  font-weight: 600;
+}
+.next-card__all-row.is-next .next-card__sun--ends {
+  color: rgba(229, 210, 176, 0.80);
+  font-weight: 600;
+}
+.next-card__all-caption {
+  margin: 0.5rem 0 0;
+  padding: 0 4px;
+  color: rgba(253, 250, 243, 0.5);
+  font-family: var(--ui);
+  font-size: 0.62rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.next-card__all-caption strong {
+  color: var(--brass-soft);
+  font-weight: 700;
+}
+
+/* Quick action row */
+.quick {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  margin-bottom: 1.4rem;
+}
+/* "Find masjids near me" — a Material 3 EXTENDED FAB. M3 spec: 56px
+   height, 16px horizontal padding, full-pill radius, primary container
+   colour, leading icon. The state layer + elevation come from the same
+   tokens used by .btn. */
+.quick__btn {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  height: 56px;
+  padding: 0 24px;
+  border: none;
+  border-radius: var(--m3-corner-full);
+  font: var(--m3-label-large);
+  letter-spacing: 0.1px;
+  background: var(--m3-secondary-container);
+  color: var(--m3-on-secondary-container);
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: var(--m3-elevation-2);
+  transition: box-shadow 150ms ease, background 150ms ease, color 150ms ease;
+}
+.quick__btn::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  border-radius: inherit;
+  z-index: -1;
+}
+.quick__btn:hover::before { opacity: var(--m3-state-hover); }
+.quick__btn:focus-visible::before { opacity: var(--m3-state-focus); }
+.quick__btn:active::before { opacity: var(--m3-state-press); }
+.quick__btn:hover { box-shadow: var(--m3-elevation-3); }
+/* Primary variant = filled (deep green) instead of secondary container,
+   for the highest-visibility "Find masjids near me" pulse. */
+.quick__btn--primary {
+  background: var(--m3-primary);
+  color: var(--m3-on-primary);
+}
+.quick__btn svg { color: currentColor; }
+
+/* ───── App download section ───── */
+.app-section {
+  display: grid;
+  gap: 1rem;
+  margin: 1.2rem 0 1.6rem;
+  padding: 1rem;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--green-soft) 36%, var(--paper) 64%), var(--paper));
+  box-shadow: var(--shadow);
+  scroll-margin-top: 5rem;
+}
+.app-section__copy {
+  display: grid;
+  gap: 0.65rem;
+}
+.app-section__copy .kicker {
+  margin-bottom: 0;
+}
+.app-section__title {
+  margin: 0;
+  color: var(--green);
+  font-family: var(--display);
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 600;
+  line-height: 1.02;
+}
+.app-section__body {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 1rem;
+}
+.app-section__points {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.2rem 0 0;
+  color: var(--ink-2);
+  font-size: 0.94rem;
+}
+.app-section__points li {
+  position: relative;
+  padding-left: 1.05rem;
+}
+.app-section__points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: var(--brass);
+}
+[dir="rtl"] .app-section__points li {
+  padding-left: 0;
+  padding-right: 1.05rem;
+}
+[dir="rtl"] .app-section__points li::before {
+  left: auto;
+  right: 0;
+}
+.app-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+.app-section__actions .btn {
+  justify-content: center;
+}
+.app-section__play svg {
+  flex: 0 0 auto;
+}
+.app-section__media {
+  min-width: 0;
+  scroll-margin-top: 5rem;
+}
+.app-video {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
+  border-radius: var(--radius-sm);
+  background: var(--green);
+  box-shadow: var(--m3-elevation-2);
+}
+.app-video iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.app-screenshots {
+  display: flex;
+  gap: 0.75rem;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 0.1rem 0 0.65rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: var(--brass) var(--paper-3);
+}
+.app-shot {
+  flex: 0 0 154px;
+  margin: 0;
+  scroll-snap-align: start;
+}
+.app-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  box-shadow: var(--m3-elevation-2);
+}
+.app-shot figcaption {
+  margin-top: 0.35rem;
+  color: var(--ink-3);
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ───── Search intent section ───── */
+.intent-section {
+  margin: 0 0 1.7rem;
+  padding: 0.95rem 0 1.1rem;
+  border-top: 1px solid color-mix(in srgb, var(--green) 12%, var(--paper-3));
+  border-bottom: 1px solid color-mix(in srgb, var(--green) 12%, var(--paper-3));
+}
+.intent-section .kicker {
+  margin-bottom: 0.45rem;
+}
+.intent-section__title {
+  margin: 0;
+  color: var(--green);
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 7vw, 2.55rem);
+  font-weight: 600;
+  line-height: 1.06;
+}
+.intent-section__body {
+  margin: 0.65rem 0 0;
+  color: var(--ink-2);
+  font-size: 1rem;
+}
+.intent-grid {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+.intent-grid article {
+  padding: 0.85rem;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--paper-2) 54%, var(--paper) 46%);
+}
+.intent-grid h3 {
+  margin: 0 0 0.3rem;
+  color: var(--green);
+  font-family: var(--ui);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+.intent-grid p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 0.91rem;
+}
+
+/* ───── Directory ───── */
+.directory { padding-top: 0.6rem; }
+.dir-tabs {
+  display: flex; gap: 0.4rem;
+  border-bottom: var(--rule);
+  margin-bottom: 0.9rem;
+}
+.dir-tab {
+  flex: 1;
+  padding: 0.7rem 0.4rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink-3);
+  border-bottom: 2px solid transparent;
+  text-align: center;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.dir-tab:hover { color: var(--ink); }
+.dir-tab.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--green);
+}
+.dir-tab:focus-visible { outline: 2px dashed var(--green); outline-offset: 2px; border-radius: 4px; }
+
+.dir-search {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--paper-2);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.9rem;
+  color: var(--ink-3);
+}
+.dir-search input {
+  flex: 1;
+  border: none; outline: none; background: none;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+/* Cards */
+.cards { display: flex; flex-direction: column; gap: 0.6rem; }
+.cards.is-hidden { display: none; }
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius);
+  padding: 1rem 1rem 0.95rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  position: relative;
+  isolation: isolate;
+}
+.card__main,
+.card__times {
+  min-width: 0;
+}
+.card:hover { border-color: var(--green); }
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+}
+.card:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.card:focus-within {
+  border-color: color-mix(in srgb, var(--green) 65%, var(--paper-3));
+}
+
+.card.is-default {
+  background: var(--green-soft);
+  border-color: var(--green);
+}
+.card.is-closed {
+  background: color-mix(in srgb, var(--paper-2) 82%, #d8d2c6);
+  border-color: color-mix(in srgb, var(--ink-3) 44%, var(--paper-3));
+  filter: grayscale(0.18);
+}
+.card.is-closed .card__name,
+.card.is-closed .card__addr {
+  color: color-mix(in srgb, var(--ink) 64%, var(--ink-3));
+}
+.card.is-default::before {
+  content: "Your default";
+  position: absolute;
+  top: -8px; left: 12px;
+  font-family: var(--ui);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--green); color: var(--paper);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.card__name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.15;
+  margin: 0 0 0.15rem;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.card__addr {
+  color: var(--ink-3);
+  font-size: 0.85rem;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.card__meta {
+  margin-top: 0.5rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.78rem; color: var(--ink-3);
+}
+/* M3 small ASSIST CHIP. Container colour scaled from the brand green
+   so it reads as an info pill, not a warning. Border-radius full-pill,
+   uppercase label retained because "VERIFIED" is a status word and
+   tracking 0.14em + uppercase has earned the badge convention. */
+.card__verified {
+  display: inline-flex; align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  font: var(--m3-label-medium);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--m3-on-primary-container);
+  background: var(--m3-primary-container);
+  border-radius: var(--m3-corner-full);
+}
+.card__status-closed {
+  display: inline-flex; align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: var(--m3-corner-full);
+  background: color-mix(in srgb, var(--ink-3) 18%, var(--paper-2));
+  color: var(--ink-3);
+  font: var(--m3-label-medium);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.card__times {
+  text-align: right;
+  display: flex; flex-direction: column; align-items: flex-end;
+  gap: 0.1rem;
+}
+.card__next {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+/* "Be the first to submit times" — instead of a passive defect note,
+   reframe directory entries with no schedule as an invitation. Subtle
+   brand colour (not warning amber) and lowercase weight so a directory
+   full of these doesn't shout — but enough emphasis to read as an
+   action prompt rather than a status. */
+.card__notimes {
+  font-size: 0.72rem;
+  color: var(--green);
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 600;
+}
+.card__notimes--closed {
+  color: var(--ink-3);
+}
+.card__next-time {
+  font-family: var(--mono);
+  font-size: 1.25rem;
+  color: var(--ink);
+  font-weight: 700;
+  font-feature-settings: "tnum" 1;
+}
+.card__distance {
+  font-family: var(--mono);
+  color: var(--ink-3);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Third grid row: the "Set as default" pill. Spans both columns so it
+   sits as a footer action under the meta + times. On a default card the
+   pill renders as filled-tonal ("✓ Default") so the user can't
+   accidentally re-set what's already set. */
+.card__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+  min-width: 0;
+}
+.card__set-default,
+.card__navigate {
+  appearance: none;
+  border: 1px solid var(--m3-outline, var(--ink-3));
+  background: transparent;
+  color: var(--green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--m3-label-large);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0 14px;
+  min-height: 34px;
+  max-width: 100%;
+  border-radius: var(--m3-corner-full);
+  cursor: pointer;
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  position: relative;
+  z-index: 1;
+}
+.card__set-default { margin-left: auto; }
+.card__navigate {
+  color: var(--green);
+  padding: 0 12px;
+  gap: 0.4rem;
+}
+.card__navigate svg { flex: 0 0 auto; }
+.card__set-default:hover {
+  background: color-mix(in srgb, var(--green) 8%, transparent);
+  border-color: var(--green);
+}
+.card__navigate:hover {
+  background: color-mix(in srgb, var(--green) 8%, transparent);
+  border-color: var(--green);
+}
+.card__set-default:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.card__navigate:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.card__set-default:active {
+  background: color-mix(in srgb, var(--green) 14%, transparent);
+  transform: translateY(1px);
+}
+.card__navigate:active {
+  background: color-mix(in srgb, var(--green) 14%, transparent);
+  transform: translateY(1px);
+}
+.card__set-default.is-default {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--paper);
+  cursor: default;
+  box-shadow: var(--m3-elevation-1);
+}
+.card__set-default.is-default:hover {
+  background: var(--green);
+}
+.card__set-default.is-default:active {
+  transform: none;
+}
+
+.empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--ink-3);
+}
+
+/* ───── Map view (full-screen takeover) ───── */
+.mapview {
+  position: fixed; inset: 0;
+  z-index: 80;
+  background: var(--paper);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  transform: translateY(100%);
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+.mapview[aria-hidden="false"] {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.mapview__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.55rem var(--pad);
+  border-bottom: var(--rule);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: saturate(140%) blur(8px);
+  gap: 0.5rem;
+  position: relative; z-index: 5;
+}
+.mapview__head h2 {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.mapview__head-actions { display: flex; align-items: center; gap: 0.4rem; }
+.mapview__close {
+  font-size: 1.6rem;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--ink-2);
+  transition: background 120ms ease;
+}
+.mapview__close:hover { background: var(--paper-2); color: var(--ink); }
+.mapview__addbtn {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--green);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--green);
+  font-weight: 600;
+  font-size: 0.82rem;
+  transition: background 120ms ease, color 120ms ease;
+}
+.mapview__addbtn:hover, .mapview__addbtn[aria-pressed="true"] {
+  background: var(--green); color: var(--paper);
+}
+
+.mapview__addhint {
+  position: absolute;
+  top: 60px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 1201;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  box-shadow: 0 6px 20px -8px rgba(0,0,0,0.35);
+  animation: toastIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.mapview__addhint .link { color: var(--brass-soft); border-bottom-color: var(--brass-soft); }
+.mapview__addhint .link:hover { color: var(--paper); border-bottom-color: var(--paper); }
+
+.mapview__addform {
+  position: absolute;
+  left: 50%;
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 1200;
+  width: min(440px, calc(100% - 1.6rem));
+  max-height: min(48dvh, 420px);
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius);
+  padding: 1rem 1rem 0.9rem;
+  box-shadow: 0 14px 40px -12px rgba(0,0,0,0.25);
+  animation: toastIn 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.mapview__addform-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+}
+.mapview__addform-head h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+.mapview__addform-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--brass-2);
+  margin: 0 0 0.15rem;
+}
+.mapview__addform-eyebrow span { color: var(--ink); font-weight: 600; }
+.mapview__addform-help {
+  margin: 0 0 0.65rem;
+  color: var(--ink-3);
+  font-size: 0.82rem;
+  line-height: 1.18;
+}
+.mapview__addform-location {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  margin: 0 0 0.65rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px dashed var(--paper-3);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  color: var(--ink-3);
+  font-size: 0.78rem;
+}
+.mapview__addform-location span:first-child {
+  color: var(--ink);
+  font-weight: 700;
+}
+#addform-coords {
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mapview__addform.has-pin .mapview__addform-location {
+  border-color: color-mix(in srgb, var(--green) 45%, var(--paper-3));
+  background: color-mix(in srgb, var(--green) 8%, var(--paper));
+}
+.mapview__addform.has-pin #addform-location-status {
+  color: var(--green);
+}
+.mapview__addform-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 0.7rem;
+}
+.mapview__addform-full { grid-column: 1 / -1; }
+.mapview__addform-grid label {
+  display: flex; flex-direction: column; gap: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.mapview__addform-grid input {
+  font-family: var(--ui); font-weight: 400; font-size: 0.92rem;
+  padding: 0.5rem 0.55rem;
+  border: 1px solid var(--paper-3);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  text-transform: none; letter-spacing: 0;
+}
+.mapview__addform-grid input:focus { outline: 2px solid var(--green); outline-offset: -1px; border-color: var(--green); }
+.mapview__captcha {
+  gap: 0.35rem;
+}
+.mapview__captcha-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.mapview__captcha-row strong {
+  flex: 1;
+  min-width: 0;
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 0.88rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.mapview__captcha-row .btn {
+  flex: 0 0 auto;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.76rem;
+}
+.mapview__addform-actions {
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+  position: sticky;
+  bottom: -0.9rem;
+  margin: 0.7rem -0.1rem -0.9rem;
+  padding: 0.65rem 0.1rem 0.9rem;
+  border-top: 1px solid var(--paper-3);
+  background: var(--paper);
+}
+.mapview__addform-actions .btn { flex: 1 1 125px; }
+.mapview.is-adding .mapview__list { display: none; }
+
+@media (max-width: 520px) {
+  .mapview__addform-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cursor styling for "drop pin" mode on the map */
+.mapview.is-adding .leaflet-container,
+.mapview.is-adding .leaflet-container * { cursor: crosshair !important; }
+
+.jamat-pin.jamat-pin--temp {
+  background: var(--brass);
+  border: 2px dashed var(--paper);
+  opacity: 1;
+  animation: bounce 1s ease-in-out infinite;
+  cursor: grab;
+}
+@keyframes bounce {
+  0%, 100% { transform: rotate(-45deg) translateY(0); }
+  50%      { transform: rotate(-45deg) translateY(-4px); }
+}
+.mapview__canvas {
+  background: var(--paper-2);
+  /* safety net: even if grid 1fr doesn't compute on weird mobile browsers,
+     the map gets a real height to render into */
+  min-height: 50vh;
+}
+
+/* GPS recenter button — added by Leaflet's L.control system, so it
+   inherits proper map-overlay stacking and position automatically.
+   We just style its visual appearance. .leaflet-bar gives it the same
+   white-card look as the +/- zoom buttons. */
+.mapview__gps {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--green);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 8px; /* gap between zoom controls and GPS */
+  transition: transform 120ms ease, color 200ms ease;
+}
+.mapview__gps:hover { color: var(--ink); }
+.mapview__gps:active { transform: scale(0.94); }
+.mapview__gps.is-locating svg { animation: gpsPulse 1.1s ease-in-out infinite; }
+@keyframes gpsPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(0.85); }
+}
+.mapview__list {
+  max-height: 38vh;
+  overflow-y: auto;
+  border-top: var(--rule);
+  padding: 0.6rem var(--pad);
+  background: var(--paper);
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+
+/* Leaflet pin overrides — match brand */
+.jamat-pin-icon {
+  background: transparent;
+  border: 0;
+}
+.jamat-pin-wrap {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  justify-items: center;
+  align-items: start;
+  overflow: visible;
+  pointer-events: none;
+}
+.jamat-pin {
+  width: 26px; height: 26px;
+  background: var(--green);
+  border: 2px solid var(--paper);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg) translateY(-30px);
+  box-shadow: 0 3px 10px -2px rgba(15,42,30,0.45);
+  opacity: 0;
+  animation: pinDrop 380ms cubic-bezier(0.4, 1.4, 0.5, 1) forwards;
+}
+.jamat-pin--default {
+  background: var(--brass);
+  box-shadow: 0 3px 10px -2px rgba(181,139,77,0.55);
+  width: 30px; height: 30px;
+}
+.jamat-pin--closed {
+  background: color-mix(in srgb, var(--ink-3) 78%, var(--paper));
+  box-shadow: 0 3px 10px -2px rgba(76,72,66,0.45);
+}
+.jamat-pin--user {
+  background: #2C7BE5;
+  border-radius: 50%;
+  transform: translateY(-30px);
+  width: 18px; height: 18px;
+  animation: userPulseDrop 600ms cubic-bezier(0.4, 1.4, 0.5, 1) forwards;
+  box-shadow: 0 0 0 6px rgba(44,123,229,0.18), 0 3px 10px -2px rgba(44,123,229,0.5);
+}
+
+@keyframes pinDrop {
+  0%   { transform: rotate(-45deg) translateY(-30px); opacity: 0; }
+  60%  { transform: rotate(-45deg) translateY(2px); opacity: 1; }
+  100% { transform: rotate(-45deg) translateY(0); opacity: 1; }
+}
+@keyframes userPulseDrop {
+  0%   { transform: translateY(-30px); opacity: 0; }
+  60%  { transform: translateY(2px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.leaflet-popup-content {
+  font-family: var(--ui);
+  font-size: 0.9rem;
+  margin: 0.6rem 0.7rem;
+}
+.leaflet-popup-content b { font-family: var(--display); font-size: 1.1rem; font-weight: 600; }
+
+/* Popup body opens details, with a separate Google Maps directions action. */
+.jamat-popup-link {
+  display: block;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: none;
+  cursor: pointer;
+}
+.jamat-popup-link:hover { color: var(--ink); }
+.jamat-popup-link b { color: var(--ink); }
+.jamat-popup-cta {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--green);
+  font-weight: 600;
+  font-size: 0.86rem;
+}
+.jamat-popup-status {
+  display: inline-flex;
+  margin-top: 0.4rem;
+  padding: 2px 8px;
+  border-radius: var(--m3-corner-full);
+  background: color-mix(in srgb, var(--ink-3) 16%, var(--paper-2));
+  color: var(--ink-3);
+  font: var(--m3-label-medium);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+.jamat-popup-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  margin-top: 0.55rem;
+  padding: 0 14px;
+  border: 1px solid var(--green);
+  border-radius: var(--m3-corner-full);
+  background: var(--green);
+  color: var(--paper);
+  font: var(--m3-label-large);
+  font-size: 0.82rem;
+  letter-spacing: 0.1px;
+  cursor: pointer;
+}
+.jamat-popup-nav:hover,
+.jamat-popup-nav:focus-visible {
+  background: var(--green-2);
+  border-color: var(--green-2);
+  outline: none;
+}
+
+/* ───── Drawer ───── */
+.drawer {
+  position: fixed; inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+.drawer[aria-hidden="false"] { pointer-events: auto; }
+.drawer__scrim {
+  position: absolute; inset: 0;
+  background: rgba(15, 42, 30, 0.5);
+  opacity: 0;
+  transition: opacity 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.drawer[aria-hidden="false"] .drawer__scrim { opacity: 1; }
+
+.drawer__panel {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--paper);
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  padding: 1.2rem var(--pad) 2rem;
+  max-height: 88dvh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 -10px 40px -10px rgba(0,0,0,0.18);
+}
+.drawer[aria-hidden="false"] .drawer__panel { transform: translateY(0); }
+
+.drawer__head { padding-right: 36px; margin-bottom: 1rem; }
+.drawer__close {
+  position: absolute;
+  top: 0.6rem; right: 0.7rem;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 1.6rem; line-height: 1;
+  display: grid; place-items: center;
+  color: var(--ink-2);
+  transition: background 120ms ease;
+}
+.drawer__close:hover { background: var(--paper-2); color: var(--ink); }
+.drawer__eyebrow {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--brass);
+  font-weight: 500;
+  margin: 0 0 0.2rem;
+}
+.drawer__title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.7rem;
+  line-height: 1.1;
+  margin: 0 0 0.25rem;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.drawer__addr {
+  color: var(--ink-3);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.qaza-record,
+.qaza-pending {
+  margin-top: 1.1rem;
+}
+.qaza-date {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.6rem 0 0.8rem;
+  font-family: var(--ui);
+  font-size: 0.86rem;
+  color: var(--ink-2);
+}
+.qaza-date input {
+  min-height: 42px;
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  padding: 0 0.75rem;
+}
+.qaza-prayers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+.qaza-prayer {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--green) 32%, transparent);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.1;
+  text-align: center;
+}
+.qaza-prayer[aria-pressed="true"] {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--paper);
+}
+.qaza-actions {
+  margin-top: 0.8rem;
+}
+.qaza-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+.qaza-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--paper-2) 58%, var(--paper));
+}
+.qaza-row__text {
+  display: grid;
+  gap: 0.16rem;
+  min-width: 0;
+  font-family: var(--ui);
+}
+.qaza-row__text strong {
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+.qaza-row__text span {
+  color: var(--ink-3);
+  font-size: 0.78rem;
+}
+.qaza-empty {
+  margin: 0.75rem 0 0;
+  color: var(--ink-3);
+  font-family: var(--ui);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 430px) {
+  .qaza-prayers { grid-template-columns: 1fr; }
+  .qaza-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+}
+
+/* Make-default button at the top of the drawer head — visible
+   immediately on open, no scrolling required. Uses .btn baseline
+   styles plus its own breathing room. When the mosque is already the
+   default, the JS swaps the label to "✓ Your default mosque" and the
+   button picks up the green-fill via aria-pressed=true. */
+.drawer__head-default {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+  font-size: 0.85rem;
+  padding: 0.55rem 0.85rem;
+}
+.drawer__head-default[aria-pressed="true"] {
+  background: var(--green);
+  color: var(--paper);
+  border-color: var(--green);
+}
+
+.section-title {
+  font-family: var(--ui);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-3);
+  font-weight: 700;
+  margin: 1.4rem 0 0.6rem;
+}
+
+.times { width: 100%; border-collapse: collapse; }
+.times td {
+  padding: 0.55rem 0;
+  border-bottom: var(--rule);
+  font-family: var(--mono);
+  font-size: 1rem;
+}
+.times tr:last-child td { border-bottom: none; }
+.times .name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.times .time { text-align: right; color: var(--ink); font-weight: 700; font-feature-settings: "tnum" 1; }
+.times .time--upcoming { color: var(--green); position: relative; }
+.times .time--upcoming::after { content: " · next"; font-family: var(--ui); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); margin-left: 0.4rem; font-weight: 700; }
+/* Past prayers: dim, no strikethrough. Strikethrough reads as
+   "cancelled / wrong"; this list shows what already happened, which
+   isn't a correction. Dim both the prayer name and time so the row
+   recedes uniformly. The :has() selector dims the .name cell when
+   its sibling .time has --passed; supported in all Chromium WebView
+   versions Capacitor targets. */
+.times .time--passed { color: var(--ink-4); }
+.times tr:has(.time--passed) .name { color: var(--ink-3); font-weight: 500; }
+
+.times-empty {
+  text-align: center;
+  padding: 1.4rem 1rem 1.2rem;
+  background: var(--paper-2);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--paper-3);
+  margin-top: 0.4rem;
+}
+.times-empty__line {
+  margin: 0 0 0.3rem;
+  color: var(--ink-2);
+  font-size: 1rem;
+  font-family: var(--display);
+  font-style: italic;
+}
+.times-empty__line--small {
+  font-family: var(--ui);
+  font-style: normal;
+  font-size: 0.85rem;
+  color: var(--ink-3);
+  margin-bottom: 0.95rem;
+}
+.times-empty .btn {
+  width: 100%;
+}
+
+/* ───── Keeper credit (above the times table) ───── */
+.keeper-credit {
+  display: inline-flex; align-items: baseline; gap: 0.4rem;
+  flex-wrap: wrap;
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  color: var(--ink-3);
+}
+.keeper-credit strong { color: var(--ink); font-weight: 600; }
+.keeper-credit__hint {
+  font-size: 0.72rem;
+  color: var(--brass);
+  font-style: italic;
+}
+
+/* ───── Time keepers list ───── */
+.keepers-list {
+  display: flex; flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.6rem;
+}
+.keepers-guide {
+  margin-top: 0.45rem;
+  padding: 0.72rem 0.78rem;
+  border: 1.5px solid color-mix(in srgb, var(--brass) 32%, var(--paper-3));
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.2)),
+    color-mix(in srgb, var(--brass) 10%, var(--paper));
+}
+.keepers-guide__title {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+.keepers-guide__body {
+  margin: 0.3rem 0 0;
+  color: var(--ink-2);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+.keepers-guide__body--small {
+  color: var(--ink-3);
+  font-size: 0.78rem;
+}
+
+/* ───── Time-keeper card ─────
+   Three-row grid:
+     Row 1: name + meta on the left, thumbs-up/down on the right
+     Row 2: five labelled prayer times, Maghrib intentionally excluded
+     Row 3+: full-width descriptive actions so button text can wrap safely. */
+.keeper {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "main votes"
+    "times times"
+    "follow follow"
+    "suggest suggest"
+    "withdraw withdraw";
+  gap: 0.5rem 0.75rem;
+  padding: 0.72rem 0.78rem 0.78rem;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.24)),
+    var(--paper);
+  border: 1.5px solid color-mix(in srgb, var(--ink) 18%, var(--paper-3));
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 0 rgba(15, 42, 30, 0.08), 0 8px 18px rgba(15, 42, 30, 0.06);
+  cursor: pointer;
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+.keeper:hover { border-color: var(--green); box-shadow: 0 10px 26px rgba(15, 42, 30, 0.13); transform: translateY(-1px); }
+.keeper.is-effective {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.12)),
+    var(--green-soft);
+  border-color: color-mix(in srgb, var(--green) 74%, var(--ink));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--green) 12%, transparent), 0 9px 22px rgba(15, 42, 30, 0.10);
+}
+
+.keeper__main {
+  grid-area: main;
+  min-width: 0; /* allow ellipsis on long names */
+}
+.keeper__topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-right: 0;
+}
+.keeper__name {
+  font-family: var(--ui);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0;
+  line-height: 1.25;
+  margin: 0;
+  min-width: 0;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+.keeper__stats {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.32rem;
+  flex: 0 0 auto;
+  max-width: min(15rem, 52%);
+  margin: 0;
+}
+.keeper__stat {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, var(--paper-3));
+  border-radius: var(--m3-corner-full);
+  background: color-mix(in srgb, var(--paper-2) 88%, white);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.keeper__stat--followers {
+  color: var(--ink-2);
+}
+.keeper__stat.keeper__rating {
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, var(--paper));
+  border-color: color-mix(in srgb, var(--brass) 34%, var(--paper-3));
+}
+.keeper__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.45rem;
+  margin: 0.34rem 0 0;
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-feature-settings: "tnum" 1;
+}
+.keeper__source {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: var(--m3-corner-full);
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-family: var(--ui);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.25;
+  white-space: normal;
+}
+.keeper__meta-item {
+  font-family: var(--mono);
+  white-space: normal;
+}
+.keeper__meta .verified {
+  color: var(--green);
+  font-weight: 700;
+}
+
+@media (max-width: 460px) {
+  .keeper__topline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.36rem;
+  }
+  .keeper__name { order: 2; }
+  .keeper__stats {
+    order: 1;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+}
+
+/* Five compact prayer tiles. Maghrib is omitted because the app derives it
+   from local sunset plus the masjid's offset rather than a keeper clock time. */
+.keeper__times {
+  grid-area: times;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.28rem;
+  padding: 0;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--mono);
+  color: var(--ink-2);
+  font-feature-settings: "tnum" 1;
+  text-align: start;
+}
+.keeper__time {
+  display: grid;
+  align-content: center;
+  min-height: 2.8rem;
+  padding: 0.32rem 0.28rem;
+  background: color-mix(in srgb, var(--paper-2) 88%, white);
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, var(--paper-3));
+  border-radius: 7px;
+  line-height: 1.12;
+  overflow: hidden;
+}
+.keeper__time-label {
+  display: block;
+  margin-bottom: 0.16rem;
+  font-family: var(--ui);
+  font-size: 0.57rem;
+  font-weight: 800;
+  color: var(--ink-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.keeper__time-value {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.keeper__time--missing .keeper__time-value {
+  color: var(--ink-3);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+.keeper__rating {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--brass);
+  white-space: nowrap;
+}
+
+/* Vote thumbs — top-right of the card, horizontal pair */
+.keeper__votes {
+  grid-area: votes;
+  display: flex;
+  flex-direction: row;
+  gap: 0.35rem;
+  align-self: start;
+  margin-top: 0;
+}
+.keeper__vote-btn {
+  width: 31px; height: 28px;
+  background: var(--paper);
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius-sm);
+  color: var(--ink-3);
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: background 100ms ease, color 100ms ease, border-color 100ms ease, transform 100ms ease;
+}
+.keeper__vote-btn:hover { color: var(--ink); border-color: var(--ink); transform: translateY(-1px); }
+.keeper__vote-btn--up:hover { background: color-mix(in srgb, var(--green) 14%, var(--paper)); color: var(--green); border-color: var(--green); }
+.keeper__vote-btn--down:hover { background: color-mix(in srgb, var(--crimson) 14%, var(--paper)); color: var(--crimson); border-color: var(--crimson); }
+.keeper__vote-btn[aria-pressed="true"][data-type="upvote"] { background: var(--green); color: var(--paper); border-color: var(--green); }
+.keeper__vote-btn[aria-pressed="true"][data-type="downvote"] { background: var(--crimson); color: var(--paper); border-color: var(--crimson); }
+
+/* Descriptive keeper actions. Buttons are full-width so long labels are
+   readable and cannot overlap adjacent text at Android font scales. */
+.keeper__follow-btn {
+  grid-area: follow;
+  margin: 0;
+  min-height: 42px;
+  padding: 0.52rem 0.72rem;
+  font-family: var(--ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: normal;
+  text-align: center;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.keeper.is-following .keeper__follow-btn {
+  background: var(--paper);
+  color: var(--green);
+  border-color: var(--green);
+}
+.keeper__follow-btn:hover { background: var(--green); color: var(--paper); border-color: var(--green); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chips li {
+  font-size: 0.78rem;
+  padding: 0.3rem 0.65rem;
+  background: var(--paper-2);
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+.drawer__actions {
+  display: flex; flex-direction: column; gap: 0.5rem;
+  margin-top: 1.2rem;
+}
+
+/* ───── Buttons (Material 3 spec) ─────
+   .btn (default)         = OUTLINED button — secondary actions
+   .btn--primary          = FILLED button — primary CTA
+   .btn--ghost            = TEXT button — tertiary / cancel
+   .btn[aria-pressed=true]= TONAL button — toggle "on" state
+   .btn--google           = third-party-branded (Google) — keeps brand
+                            spec but inherits M3 dimensions + state layer
+
+   Common geometry (M3 button spec): 40px height, 24px horizontal padding
+   (16px when icon-only), full-pill border-radius, label-large
+   typography. State layer is a ::before pseudo-element that fades up
+   to 8% / 12% / 16% currentColor on hover / focus / press — this is
+   how M3 unifies hover/focus/press feedback across every variant
+   without overriding background/border per state. */
+.btn {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  height: 40px;
+  padding: 0 24px;
+  font: var(--m3-label-large);
+  letter-spacing: 0.1px;
+  border: 1px solid var(--m3-outline);
+  background: transparent;
+  color: var(--m3-primary);
+  border-radius: var(--m3-corner-full);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease, box-shadow 150ms ease;
+  isolation: isolate; /* keep ::before state layer scoped to the button */
+}
+/* M3 state-layer pseudo-element. currentColor inherits from the variant
+   (primary on outlined, on-primary on filled), so each variant gets a
+   correctly-tinted overlay without per-variant overrides. */
+.btn::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  border-radius: inherit;
+  z-index: -1;
+}
+.btn:hover::before { opacity: var(--m3-state-hover); }
+.btn:focus-visible::before { opacity: var(--m3-state-focus); }
+.btn:active::before { opacity: var(--m3-state-press); }
+.btn:focus-visible {
+  outline: 2px solid var(--m3-primary);
+  outline-offset: 2px;
+}
+.btn:disabled, .btn[aria-disabled="true"] {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* FILLED button — primary CTA. Solid primary background, on-primary
+   label. State layer reads as on-primary so the hover/press tint is
+   the right contrast over the brand colour. */
+.btn--primary {
+  background: var(--m3-primary);
+  border-color: var(--m3-primary);
+  color: var(--m3-on-primary);
+  box-shadow: var(--m3-elevation-1);
+}
+.btn--primary:hover { box-shadow: var(--m3-elevation-2); }
+
+/* TEXT button — tertiary / cancel. No border, no fill, just label. */
+.btn--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--m3-primary);
+  padding: 0 12px;
+}
+.btn--danger {
+  color: var(--crimson);
+}
+.btn--danger:focus-visible {
+  outline-color: var(--crimson);
+}
+
+/* TONAL ("active toggle") — when a .btn carries aria-pressed=true it
+   represents a flipped state (e.g. "Following"). Reads warmer than
+   filled-primary so it doesn't compete with primary CTAs on the same
+   surface. */
+.btn[aria-pressed="true"] {
+  background: var(--m3-secondary-container);
+  border-color: transparent;
+  color: var(--m3-on-secondary-container);
+  box-shadow: none;
+}
+
+/* Google sign-in — keeps Google's brand spec (white bg, neutral border,
+   regular weight) but inherits M3 dimensions, full-pill radius, and
+   state-layer feedback. */
+.btn--google {
+  width: 100%;
+  background: #fff;
+  color: #1f1f1f;
+  border: 1px solid #dadce0;
+  font-weight: 500;
+  gap: 0.65rem;
+}
+.btn--google[hidden] { display: none; }
+.login-google__icon { flex: 0 0 auto; }
+#login-divider {
+  text-align: center;
+  margin: 0.75rem 0 0.5rem;
+  position: relative;
+}
+#login-divider[hidden] { display: none; }
+
+.drawer__submit,
+.drawer__edit {
+  margin-top: 0.8rem;
+  padding: 1.1rem;
+  background: var(--paper-2);
+  border-radius: var(--radius-sm);
+}
+.drawer.is-closed .drawer__panel {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 88%, #d9d3c8), var(--paper));
+}
+.submit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 0.8rem;
+  margin-top: 0.4rem;
+}
+.submit-grid label {
+  display: flex; flex-direction: column; gap: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.submit-grid label.is-disabled {
+  opacity: 0.6;
+}
+.submit-grid label.is-disabled input {
+  cursor: not-allowed;
+}
+.submit-grid input[type="time"], .submit-grid select, .submit-notes textarea {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  padding: 0.5rem 0.55rem;
+  border: 1px solid var(--paper-3);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  width: 100%;
+}
+.submit-grid select {
+  min-height: 2.6rem;
+  appearance: auto;
+}
+.submit-notes {
+  display: flex; flex-direction: column; gap: 0.3rem;
+  margin-top: 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.submit-notes textarea { font-family: var(--ui); font-weight: 400; font-size: 0.95rem; }
+.submit-actions { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+
+.contributors li {
+  padding: 0.7rem 0;
+  border-bottom: var(--rule);
+}
+.contributors li:last-child { border-bottom: none; }
+.contributors .who { font-weight: 600; color: var(--ink); display: block; }
+.contributors .when { color: var(--ink-3); font-size: 0.82rem; font-family: var(--mono); }
+.contributors .note { font-style: italic; color: var(--ink-2); font-size: 0.92rem; display: block; margin-top: 0.2rem; }
+
+/* ───── Modal (login) ───── */
+.modal {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center;
+  padding: var(--pad);
+  pointer-events: none;
+  /* Hide with visibility (not display:none) so the scrim/card transitions
+     below can play on BOTH open and close. The delayed visibility keeps a
+     closed modal out of the tab order / a11y tree once its fade-out ends. */
+  visibility: hidden;
+  transition: visibility 0s linear 240ms;
+}
+.modal[aria-hidden="false"] {
+  pointer-events: auto;
+  visibility: visible;
+  transition: visibility 0s;
+}
+.modal__scrim {
+  position: absolute; inset: 0;
+  background: rgba(22, 22, 20, 0.55);
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.modal[aria-hidden="false"] .modal__scrim { opacity: 1; }
+.modal__card {
+  position: relative;
+  background: var(--paper);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.4rem 1.6rem;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,0.3);
+  transform: translateY(20px) scale(0.96);
+  opacity: 0;
+  transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease;
+}
+.modal[aria-hidden="false"] .modal__card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.modal__card h2 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.01em;
+}
+.modal__close {
+  position: absolute; top: 0.5rem; right: 0.6rem;
+  width: 32px; height: 32px;
+  font-size: 1.4rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--ink-3);
+}
+.modal__close:hover { background: var(--paper-2); color: var(--ink); }
+.modal form {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+/* M3 OUTLINED text fields — used in the login modal. Spec: 56px height
+   (more comfortable than the previous ~46px), 16px horizontal padding,
+   primary-colour outline on focus that thickens from 1px to 2px without
+   shifting layout, transparent fill so the surface shows through. */
+.modal input[type="email"],
+.modal input[type="password"] {
+  height: 56px;
+  padding: 0 16px;
+  border: 1px solid var(--m3-outline);
+  border-radius: var(--m3-corner-xs);
+  font: var(--m3-body-large);
+  background: transparent;
+  color: var(--m3-on-surface);
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.modal input[type="email"]:focus,
+.modal input[type="password"]:focus {
+  border-color: var(--m3-primary);
+  box-shadow: inset 0 0 0 1px var(--m3-primary); /* faux 2px without shifting layout */
+}
+.modal input[type="email"]::placeholder,
+.modal input[type="password"]::placeholder {
+  color: var(--m3-on-surface-variant);
+  opacity: 0.7;
+}
+.login-form__hint {
+  margin: 0.2rem 2px 0;
+  font: var(--m3-label-medium);
+  color: var(--m3-on-surface-variant);
+}
+
+/* ───── Toast ───── */
+/* `bottom` uses max(1.2rem, 1.2rem + safe-area-inset-bottom) so the toast
+   always sits at least 1.2rem off the bottom AND clears the black system
+   gesture band on Android (height = env(safe-area-inset-bottom), z-index
+   999 — see #native-gesture-band rule below). On a regular browser where
+   safe-area is 0, this collapses to plain 1.2rem. */
+.toast {
+  position: fixed;
+  bottom: max(1.2rem, calc(1.2rem + env(safe-area-inset-bottom)));
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.7rem 1.1rem;
+  font-size: 0.88rem;
+  line-height: 1.3;
+  text-align: center;
+  border-radius: 999px;
+  z-index: 200;
+  pointer-events: none;
+  box-shadow: 0 8px 24px -8px rgba(0,0,0,0.3);
+  max-width: calc(100vw - 2rem);
+  animation: toastIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ───── Footer ───── */
+.foot {
+  text-align: center;
+  padding: 2rem var(--pad) 2.4rem;
+  color: var(--ink-3);
+  font-size: 0.82rem;
+  border-top: var(--rule);
+  margin-top: 2rem;
+  background: var(--paper-2);
+}
+.foot em { font-family: var(--display); font-style: italic; font-weight: 500; color: var(--ink-2); }
+
+.foot__pledge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 auto 1.2rem;
+  max-width: 520px;
+  position: relative;
+}
+.foot__pledge::before, .foot__pledge::after {
+  content: "";
+  width: 36px; height: 1px;
+  background: var(--brass);
+  display: block;
+  margin: 0 auto;
+}
+.foot__pledge-line {
+  font-family: var(--ui);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+.foot__pledge-arabic {
+  font-family: 'Amiri', 'Noto Naskh Arabic', 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  color: var(--green);
+  line-height: 1;
+  direction: rtl;
+}
+.foot__pledge-trans {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  color: var(--ink-2);
+  font-style: italic;
+}
+.foot__pledge-trans em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--green);
+}
+/* Sadqa-jaria + open-API note. Sits between the pledge and the
+   colophon — a short prose paragraph (not the all-caps banner of the
+   pledge) so it reads as an aside rather than a second headline. */
+.foot__sadqa {
+  max-width: 560px;
+  margin: 0 auto 1.4rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.foot__sadqa strong {
+  font-weight: 600;
+  color: var(--green);
+}
+.foot__sadqa a {
+  color: var(--brass);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.foot__sadqa a:hover { color: var(--green); }
+
+/* Pledge modal — reuses the footer's .foot__* pledge typography, centered on
+   a modal card. Opened by tapping the brand / logo in the top bar. */
+.pledge-modal__card {
+  max-width: 600px;
+  text-align: center;
+  padding-top: 2.2rem;
+}
+.pledge-modal__card .foot__sadqa { margin-bottom: 1rem; }
+.pledge-modal__card .foot__colophon { color: var(--ink-3); }
+
+.foot__colophon { margin: 0; font-size: 0.78rem; color: var(--ink-3); }
+.foot__version {
+  margin: 0.35rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  font-feature-settings: "tnum" 1;
+}
+/* Same monospace tnum styling as the footer version, anchored at the
+   bottom of the login modal card so support handoffs ("what version
+   are you running?") and Internal-vs-Production telling-apart works
+   from the very first screen the user sees. */
+.login-version {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  font-feature-settings: "tnum" 1;
+}
+
+/* ───── Animations ───── */
+@keyframes blink { 50% { opacity: 0.35; } }
+@keyframes toastIn { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ───── Larger screens — enhance, don't restructure ───── */
+@media (min-width: 720px) {
+  .quick { flex-direction: row; }
+  .quick__btn { flex: 1; }
+  .app-section {
+    grid-template-columns: minmax(0, 0.95fr) minmax(280px, 1.05fr);
+    align-items: center;
+    padding: 1.2rem;
+  }
+  .app-screenshots {
+    grid-column: 1 / -1;
+  }
+  .app-shot {
+    flex-basis: 136px;
+  }
+  .intent-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .submit-grid { grid-template-columns: repeat(3, 1fr); }
+  .drawer__actions { flex-direction: row; flex-wrap: wrap; }
+  .drawer__actions .btn { flex: 1; min-width: 140px; }
+  .next-card { padding: 1.5rem 1.6rem 1.7rem; }
+  .next-card__mosque { font-size: 2rem; }
+
+  .mapview { grid-template-columns: 1fr 360px; grid-template-rows: auto 1fr; }
+  .mapview__head { grid-column: 1 / -1; }
+  .mapview__canvas { grid-row: 2; grid-column: 1; }
+  .mapview__addform {
+    top: 60px;
+    bottom: auto;
+    max-height: calc(100dvh - 132px);
+  }
+  .mapview__list {
+    grid-row: 2; grid-column: 2;
+    max-height: none;
+    border-top: none;
+    border-left: var(--rule);
+  }
+}
+
+@media (min-width: 1024px) {
+  .page { max-width: 1120px; }
+  .topbar {
+    padding: 0.95rem clamp(1.5rem, 4vw, 3rem);
+  }
+  .brand {
+    gap: 0.7rem;
+  }
+  .brand__mark {
+    height: 38px;
+  }
+  .brand__name {
+    font-size: 1.18rem;
+  }
+  .topbar__actions {
+    gap: 0.7rem;
+  }
+  .qaza-pill,
+  .langmenu__trigger {
+    min-height: 38px;
+    padding-inline: 0.95rem;
+    font-size: 0.88rem;
+  }
+  .auth-btn {
+    min-height: 42px;
+    padding-inline: 0.65rem 0.95rem;
+  }
+  .hero {
+    padding-top: 2.35rem;
+  }
+  .kicker,
+  .hero-headline-row,
+  .hero-cards,
+  .quick {
+    max-width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-headline-row {
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .headline {
+    max-width: 13.5ch;
+    font-size: clamp(3.6rem, 5.2vw, 5.35rem);
+  }
+  .hero-share-btn {
+    min-height: 46px;
+    padding-inline: 1.25rem;
+    font-size: 0.9rem;
+  }
+  .hero-cards {
+    display: grid;
+    grid-template-columns: minmax(500px, 1.12fr) minmax(330px, 0.88fr);
+    gap: 1.25rem;
+  }
+  .next-card {
+    margin-top: 1rem;
+    padding: 1.8rem 1.9rem 2rem;
+    border-radius: 16px;
+  }
+  .sun-card {
+    margin-top: 1rem;
+    padding: 1.35rem;
+    border-radius: 16px;
+    align-self: start;
+  }
+  .sun-card__list {
+    gap: 0.55rem;
+  }
+  .quick {
+    margin-top: 0.15rem;
+  }
+  .drawer__panel {
+    bottom: auto; top: 0; right: 0; left: auto;
+    border-radius: 0;
+    width: min(540px, 92vw);
+    height: 100dvh;
+    max-height: none;
+    transform: translateX(100%);
+    border-left: 1px solid var(--paper-3);
+  }
+  .drawer[aria-hidden="false"] .drawer__panel { transform: translateX(0); }
+}
+
+/* ─── RTL adjustments (Arabic, Urdu, Persian) ─────────────────────
+   The layout already uses flex with `gap`, which is dir-aware. These
+   rules patch the few absolutely-positioned controls and fonts that
+   would otherwise look wrong reading right-to-left. */
+[dir="rtl"] body { font-family: var(--ui); }
+[dir="rtl"] .headline,
+[dir="rtl"] .next-card__mosque,
+[dir="rtl"] .drawer__title {
+  font-family: 'Amiri', 'Cormorant Garamond', serif;
+}
+[dir="rtl"] .drawer__close { right: auto; left: 0.7rem; }
+[dir="rtl"] .reminder-panel__line--friday em { font-style: normal; }
+[dir="rtl"] .langmenu__trigger svg { transform: scaleX(-1); }
+@media (min-width: 720px) {
+  [dir="rtl"] .drawer__panel {
+    right: auto; left: 0;
+    transform: translateX(-100%);
+    border-left: 0;
+    border-right: 1px solid var(--paper-3);
+  }
+  [dir="rtl"] .drawer[aria-hidden="false"] .drawer__panel { transform: translateX(0); }
+}
+
+/* ─── Inbox banner (top-of-app suggestion notice) ──────────────── */
+.inbox-banner {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.55rem var(--pad);
+  background: var(--brass);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+}
+.inbox-banner:hover { filter: brightness(0.97); }
+.inbox-banner__icon { display: inline-grid; place-items: center; color: var(--ink); }
+.inbox-banner__text { flex: 1; }
+.inbox-banner__btn {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.inbox-banner__btn:hover { background: var(--green); border-color: var(--green); }
+
+/* Inbox modal — list of pending suggestions */
+.modal__card--wide { max-width: 560px; width: 92vw; }
+.keeper-intro__points {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.85rem 0 1rem;
+}
+.keeper-intro__points p {
+  margin: 0;
+  padding: 0.58rem 0.68rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, var(--paper-3));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--paper-2) 84%, white);
+  color: var(--ink-2);
+  font-size: 0.88rem;
+  line-height: 1.38;
+}
+.inbox-alerts {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  padding: 0.75rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--brass) 45%, var(--paper-3));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--brass) 13%, var(--paper));
+}
+.inbox-alerts__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brass) 24%, var(--paper));
+  color: var(--green);
+}
+.inbox-alerts__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.inbox-alerts__copy strong {
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.inbox-alerts__copy span {
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+.inbox-list { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1rem; }
+.inbox-row {
+  display: flex; flex-direction: column; gap: 0.4rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+}
+.inbox-row__head { margin: 0; font-size: 0.92rem; color: var(--ink); }
+.inbox-row__head strong { color: var(--green); }
+.inbox-row__note {
+  margin: 0;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+.inbox-row__times {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  margin: 0; padding: 0;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+.inbox-row__time {
+  font-feature-settings: "tnum" 1;
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 0.2rem;
+}
+.inbox-row__time-name {
+  font-family: var(--ui);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  margin-right: 0.4rem;
+  min-width: 4.2rem;
+}
+.inbox-row__time-old {
+  color: var(--ink-3);
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--ink-3) 60%, transparent);
+}
+.inbox-row__time-arrow {
+  color: var(--brass);
+  font-weight: 700;
+  padding: 0 0.1rem;
+}
+.inbox-row__time-new {
+  color: var(--green);
+  font-weight: 600;
+}
+.inbox-row__time.is-same .inbox-row__time-new {
+  color: var(--ink-2);
+  font-weight: 400;
+}
+.inbox-row__actions {
+  display: flex; gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+.btn--small { padding: 0.4rem 0.85rem; font-size: 0.82rem; }
+
+@media (max-width: 520px) {
+  .inbox-alerts {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .inbox-alerts .btn {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+/* Suggest-update — pinned to the trailing edge of the action row, dashed
+   to read as secondary against the solid Follow button. */
+.keeper__suggest-btn {
+  grid-area: suggest;
+  margin: 0;
+  min-height: 42px;
+  padding: 0.52rem 0.72rem;
+  border: 1px dashed color-mix(in srgb, var(--green) 55%, transparent);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--green);
+  font-family: var(--ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: normal;
+  text-align: center;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.keeper__suggest-btn:hover {
+  background: color-mix(in srgb, var(--green) 9%, transparent);
+  border-style: solid;
+}
+.keeper__withdraw-btn {
+  grid-area: withdraw;
+  margin: 0;
+  min-height: 42px;
+  padding: 0.52rem 0.72rem;
+  border: 1px dashed color-mix(in srgb, var(--crimson) 56%, var(--paper-3));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--crimson) 4%, transparent);
+  color: var(--crimson);
+  font-family: var(--ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: normal;
+  text-align: center;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.keeper__withdraw-btn:hover {
+  background: color-mix(in srgb, var(--crimson) 10%, transparent);
+  border-style: solid;
+}
+/* Phone WebViews often inherit a larger Android font scale than desktop
+   emulation. Use two rows so labels like "Jummah" and values like "4:40 am"
+   stay readable instead of ellipsizing inside five tiny columns. */
+@media (max-width: 480px) {
+  .keeper__times {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .keeper__time {
+    min-height: 2.55rem;
+  }
+  .keeper__time-label,
+  .keeper__time-value {
+    overflow: visible;
+    text-overflow: clip;
+  }
+}
+
+/* ─── Sun-position salah card (sibling of .next-card on desktop) ─── */
+.sun-card {
+  background: var(--paper);
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem 1.2rem;
+  margin: 1.2rem 0 1.4rem;
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+.sun-card__head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+.sun-card__title {
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green);
+  font-weight: 700;
+  margin: 0;
+}
+.sun-card__fiqh {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.sun-card__fiqh select {
+  appearance: none;
+  border: 1px solid var(--paper-3);
+  border-radius: 999px;
+  padding: 0.3rem 1.4rem 0.3rem 0.7rem;
+  background: var(--paper-2);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 10px) center, calc(100% - 6px) center;
+  background-size: 4px 4px, 4px 4px;
+  background-repeat: no-repeat;
+}
+.sun-card__sub {
+  margin: 0 0 0.7rem;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+}
+.sun-card__locate {
+  display: inline-block;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--green);
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--paper);
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 0.4rem;
+}
+.sun-card__locate:hover { filter: brightness(0.95); }
+.sun-card__list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem 1rem;
+}
+.sun-card__row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0.4rem 0.6rem;
+  background: var(--paper-2);
+  border-radius: var(--radius-sm);
+}
+.sun-card__row-name {
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.sun-card__row-time {
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-feature-settings: "tnum" 1;
+  color: var(--ink);
+}
+
+/* On wider screens, place mosque card and sun card side-by-side. The hero
+   still feels like one "above the fold" moment, just with the astronomical
+   reference within glance. */
+@media (min-width: 720px) {
+  .next-card, .sun-card {
+    /* Both cards live as flex children of .hero — split them in half. */
+    flex: 1 1 0;
+    margin: 1.2rem 0;
+  }
+  .hero {
+    /* Wrap the two cards in a flex row. The native-language headline + kicker
+       stay above; cards align below. */
+  }
+  .hero-cards {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+/* Permanent label under each map marker — name + next-takbeer time */
+.leaflet-tooltip.jamat-pin-label {
+  background: rgba(15, 42, 30, 0.92);
+  color: var(--paper);
+  font-family: var(--ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  padding: 4px 7px;
+  border: 1px solid rgba(214, 178, 102, 0.35);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  white-space: nowrap;
+  /* Tappable: opens the detail drawer (handler in js/app.js).
+     Was pointer-events:none, which blocked clicks even with the
+     Leaflet `interactive: true` option set. */
+  pointer-events: auto;
+  cursor: pointer;
+}
+.leaflet-tooltip.jamat-pin-label:hover {
+  background: rgba(15, 42, 30, 1);
+  border-color: var(--brass);
+}
+.leaflet-tooltip.jamat-pin-label::before { display: none; }
+.leaflet-tooltip.jamat-pin-label small {
+  display: block;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.68rem;
+  color: var(--brass-soft);
+  margin-top: 1px;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Native shell (Capacitor) overrides
+   ─────────────────────────────────────────────────────────────────
+   Scoped under `body.is-native` (added by mobile/native-bridge.js).
+   The web build at takbeertime.com is unaffected by this entire block.
+
+   What's covered:
+     1. Bottom safe-area inset (gesture pill on Android 10+)
+     2. 44px minimum tap targets for thumb use
+     3. Leaflet popup max-width + word-wrap (was clipping RTL Arabic)
+     4. Map view header — actions wrap & shrink so the "+ Add" button
+        stops getting cut off on narrow screens
+     5. Drawer bottom padding so action buttons clear the gesture pill
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* 0. System-bar backing: paint solid black behind the status bar at top
+      and the gesture pill at bottom. On Android 15+ edge-to-edge is
+      enforced and StatusBar.setBackgroundColor() is a no-op — the system
+      bars are transparent and the WebView shows through, so the web app
+      itself has to provide the contrast.
+
+      Real DOM elements (#native-status-band / #native-gesture-band,
+      injected by mobile/native-bridge.js) instead of body::before/::after
+      because the pseudo-elements weren't reliably holding position:fixed
+      under WebView scroll. z-index 999 keeps them above sticky headers,
+      drawers, modals; pointer-events:none keeps them from eating taps. */
+body.is-native #native-status-band {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: env(safe-area-inset-top);
+  background: #000;
+  z-index: 999;
+  pointer-events: none;
+}
+body.is-native #native-gesture-band {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: env(safe-area-inset-bottom);
+  background: #000;
+  z-index: 999;
+  pointer-events: none;
+}
+
+/* 1. Safe-area insets — edge-to-edge is enforced on Android 15+ regardless
+      of StatusBar.setOverlaysWebView, so we have to handle both top and
+      bottom in CSS. viewport-fit=cover (in index.html) makes env() return
+      the actual inset values. */
+
+/* Top: sticky headers extend their padding so the status bar sits on top
+   of the header's background, not floating over the page content. The
+   web version uses 92% opacity for a frosted-glass effect — on mobile
+   that lets scrolling content bleed through the safe-area inset region.
+   Make them fully opaque for the native shell. */
+body.is-native .topbar {
+  padding-top: calc(0.7rem + env(safe-area-inset-top));
+  /* Dark-cream header band (opaque on native) so the top section reads as a
+     distinct surface, not bland white. */
+  background: #E9DCBC;
+  backdrop-filter: none;
+}
+body.is-native .mapview__head {
+  padding-top: calc(0.75rem + env(safe-area-inset-top));
+  background: var(--paper);
+  backdrop-filter: none;
+}
+body.is-native .mapview__addhint {
+  top: calc(64px + env(safe-area-inset-top));
+}
+body.is-native .mapview__addform {
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  max-height: min(48dvh, calc(100dvh - 150px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+}
+/* The inbox banner sits above the topbar at the very top of body. On
+   Android 15+ edge-to-edge, the system status bar overlays the first
+   ~75dp of the document — without a safe-area inset, the banner's
+   "N suggestions waiting…" text is clipped. Push the banner's content
+   below the inset so the line reads in full. */
+body.is-native .inbox-banner {
+  padding-top: calc(0.55rem + env(safe-area-inset-top));
+}
+
+/* Bottom: gesture pill on Android / home indicator on iOS. */
+body.is-native .drawer__panel {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+body.is-native .page {
+  padding-bottom: max(4rem, calc(4rem + env(safe-area-inset-bottom)));
+}
+body.is-native .mapview__list {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+/* The colophon footer sits outside .page — give it its own bottom inset
+   so "Built for the ummah" doesn't slide under the black gesture band. */
+body.is-native .foot {
+  padding-bottom: calc(2.4rem + env(safe-area-inset-bottom));
+}
+
+/* 2. 44px minimum tap targets. Apple HIG / Material both land near here.
+      We use min-height; rely on existing flex centering for vertical align. */
+body.is-native .btn,
+body.is-native button:not(.leaflet-control-zoom-in):not(.leaflet-control-zoom-out),
+body.is-native .auth-btn,
+body.is-native .langmenu__trigger,
+body.is-native .mapview__close,
+body.is-native .mapview__addbtn,
+body.is-native .drawer__close {
+  min-height: 44px;
+}
+
+/* The leaflet zoom controls are 30px square by default — bump them up so
+   thumbs aren't stabbing at tiny squares wedged in the corner. */
+body.is-native .leaflet-control-zoom a {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  font-size: 1.2rem;
+}
+
+/* 3. Leaflet popup — was clipping the Arabic mosque name on the right.
+      Constrain to the viewport and let long text wrap. */
+body.is-native .leaflet-popup-content-wrapper {
+  max-width: calc(100vw - 32px);
+}
+body.is-native .leaflet-popup-content {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* 4. Map view header — the "+ Add a masjid" button was running off the
+      right edge. Allow the actions cluster to shrink and the title to
+      truncate before the button gets cut. */
+body.is-native .mapview__head {
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  min-width: 0;
+}
+body.is-native .mapview__head h2 {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 auto;
+}
+body.is-native .mapview__head-actions {
+  flex: 0 0 auto;
+}
+/* Compact the "+ Add a masjid" label on narrow screens so it doesn't
+   shoulder the title off the screen. The icon stays; the text shortens. */
+@media (max-width: 420px) {
+  body.is-native .mapview__addbtn {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* 5. Drawer body — keep the "Be the first / submit" CTAs clear of the
+      gesture pill at the bottom of the screen. */
+body.is-native .drawer__actions,
+body.is-native .drawer__submit,
+body.is-native .drawer__edit {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+/* 6. Hard horizontal-overflow clamp — Leaflet tiles, popups, attribution
+      and long mosque names were extending past the viewport edge on the
+      phone. Apply ONLY to the offending containers — *not* to body.
+      Putting overflow-x:hidden on body turns it into its own scroll
+      container, which broke position:fixed for the system-bar bands
+      above (they scrolled away on swipe). */
+body.is-native .mapview,
+body.is-native .mapview__canvas,
+body.is-native .leaflet-container {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+/* .page is just the home content area; nothing in it actually overflows
+   horizontally any more (cards use grid + min-width:0). Don't add
+   overflow-x:hidden here — it would coerce overflow-y to auto and
+   clip the "YOUR DEFAULT" ::before badge that sits at top:-8px above
+   default mosque cards. */
+
+/* Mosque list cards — fixes layered:
+
+   • flex-shrink:0 — .mapview__list is a flex column with max-height:38vh.
+     Default flex-shrink:1 was squashing every card into ~30px to fit
+     them all in 38vh, hiding the address/meta. Now the LIST scrolls
+     instead of the cards collapsing.
+
+   • min-width:0 on grid children — lets long Arabic/Latin mosque names
+     wrap inside the .card grid (`1fr auto`) instead of pushing the
+     right-side prayer column off-screen. We don't use overflow:hidden
+     on the card because per CSS spec, setting overflow on one axis
+     coerces the other from `visible` to `auto` — that was clipping the
+     "YOUR DEFAULT" ::before badge that sits at `top:-8px` above the card. */
+body.is-native .mapview__list > li {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  flex-shrink: 0;
+}
+body.is-native .mapview__list > li > .card__main,
+body.is-native .mapview__list > li > .card__times {
+  min-width: 0;
+}
+
+/* 11. Modals (Suggest update / Login / etc.) — the modal is centered with
+       `display: grid; place-items: center` and the card has fixed padding
+       at top. On a phone where the form is taller than the viewport,
+       centering pushes the title off the top of the screen, behind the
+       black status-bar band. Fix: top-align the modal on phone widths
+       and respect the safe-area inset, plus let the card scroll if the
+       form is too long. */
+body.is-native .modal {
+  place-items: start center;
+  padding-top: max(var(--pad), calc(var(--pad) + env(safe-area-inset-top)));
+  padding-bottom: max(var(--pad), calc(var(--pad) + env(safe-area-inset-bottom)));
+}
+body.is-native .modal__card {
+  max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 2 * var(--pad));
+  overflow-y: auto;
+}
+
+/* (Removed: a stale is-native bell override that added padding 0.25rem 0.5rem
+   for a long-gone "🔔 4 reminders" pill design. The bell is now icon-only
+   (44×44 circle), so the padding here was making it taller than wide on
+   the device.) */
+body.is-native .reminder-flip {
+  width: 34px;
+  height: 20px;
+  /* Override the global 44px tap-target rule — for a toggle switch the
+     visible track IS the tap area, no need for invisible padding above
+     and below it. With min-height:44px the flip looked weirdly tall
+     because of empty space, not because the track grew. */
+  min-height: 0;
+}
+body.is-native .reminder-flip__thumb {
+  width: 14px;
+  height: 14px;
+}
+body.is-native .reminder-flip[aria-checked="true"] .reminder-flip__thumb {
+  transform: translateX(14px);
+}
+body.is-native [dir="rtl"] .reminder-flip[aria-checked="true"] .reminder-flip__thumb {
+  transform: translateX(-14px);
+}
+
+/* 9. Compaction for phone — the desktop spacing/letter-spacing eats huge
+      vertical chunks. Tighten everything proportionally.
+
+      • Hero kicker + next-card eyebrow had letter-spacing 0.18em — that's
+        ~18% extra width per character. Combined with uppercase + ALL CAPS
+        copy ("A CROWD-SOURCED JAMAT TIMES DIRECTORY", "YOUR DEFAULT
+        MOSQUE"), they wrapped into 2-3 lines. Drop letter-spacing on
+        phone.
+      • Hero padding was 1.6rem top — feels luxurious on desktop, wasteful
+        on phone. Halve it.
+      • Next-card padding was 1.2rem all around with 1.2/1.4rem margins —
+        compact to 0.9rem padding and 0.9rem margins.
+      • Countdown digit size scales down with --t-clock-num — leave that
+        alone, it's the centerpiece. */
+body.is-native .kicker,
+body.is-native .next-card__eyebrow,
+body.is-native .next-card__label,
+body.is-native .next-card__in {
+  letter-spacing: 0.06em;
+}
+body.is-native .hero {
+  padding: 0.9rem 0 0.6rem;
+}
+body.is-native .next-card {
+  padding: 0.9rem 1rem 1rem;
+  margin: 0.9rem 0;
+}
+body.is-native .subhead {
+  font-size: 0.95rem;
+  margin-bottom: 0.9rem;
+  line-height: 1.4;
+}
+body.is-native .headline {
+  margin-bottom: 0.5rem;
+}
+
+/* 8. Topbar fit on phone widths.
+      Was: brand "Takbeer Time" wrapping (then clipping to "Takbe") and
+      "Sign in" wrapping vertically. Tighten gaps, force single-line
+      labels, and on widths the user actually has (Galaxy S23U ≈ 412px)
+      shrink the language picker + auth button so the brand has room. */
+body.is-native .topbar {
+  gap: 0.5rem;
+}
+body.is-native .brand {
+  white-space: nowrap;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+body.is-native .auth-btn,
+body.is-native .auth-btn__label {
+  white-space: nowrap;
+}
+body.is-native .topbar__actions { flex: 0 0 auto; }
+@media (max-width: 480px) {
+  body.is-native .topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(6.8rem, 34%) auto;
+    grid-template-rows: auto;
+    align-items: center;
+    column-gap: 0.4rem;
+    padding: calc(0.55rem + env(safe-area-inset-top)) 0.7rem 0.45rem;
+  }
+  body.is-native .topbar__actions {
+    display: contents;
+  }
+  body.is-native .brand {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    font-size: 0.94rem;
+    gap: 0.35rem;
+  }
+  body.is-native .brand__mark { height: 24px; }
+  /* Cinzel is wider than the old UI font — shrink + tighten the wordmark so
+     "Takbeer Time" fits the narrow native topbar column without clipping. */
+  body.is-native .brand__name { font-size: 0.8rem; letter-spacing: 0.005em; }
+  /* Qaza pill spans the full app width on its own row beneath the brand /
+     language / auth row — a short, full-width strip. */
+  body.is-native .qaza-pill {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+    width: auto;
+    min-height: 30px;
+    margin-top: 0.3rem;
+  }
+  /* RTL translations of "Sign in" (e.g. سائن ان کریں, تسجيل الدخول) are
+     much wider than the English label and squeeze the brand off the
+     screen. Hide the text on phone-width RTL — the icon identifies the
+     app, which is what most native launchers do too. */
+  [dir="rtl"] body.is-native .brand__name { display: none; }
+  body.is-native .langmenu {
+    grid-column: 2;
+    grid-row: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    max-width: none;
+  }
+  body.is-native .langmenu__trigger {
+    width: 100%;
+    min-height: 36px;
+    font-size: 0.74rem;
+    padding: 0.2rem 0.45rem;
+  }
+  body.is-native .langmenu__pop {
+    right: 0;
+    width: min(18rem, calc(100vw - 1.4rem));
+  }
+  /* In RTL the trigger sits on the left, so the dropdown must anchor left
+     too. This native rule needs its own RTL override because
+     `body.is-native .langmenu__pop` outranks the generic
+     `[dir="rtl"] .langmenu__pop` on specificity. JS (positionPop) upgrades
+     this to a fixed left-screen-edge dock on open; this is the static
+     fallback that still keeps the panel fully on-screen. */
+  [dir="rtl"] body.is-native .langmenu__pop {
+    right: auto;
+    left: 0;
+  }
+  /* The pointer triangle aims at the trigger; once the panel is docked to
+     the screen edge (not the trigger) it no longer lines up, so drop it. */
+  [dir="rtl"] body.is-native .langmenu__pointer {
+    display: none;
+  }
+  body.is-native .share-app-btn {
+    min-height: 30px;
+    height: 30px;
+    padding: 0 0.42rem;
+    gap: 0.18rem;
+    font-size: 0.6rem;
+  }
+  body.is-native button.share-app-btn { min-height: 30px; }
+  body.is-native .share-app-btn svg { width: 12px; height: 12px; }
+  body.is-native .auth-btn {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    align-self: start;
+    flex: 0 0 auto;
+    min-height: 40px;
+    font-size: 0.84rem;
+    padding: 0.35rem 0.55rem;
+  }
+  /* Auth button — different shape per state, both phone-friendly:
+     • Signed-out: hide the useless "?" avatar, show "Sign in" label.
+     • Signed-in:  hide the long email/name label, show just the
+       initial-avatar circle (standard mobile profile pattern). The
+       full email was eating the entire topbar width, clipping the
+       brand. */
+  body.is-native .auth-btn:not([data-state="signed-in"]) .auth-btn__avatar {
+    display: none;
+  }
+  body.is-native .auth-btn[data-state="signed-in"] .auth-btn__label {
+    display: none;
+  }
+  body.is-native .auth-btn[data-state="signed-in"] {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  body.is-native .auth-btn[data-state="signed-in"] .auth-btn__avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+  }
+  /* Keep the count badge fully inside the cream bar: the avatar is
+     top-aligned in the row, so a large negative top pushed the badge above
+     the safe-area line into the status bar (clipping "41"). Sit it lower and
+     tucked in. */
+  body.is-native .auth-btn__followers {
+    top: -0.22rem;
+    right: -0.14rem;
+    min-width: 1.5rem;
+    font-size: 0.7rem;
+  }
+  body.is-native .account-menu {
+    top: calc(3rem + env(safe-area-inset-top));
+    right: 0.7rem;
+  }
+  body.is-native .hero-share-btn {
+    margin-top: 0.18rem;
+    margin-bottom: 0;
+    box-shadow: 0 6px 14px -14px rgba(15, 42, 30, 0.6);
+  }
+  body.is-native .hero-share-btn span {
+    font-size: 0;
+  }
+  body.is-native .hero-share-btn span::after {
+    content: "Share";
+    font-size: 0.6rem;
+  }
+  body.is-native .next-card__head-actions {
+    gap: 0.25rem;
+  }
+  body.is-native .next-card__refresh,
+  body.is-native .next-card__bell {
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+  }
+  body.is-native .next-card__bell-icon {
+    width: 17px;
+    height: 17px;
+  }
+  /* Hug the bell so the pill reads as a compact control instead of a tall
+     lozenge; a touch more right padding leaves room for the count badge. */
+  body.is-native .reminder-toggle {
+    gap: 0.28rem;
+    padding: 0.13rem 0.34rem 0.13rem 0.6rem;
+  }
+  body.is-native .reminder-toggle__hint {
+    font-size: 0.68rem;
+    line-height: 1;
+  }
+  body.is-native .next-card__keeper {
+    gap: 0.32rem;
+    padding: 5px 7px 5px 8px;
+    font-size: 0.78rem;
+    line-height: 1.05rem;
+  }
+  body.is-native .next-card__keeper-hint {
+    font-size: 0.62rem;
+    line-height: 1;
+  }
+}
+
+/* 7. Sun-card prayer time cells — on phone widths the horizontal layout
+      forces a choice: clip the label ("MA...", "SU...") or break the
+      time ("6:47" + "pm" stacked). Both are bad. Stack the cell
+      vertically — label on top, time below — so each gets its full
+      width. Time keeps nowrap so "6:47 pm" stays one token. */
+body.is-native .sun-card__row-time { white-space: nowrap; }
+
+/* === Drawer redesign handoff integration === */
+.drawer__head {
+  position: relative;
+  padding-right: 2.25rem;
+}
+.drawer__status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.drawer__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brass);
+}
+.drawer__status-label {
+  font-family: var(--ui);
+  font-size: 0.69rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass);
+  font-weight: 800;
+}
+.drawer__status-sep {
+  color: var(--ink-3);
+  font-size: 0.7rem;
+}
+.drawer__status-distance {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--ink-2);
+  font-weight: 700;
+}
+.drawer__title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.drawer__title {
+  margin-bottom: 0;
+}
+.drawer__rename {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--paper-line);
+  color: var(--brass);
+  display: grid;
+  place-items: center;
+}
+.drawer__rename:hover,
+.drawer__rename:focus-visible {
+  background: color-mix(in srgb, var(--brass) 10%, transparent);
+  outline: none;
+}
+.drawer__head-default {
+  margin-top: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+.drawer__head-default:hover,
+.drawer__head-default:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  outline: none;
+}
+.drawer__head-default[aria-pressed="true"] {
+  background: var(--paper-2);
+  border-color: var(--paper-line);
+  color: var(--brass);
+}
+.drawer__head-default-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.times-empty {
+  background: var(--paper-2);
+  border: 1px solid var(--paper-line);
+  border-radius: 1rem;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+}
+.times-empty__mark {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  color: var(--green);
+  opacity: 0.68;
+}
+.times-empty__lead {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 0.4rem;
+}
+.times-empty__sub {
+  font-family: var(--ui);
+  font-size: 0.82rem;
+  color: var(--ink-2);
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 0 auto 1rem;
+  max-width: 18rem;
+}
+.times-empty__cta {
+  width: auto;
+  display: inline-flex;
+  padding-inline: 1.4rem;
+}
+.times-empty .times-empty__cta {
+  width: auto;
+}
+.jumma-shortcut {
+  margin-top: 0.9rem;
+  padding: 0.75rem 0.85rem;
+  background: color-mix(in srgb, var(--brass) 11%, var(--paper));
+  border: 1px dashed var(--brass);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
+}
+.jumma-shortcut__chip {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--brass);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.1rem;
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+.jumma-shortcut__body {
+  flex: 1;
+  min-width: 0;
+}
+.jumma-shortcut__title {
+  font-family: var(--ui);
+  font-size: 0.8rem;
+  color: var(--ink);
+  font-weight: 800;
+  margin: 0;
+}
+.jumma-shortcut__sub {
+  font-family: var(--ui);
+  font-size: 0.72rem;
+  color: var(--ink-2);
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0.15rem 0 0;
+}
+.jumma-shortcut__cta {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: var(--brass);
+  color: var(--ink);
+  border: 0;
+  font-family: var(--ui);
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.times-empty .jumma-shortcut__cta {
+  width: auto;
+}
+
+.keepers-banner {
+  margin: 0.5rem 0 1rem;
+  padding: 0.625rem 0.75rem;
+  background: color-mix(in srgb, var(--brass) 9%, var(--paper));
+  border-radius: 0.625rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.keepers-banner__icon {
+  color: var(--brass);
+  margin-top: 1px;
+}
+.keepers-banner p {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  font-weight: 600;
+  line-height: 1.45;
+}
+.keepers-banner strong {
+  color: var(--ink);
+}
+.keepers-banner em {
+  font-family: var(--ui);
+  font-style: normal;
+  color: var(--green);
+  font-weight: 800;
+}
+.keepers-list {
+  list-style: none;
+  padding: 0;
+  gap: 1rem;
+}
+.keeper-card {
+  position: relative;
+  background: color-mix(in srgb, white 74%, var(--paper));
+  border-radius: 1rem;
+  border: 1px solid var(--paper-line);
+  padding: 1rem 1rem 0.875rem;
+  list-style: none;
+}
+.keeper-card[aria-current="true"] {
+  border-color: var(--green);
+  box-shadow: 0 10px 28px -16px rgba(15,42,30,0.35);
+}
+.keeper-card__ribbon {
+  position: absolute;
+  top: -10px;
+  left: 0.875rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--paper);
+  font-family: var(--ui);
+  font-size: 0.59rem;
+  letter-spacing: 0.14em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.keeper-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.keeper-card__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  display: grid;
+  place-items: center;
+  font-family: var(--ui);
+  font-size: 0.81rem;
+  font-weight: 900;
+  flex: 0 0 auto;
+}
+.keeper-card[aria-current="true"] .keeper-card__avatar {
+  background: var(--brass);
+  color: var(--ink);
+}
+.keeper-card__id {
+  flex: 1;
+  min-width: 0;
+}
+.keeper-card__name {
+  font-family: var(--display);
+  font-size: 1.125rem;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0;
+}
+.keeper-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.32rem;
+  margin: 0.2rem 0 0;
+  font-family: var(--ui);
+  font-size: 0.7rem;
+  color: var(--ink-2);
+  font-weight: 700;
+}
+.keeper-card__rating {
+  color: var(--brass);
+}
+.keeper-card__sep {
+  color: var(--ink-3);
+}
+.keeper-card__votes {
+  display: flex;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+.keeper-card__vote {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--green) 5%, var(--paper));
+  border: 0;
+  color: var(--ink-3);
+  display: grid;
+  place-items: center;
+}
+.keeper-card__vote:hover,
+.keeper-card__vote:focus-visible {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--brass) 18%, var(--paper));
+  outline: none;
+}
+.keeper-card__source {
+  margin: 0.7rem 0 0;
+  color: var(--ink-2);
+  font-family: var(--ui);
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.keeper-card__times {
+  list-style: none;
+  margin: 0.875rem 0 0;
+  padding: 0.75rem 0.625rem;
+  background: color-mix(in srgb, var(--green) 4%, var(--paper));
+  border-radius: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.25rem 0.5rem;
+}
+.keeper-card__time {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0.375rem;
+}
+.keeper-card__time span {
+  font-family: var(--ui);
+  font-size: 0.59rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.keeper-card__time strong {
+  font-family: var(--display);
+  font-size: 1rem;
+  color: var(--ink);
+  font-weight: 700;
+  margin-top: 2px;
+}
+.keeper-card__time--missing strong {
+  color: var(--ink-3);
+  font-family: var(--ui);
+  font-size: 0.78rem;
+}
+.keeper-card__foot {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.65rem;
+}
+.keeper-card__updated {
+  font-family: var(--ui);
+  font-size: 0.7rem;
+  color: var(--ink-3);
+  font-weight: 700;
+}
+.keeper-card__actions {
+  display: grid;
+  gap: 0.45rem;
+}
+.keeper-card__primary,
+.keeper-card__secondary {
+  width: 100%;
+}
+
+.amenities-section {
+  margin-top: 1.5rem;
+}
+.amenities-section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.amenities-section__head .section-title {
+  margin-bottom: 0;
+}
+.amenities-section__eyebrow {
+  font-family: var(--ui);
+  font-size: 0.66rem;
+  color: var(--brass);
+  font-weight: 800;
+  font-style: italic;
+}
+.amenities-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: color-mix(in srgb, white 72%, var(--paper));
+  border: 1px solid var(--paper-line);
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+.amenity-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.875rem;
+  border-bottom: 1px solid var(--paper-line);
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.amenity-row:hover,
+.amenity-row:focus-visible {
+  background: color-mix(in srgb, var(--brass) 9%, transparent);
+  outline: none;
+}
+.amenity-row:last-child {
+  border-bottom: none;
+}
+.amenity-row__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--brass) 13%, var(--paper));
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+.amenity-row__body {
+  flex: 1;
+  min-width: 0;
+}
+.amenity-row__label {
+  font-family: var(--display);
+  font-size: 1rem;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+}
+.amenity-row__meta {
+  font-family: var(--ui);
+  font-size: 0.68rem;
+  color: var(--ink-2);
+  font-weight: 600;
+  margin: 0.15rem 0 0;
+}
+.amenity-row__rating {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+.amenity-row__score {
+  font-family: var(--ui);
+  font-size: 0.62rem;
+  color: var(--ink-2);
+  font-weight: 700;
+  margin: 0;
+}
+.amenity-row__score strong {
+  font-family: var(--mono);
+  color: var(--ink);
+  font-weight: 800;
+}
+.stars::before {
+  content: "★★★★★";
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, var(--brass) calc(var(--val, 0) * 20%), rgba(15,42,30,0.18) calc(var(--val, 0) * 20%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.amenities-cta {
+  width: 100%;
+  margin-top: 0.625rem;
+  padding: 0.75rem;
+  background: transparent;
+  border: 1.5px dashed var(--brass);
+  border-radius: 999px;
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  color: var(--ink);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.amenities-cta__icon {
+  color: var(--brass);
+}
+
+.rating-modal__card {
+  max-width: 360px;
+}
+.modal__eyebrow {
+  margin: 0 0 0.25rem;
+  font-family: var(--ui);
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+.rating-modal__field {
+  display: grid;
+  gap: 0.35rem;
+  margin: 1rem 0 0.8rem;
+  font-family: var(--ui);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--ink-2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.rating-modal__field select {
+  height: 44px;
+  border: 1px solid var(--paper-line);
+  border-radius: 0.65rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  padding: 0 0.75rem;
+}
+.rating-modal__stars {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin: 0.65rem 0 0.9rem;
+}
+.rating-modal__stars button {
+  height: 44px;
+  border: 1px solid var(--paper-line);
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, white 72%, var(--paper));
+  color: rgba(15, 42, 30, 0.24);
+  font-size: 1.25rem;
+  display: grid;
+  place-items: center;
+}
+.rating-modal__stars button.is-active {
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, white);
+  border-color: color-mix(in srgb, var(--brass) 42%, var(--paper-line));
+}
+
+/* === Masjid drawer layout from supplied reference === */
+#drawer .drawer__panel {
+  background: var(--paper);
+  padding: 1.45rem var(--pad) 2rem;
+}
+#drawer .drawer__head {
+  position: relative;
+  overflow: hidden;
+  padding: 1.05rem 1rem 1rem;
+  margin: 0 0 1rem;
+  border-radius: 0.9rem;
+  background: radial-gradient(circle at 84% 38%, color-mix(in srgb, var(--green-3) 46%, transparent) 0 18%, transparent 19%),
+    linear-gradient(135deg, var(--green), color-mix(in srgb, var(--green) 82%, #000 18%));
+  color: var(--paper);
+  box-shadow: 0 16px 30px -22px rgba(15, 42, 30, 0.65);
+}
+#drawer .drawer__close {
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+  background: color-mix(in srgb, var(--paper) 14%, transparent);
+  color: var(--paper);
+  font-size: 1.25rem;
+}
+#drawer .drawer__close:hover,
+#drawer .drawer__close:focus-visible {
+  background: color-mix(in srgb, var(--paper) 22%, transparent);
+}
+.drawer__hero-mark {
+  position: absolute;
+  inset: auto 0 0 auto;
+  width: 9rem;
+  height: 8rem;
+  opacity: 0.1;
+  color: var(--brass);
+  pointer-events: none;
+}
+.drawer__hero-dome {
+  position: absolute;
+  right: 2.3rem;
+  bottom: 1.15rem;
+  width: 4.6rem;
+  height: 3.9rem;
+  border-radius: 3rem 3rem 0.5rem 0.5rem;
+  border: 0.55rem solid currentColor;
+  border-bottom-width: 0.75rem;
+}
+.drawer__hero-moon {
+  position: absolute;
+  right: 5.2rem;
+  top: 0.4rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  box-shadow: -0.48rem 0 0 currentColor;
+}
+.drawer__hero-minaret {
+  position: absolute;
+  bottom: 0.9rem;
+  width: 0.75rem;
+  height: 5.4rem;
+  background: currentColor;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.drawer__hero-minaret--left { right: 7.4rem; }
+.drawer__hero-minaret--right { right: 0.7rem; }
+#drawer .drawer__status {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 0.45rem;
+  padding-right: 2.2rem;
+}
+#drawer .drawer__status-label,
+#drawer .drawer__status-distance,
+#drawer .drawer__status-sep {
+  color: var(--brass-soft);
+}
+#drawer .drawer__status-dot {
+  background: var(--brass);
+}
+#drawer .drawer__title-row,
+#drawer .drawer__addr,
+#drawer .drawer__head-default,
+#drawer .keeper-credit {
+  position: relative;
+  z-index: 2;
+}
+#drawer .drawer__title {
+  color: var(--paper);
+  font-size: clamp(1.75rem, 8vw, 2.3rem);
+}
+#drawer .drawer__addr {
+  color: color-mix(in srgb, var(--paper) 82%, transparent);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+#drawer .drawer__rename {
+  border-color: color-mix(in srgb, var(--paper) 28%, transparent);
+  color: var(--brass-soft);
+}
+#drawer .drawer__head-default {
+  border-color: color-mix(in srgb, var(--paper) 35%, transparent);
+  color: var(--paper);
+}
+#drawer .drawer__head-default:hover,
+#drawer .drawer__head-default:focus-visible {
+  background: color-mix(in srgb, var(--paper) 14%, transparent);
+}
+#drawer .drawer__head-default[aria-pressed="true"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+#drawer .keeper-credit {
+  width: min(100%, 19.8rem);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0 0;
+  padding: 0.7rem 0.78rem;
+  border: 1px solid color-mix(in srgb, var(--paper) 20%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--paper) 10%, transparent);
+  backdrop-filter: blur(2px);
+  cursor: pointer;
+}
+#drawer .keeper-credit[hidden],
+.stale-pill[hidden] {
+  display: none;
+}
+.keeper-credit__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--brass);
+  color: var(--green);
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  font-weight: 900;
+  border: 1px solid color-mix(in srgb, var(--paper) 24%, transparent);
+}
+.keeper-credit__body {
+  min-width: 0;
+}
+.keeper-credit__meta,
+.keeper-credit__name,
+.keeper-credit__hint {
+  margin: 0;
+}
+.keeper-credit__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--ui);
+  font-size: 0.61rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--paper) 68%, transparent);
+  font-weight: 900;
+}
+.keeper-credit__meta span:last-child {
+  color: var(--brass-soft);
+  letter-spacing: 0;
+}
+.keeper-credit__name strong {
+  color: var(--paper);
+  font-family: var(--ui);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+.keeper-credit__hint {
+  color: color-mix(in srgb, var(--paper) 72%, transparent);
+  font-family: var(--ui);
+  font-size: 0.72rem;
+  font-style: normal;
+  line-height: 1.25;
+}
+.keeper-credit__switch {
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--paper) 72%, transparent);
+  font-family: var(--ui);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 900;
+  display: grid;
+  gap: 0.2rem;
+  place-items: center;
+}
+.keeper-credit__switch::after {
+  content: "⇄";
+  color: var(--brass-soft);
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.drawer-times-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.drawer-times-head .section-title {
+  margin-bottom: 0.55rem;
+}
+.drawer-times-updated {
+  margin: 0;
+  color: var(--alert);
+  font-family: var(--ui);
+  font-size: 0.72rem;
+  font-style: italic;
+  font-weight: 800;
+  white-space: nowrap;
+}
+#drawer .times td {
+  padding: 0.75rem 0;
+  font-family: var(--display);
+  font-size: 1.12rem;
+}
+#drawer .times .name {
+  color: color-mix(in srgb, var(--ink) 72%, var(--paper));
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+#drawer .times .time {
+  font-family: var(--display);
+  font-size: 1.16rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--ink) 72%, var(--paper));
+}
+#drawer .times .time--upcoming {
+  color: var(--green);
+  font-size: 1.38rem;
+  font-weight: 800;
+}
+#drawer .times tr:has(.time--upcoming) .name {
+  color: var(--ink);
+  font-weight: 700;
+}
+.stale-pill {
+  margin-top: 1rem;
+  padding: 0.75rem 0.85rem;
+  background: var(--alert-soft);
+  border: 1px solid color-mix(in srgb, var(--alert) 32%, var(--paper-3));
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.stale-pill__icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--alert);
+  color: var(--paper);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  font-family: var(--ui);
+  font-weight: 900;
+}
+.stale-pill__body {
+  flex: 1;
+  min-width: 0;
+}
+.stale-pill__title {
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  color: color-mix(in srgb, var(--alert) 76%, var(--ink));
+  font-weight: 900;
+  margin: 0;
+}
+.stale-pill__sub {
+  font-family: var(--ui);
+  font-size: 0.7rem;
+  color: var(--ink-2);
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0.15rem 0 0;
+}
+.stale-pill__cta {
+  flex: 0 0 auto;
+  padding: 0.55rem 0.82rem;
+  border-radius: 999px;
+  background: var(--alert);
+  color: var(--paper);
+  border: 0;
+  font-family: var(--ui);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+.keeper-credit.is-stale {
+  border-color: color-mix(in srgb, var(--alert) 40%, transparent);
+}
+.nudge-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  pointer-events: none;
+}
+.nudge-sheet[aria-hidden="false"] {
+  pointer-events: auto;
+}
+.nudge-sheet__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 42, 30, 0.5);
+  opacity: 0;
+  transition: opacity 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.nudge-sheet[aria-hidden="false"] .nudge-sheet__scrim {
+  opacity: 1;
+}
+.nudge-sheet__panel {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 111;
+  max-height: 88dvh;
+  overflow-y: auto;
+  padding: 0.6rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 0px) + 4rem);
+  background: var(--paper);
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  box-shadow: 0 -20px 60px -20px rgba(0, 0, 0, 0.4);
+  transform: translateY(100%);
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.nudge-sheet[aria-hidden="false"] .nudge-sheet__panel {
+  transform: translateY(0);
+}
+.nudge-sheet__grabber {
+  width: 40px;
+  height: 4px;
+  margin: 0 auto 1rem;
+  border-radius: 2px;
+  background: var(--paper-line);
+}
+.nudge-sheet__head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.4rem;
+}
+.nudge-sheet__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--brass);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  font-family: var(--ui);
+  font-size: 0.69rem;
+  font-weight: 900;
+}
+.nudge-sheet__eyebrow {
+  margin: 0;
+  color: var(--brass);
+  font-family: var(--ui);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.nudge-sheet__to {
+  margin: 0.15rem 0 0;
+  color: var(--ink-2);
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.nudge-sheet__to strong {
+  color: var(--ink);
+}
+.nudge-sheet__sep {
+  margin: 0 0.25rem;
+  color: var(--ink-3);
+}
+.nudge-sheet__title {
+  margin: 0.9rem 0 0;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.nudge-sheet__lede {
+  margin: 0.25rem 0 0;
+  color: var(--ink-2);
+  font-family: var(--ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.nudge-sheet__list {
+  list-style: none;
+  margin: 0.875rem 0 0;
+  padding: 0;
+  background: #fff;
+  border: 1px solid var(--paper-line);
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+.nudge-row {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.875rem;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--paper-line);
+  cursor: pointer;
+  text-align: left;
+}
+.nudge-row:last-child {
+  border-bottom: 0;
+}
+.nudge-row.is-edited {
+  background: rgba(182, 138, 62, 0.07);
+}
+.nudge-row__name {
+  flex: 0 0 5rem;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.06rem;
+  font-weight: 600;
+}
+.nudge-row__jummah {
+  font-style: italic;
+}
+.nudge-row__times {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.nudge-row__cur {
+  color: var(--ink-3);
+  font-family: var(--display);
+  font-size: 0.94rem;
+  font-weight: 600;
+}
+.nudge-row.is-edited .nudge-row__cur {
+  text-decoration: line-through;
+  text-decoration-color: rgba(14, 42, 30, 0.4);
+}
+.nudge-row__arrow {
+  color: var(--brass);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+.nudge-row__new {
+  color: #7a5418;
+  font-family: var(--display);
+  font-size: 1.06rem;
+  font-weight: 900;
+}
+.nudge-row__chip {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: rgba(14, 42, 30, 0.05);
+  color: var(--ink-2);
+  display: grid;
+  place-items: center;
+  font-size: 0.69rem;
+  font-weight: 900;
+}
+.nudge-row.is-edited .nudge-row__chip {
+  background: var(--brass);
+  color: var(--ink);
+}
+.nudge-sheet__summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.625rem 0 0;
+  color: var(--ink-2);
+  font-family: var(--ui);
+  font-size: 0.69rem;
+  font-weight: 700;
+}
+.nudge-sheet__count {
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(182, 138, 62, 0.15);
+  color: #7a5418;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+.nudge-sheet__alt {
+  width: 100%;
+  margin: 0.875rem 0 0;
+  padding: 0.75rem 0.875rem;
+  background: rgba(182, 138, 62, 0.06);
+  border: 1px dashed var(--brass);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+  text-align: left;
+}
+.nudge-sheet__alt-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--brass);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+.nudge-sheet__alt-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.nudge-sheet__alt-title {
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+.nudge-sheet__alt-sub {
+  margin-top: 0.15rem;
+  color: var(--ink-2);
+  font-family: var(--ui);
+  font-size: 0.69rem;
+  font-weight: 600;
+}
+.nudge-sheet__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.125rem;
+}
+.nudge-sheet__actions .btn--primary {
+  flex: 1;
+}
+.nudge-time-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  pointer-events: none;
+}
+.nudge-time-popup[aria-hidden="false"] {
+  pointer-events: auto;
+}
+.nudge-time-popup__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 42, 30, 0.42);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+.nudge-time-popup[aria-hidden="false"] .nudge-time-popup__scrim {
+  opacity: 1;
+}
+.nudge-time-popup__card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 330px);
+  padding: 1.2rem;
+  border-radius: 0.9rem;
+  background: var(--paper);
+  box-shadow: 0 22px 60px -28px rgba(0, 0, 0, 0.48);
+  opacity: 0;
+  transform: translateY(14px) scale(0.98);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.nudge-time-popup[aria-hidden="false"] .nudge-time-popup__card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.nudge-time-popup__card h2 {
+  margin: 0.1rem 0 0.5rem;
+  font-family: var(--display);
+  font-size: 1.45rem;
+  color: var(--ink);
+}
+.nudge-time-popup__current {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 0.85rem;
+  color: var(--ink-2);
+  font-family: var(--ui);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.nudge-time-popup__current strong {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.05rem;
+}
+.nudge-time-popup__field {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--ink-2);
+  font-family: var(--ui);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.nudge-time-popup__field input {
+  height: 52px;
+  border: 1px solid var(--paper-line);
+  border-radius: 0.7rem;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  font-weight: 900;
+  padding: 0 0.85rem;
+}
+.nudge-time-popup__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.nudge-time-popup__actions .btn--primary {
+  flex: 1;
+}
+#drawer .drawer__actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+}
+#drawer .drawer__actions .btn {
+  min-width: 0;
+}
+#drawer #btn-submit-update {
+  grid-column: 1 / -1;
+}
+@media (max-width: 430px) {
+  #drawer .keeper-credit {
+    width: 100%;
+  }
+  #drawer .drawer__actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Two-screen drawer flow: the main masjid screen links to this keeper picker. */
+#drawer:not(.is-keeper-screen) #keepers-section {
+  display: none;
+}
+#drawer.is-keeper-screen .drawer__head,
+#drawer.is-keeper-screen #drawer-times-section,
+#drawer.is-keeper-screen .amenities-section,
+#drawer.is-keeper-screen .drawer__actions,
+#drawer.is-keeper-screen .drawer__edit,
+#drawer.is-keeper-screen .drawer__submit,
+#drawer.is-keeper-screen #recent-section {
+  display: none !important;
+}
+#drawer.is-keeper-screen #keepers-section {
+  display: block;
+}
+#drawer.is-keeper-screen .drawer__panel {
+  padding-top: 1.25rem;
+}
+.keepers-screen__head {
+  position: relative;
+  padding-right: 2rem;
+  margin-bottom: 1rem;
+}
+.keepers-screen__masjid {
+  margin: 0 0 0.15rem;
+  color: var(--brass);
+  font-family: var(--ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+.keepers-screen__title {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.8rem;
+  line-height: 1.05;
+  font-weight: 700;
+}
+.keepers-screen__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--ink-2);
+  font-size: 1.3rem;
+}
+.keepers-screen__close:hover,
+.keepers-screen__close:focus-visible {
+  background: var(--paper-2);
+  color: var(--ink);
+  outline: none;
+}
+#drawer.is-keeper-screen .keepers-banner {
+  margin-bottom: 1rem;
+}
+#drawer.is-keeper-screen .keeper-card {
+  background: color-mix(in srgb, white 72%, var(--paper));
+}
+@media (max-width: 480px) {
+  body.is-native .sun-card__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    padding: 0.5rem 0.6rem;
+  }
+}
+
+/* Footer secondary links — API docs, source, etc. */
+.foot__links {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+  font-family: var(--ui);
+}
+.foot__links a {
+  color: var(--ink-2);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 35%, transparent);
+}
+.foot__links a:hover { color: var(--green); border-bottom-color: var(--green); }
+
+/* ───── Pull-to-refresh indicator ─────
+   Sits just above the viewport at rest. js/app.js sets inline `transform`
+   and `opacity` during the touchmove drag, then either snaps it back
+   (release before threshold) or holds + adds `is-loading` (release at
+   or past threshold) while the existing refresh handler runs. */
+#ptr-indicator {
+  position: fixed;
+  top: -40px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  display: grid; place-items: center;
+  color: var(--brass);
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  /* When app.js clears inline styles (release before threshold or after
+     loading completes), this transition pulls the indicator back up
+     and fades it out. During the drag itself the inline transform
+     wins on every touchmove, so this transition has no effect. */
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+#ptr-indicator.is-armed {
+  color: var(--green);
+  /* Same subtle scale as the bell-press feedback elsewhere — confirms
+     "yes, release now and it'll fire". */
+  background: color-mix(in srgb, var(--paper) 92%, var(--green) 8%);
+}
+#ptr-indicator.is-loading svg { animation: refreshSpin 800ms linear infinite; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   DARS — Islamic lesson groups (drawer reuses .drawer / .drawer__panel)
+   ═══════════════════════════════════════════════════════════════════ */
+.dars-pill svg { color: var(--green); }
+.dars-back {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  border: none;
+  background: none;
+  color: var(--green);
+  font-family: var(--ui);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+}
+.dars-back:hover { text-decoration: underline; }
+.dars-drawer__head { padding-left: 4.5rem; }
+
+.dars-body { padding-bottom: 2rem; }
+.dars-loading { padding: 2rem 0; text-align: center; color: var(--ink-3); }
+
+.dars-actions-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.dars-list { display: flex; flex-direction: column; gap: 0.7rem; }
+.dars-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border: var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  cursor: pointer;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+.dars-card:hover { border-color: var(--green-3); box-shadow: var(--shadow); }
+.dars-card__top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.dars-card__name { font-family: var(--display); font-size: 1.2rem; font-weight: 600; color: var(--green); }
+.dars-card__meta { font-size: 0.82rem; color: var(--ink-3); }
+.dars-card__next { font-size: 0.85rem; color: var(--ink-2); }
+.dars-card__next--none { color: var(--ink-4); font-style: italic; }
+
+.dars-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brass) 22%, var(--paper));
+  color: color-mix(in srgb, var(--brass) 75%, var(--ink));
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.dars-badge--sm { font-size: 0.6rem; padding: 0.05rem 0.4rem; }
+
+.dars-empty { text-align: center; padding: 2.2rem 1rem; }
+.dars-empty__title { font-family: var(--display); font-size: 1.35rem; color: var(--green); margin-bottom: 0.3rem; }
+.dars-empty__sub { color: var(--ink-3); font-size: 0.9rem; max-width: 30ch; margin: 0 auto 1rem; }
+
+.dars-muted { color: var(--ink-3); font-size: 0.9rem; }
+.dars-muted--sm { font-size: 0.82rem; }
+
+/* Forms */
+.dars-form { display: flex; flex-direction: column; gap: 0.9rem; }
+.dars-form__title { font-family: var(--display); font-size: 1.4rem; color: var(--green); }
+.dars-form__actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.dars-field { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem; font-weight: 600; color: var(--ink-2); }
+.dars-field em { color: var(--ink-4); font-weight: 400; }
+.dars-field--inline { max-width: 12rem; }
+.dars-field input,
+.dars-field textarea {
+  font-family: var(--ui);
+  font-size: 0.95rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+}
+.dars-field input:focus,
+.dars-field textarea:focus { outline: 2px solid color-mix(in srgb, var(--green) 40%, transparent); border-color: var(--green); }
+.dars-check { display: flex; align-items: center; gap: 0.45rem; font-size: 0.88rem; color: var(--ink-2); }
+
+/* Join card */
+.dars-join-card {
+  text-align: center;
+  padding: 1.6rem 1rem;
+  border: var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.dars-join-card__eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem; font-weight: 800; color: var(--brass); }
+.dars-join-card__name { font-family: var(--display); font-size: 1.7rem; color: var(--green); margin: 0.2rem 0; }
+.dars-join-card__desc { color: var(--ink-2); font-size: 0.92rem; margin-bottom: 0.4rem; }
+.dars-join-card__meta { color: var(--ink-3); font-size: 0.85rem; margin-bottom: 1rem; }
+
+/* Detail — remind bar */
+.dars-remind-bar { margin-bottom: 1.1rem; }
+.dars-remind-btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; }
+.dars-remind-btn svg { flex: 0 0 auto; }
+
+.dars-detail-head { margin-bottom: 1rem; }
+.dars-detail__name { font-family: var(--display); font-size: 1.6rem; color: var(--green); }
+.dars-detail__desc { color: var(--ink-2); font-size: 0.92rem; margin-top: 0.2rem; }
+
+/* Share row */
+.dars-share {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.7rem 0.8rem;
+  margin-bottom: 1.2rem;
+  border: 1px dashed var(--green-3);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--green) 5%, var(--paper));
+}
+.dars-share__intro { display: flex; flex-direction: column; gap: 0.08rem; }
+.dars-share__label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--green-3); }
+.dars-share__hint { font-size: 0.78rem; color: var(--ink-3); }
+.dars-share__code {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dars-share__actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.dars-share__button { border: 0; color: #fff; }
+.dars-share__button--whatsapp { background: #168c42; }
+.dars-share__button--whatsapp:hover { background: #107135; }
+.dars-share__button--facebook { background: #1877f2; }
+.dars-share__button--facebook:hover { background: #0e63cf; }
+@media (max-width: 420px) {
+  .dars-share__code { flex-basis: 100%; }
+  .dars-share__actions { width: 100%; }
+  .dars-share__actions .btn { flex: 1 1 auto; }
+}
+/* Sections */
+.dars-section { margin-bottom: 1.5rem; }
+.dars-section__title { font-family: var(--ui); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); margin-bottom: 0.6rem; }
+.dars-count { color: var(--ink-4); }
+
+.dars-sessions { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.dars-session {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border: var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+}
+.dars-session__when { font-weight: 700; color: var(--green); font-size: 0.9rem; }
+.dars-session__title { color: var(--ink-2); font-size: 0.85rem; flex: 1; }
+.dars-session__remind {
+  margin-left: auto;
+  border: 1px solid var(--green-3);
+  background: none;
+  color: var(--green);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.dars-session__remind:hover { background: color-mix(in srgb, var(--green) 10%, var(--paper)); }
+
+/* Members */
+.dars-members { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.7rem; }
+.dars-member { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0; }
+.dars-member__avatar {
+  width: 1.9rem; height: 1.9rem;
+  flex: 0 0 auto;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: var(--green);
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+.dars-member__name { flex: 1; color: var(--ink); font-size: 0.92rem; }
+.dars-member__remove { border: none; background: none; color: var(--crimson); font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+.dars-member__remove:hover { text-decoration: underline; }
+
+.dars-add-member { display: flex; gap: 0.5rem; }
+.dars-add-member input {
+  flex: 1;
+  font-family: var(--ui);
+  font-size: 0.9rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+}
+
+/* Scheduler */
+.dars-scheduler { margin-top: 0.8rem; border: var(--rule); border-radius: var(--radius-sm); overflow: hidden; }
+.dars-scheduler__summary { padding: 0.65rem 0.8rem; font-weight: 700; color: var(--green); cursor: pointer; font-size: 0.9rem; background: var(--paper-2); }
+.dars-scheduler__body { padding: 0.8rem; }
+.dars-sched-label { font-size: 0.8rem; font-weight: 700; color: var(--ink-2); margin-bottom: 0.5rem; }
+.dars-days { display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+.dars-day {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 3.6rem;
+  padding: 0.45rem 0.5rem;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  cursor: pointer;
+}
+.dars-day.is-active { border-color: var(--green); background: color-mix(in srgb, var(--green) 12%, var(--paper)); }
+.dars-day__dow { font-size: 0.72rem; font-weight: 700; color: var(--ink-3); }
+.dars-day.is-active .dars-day__dow { color: var(--green); }
+.dars-day__date { font-size: 0.82rem; font-weight: 700; color: var(--ink); }
+.dars-sched-step2 { display: flex; flex-direction: column; gap: 0.7rem; }
+
+/* Toast */
+.dars-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translate(-50%, 1rem);
+  z-index: 4000;
+  max-width: 90vw;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--paper);
+  font-family: var(--ui);
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.dars-toast.is-shown { opacity: 1; transform: translate(-50%, 0); }
+
+.btn--sm { min-height: 30px; padding: 0 0.75rem; font-size: 0.82rem; }
+
+/* Dars reminder settings */
+.dars-settings .dars-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.5rem 0;
+}
+.dars-setting-row__label { font-size: 0.92rem; color: var(--ink); }
+.dars-setting-sub { padding-left: 0; border-top: 1px dashed var(--paper-3); margin-top: 0.3rem; padding-top: 0.4rem; }
+.dars-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 26px;
+  border-radius: 999px;
+  border: none;
+  background: var(--paper-3);
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.dars-switch.is-on { background: var(--green); }
+.dars-switch__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: transform 160ms ease;
+}
+.dars-switch.is-on .dars-switch__thumb { transform: translateX(18px); }
+.dars-minutes { display: inline-flex; align-items: center; gap: 0.4rem; }
+.dars-minutes input {
+  width: 3.6rem;
+  text-align: center;
+  font-family: var(--ui);
+  font-size: 0.95rem;
+  padding: 0.4rem 0.4rem;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+}
+.dars-minutes__suffix { font-size: 0.82rem; color: var(--ink-3); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Simple tap time picker (progressive enhancement of .submit-grid)
+   ═══════════════════════════════════════════════════════════════════ */
+.stime-grid-enhanced,          /* the original inputs, now hidden but live */
+.stime-hidden-src { display: none !important; }
+
+.stime-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.5rem 0 1.1rem; }
+.stime {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  border: var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+}
+.stime__name {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--green);
+  line-height: 1.1;
+}
+.stime__name small { font-family: var(--ui); font-weight: 500; font-size: 0.66rem; color: var(--ink-4); }
+
+.stime.is-empty { background: color-mix(in srgb, var(--green) 4%, var(--paper)); }
+.stime__set {
+  border: 1px dashed var(--green-3);
+  background: none;
+  color: var(--green);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.stime__set:active { background: var(--green-soft); }
+
+.stime__stepper { display: flex; align-items: center; gap: 0.25rem; }
+.stime__unit { display: flex; flex-direction: column; align-items: center; gap: 0.1rem; }
+.stime__btn {
+  width: 40px;
+  height: 30px;
+  border: 1px solid var(--paper-3);
+  background: var(--paper-2);
+  border-radius: 8px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--green);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.stime__btn:active { background: var(--green-soft); transform: scale(0.95); }
+.stime__val {
+  font-family: var(--mono);
+  font-size: 1.25rem;
+  font-weight: 700;
+  min-width: 2.2ch;
+  text-align: center;
+  color: var(--ink);
+}
+.stime__colon { font-size: 1.3rem; font-weight: 700; color: var(--ink-3); padding: 0 0.05rem; align-self: center; }
+.stime__ampm {
+  margin-left: 0.4rem;
+  min-width: 46px;
+  align-self: stretch;
+  border: 1.5px solid var(--green-3);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--green);
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.stime__ampm.is-pm { background: var(--green); color: var(--paper); border-color: var(--green); }
+.stime__clear {
+  margin-left: 0.15rem;
+  border: none;
+  background: none;
+  color: var(--ink-4);
+  font-size: 1.05rem;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+}
+.stime__clear:hover { color: var(--crimson); }
+
+/* Maghrib — plain labelled buttons instead of an "offset" dropdown */
+.stime--maghrib { flex-direction: column; align-items: stretch; }
+.stime__segrow { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+.stime__seg {
+  border: 1px solid var(--paper-3);
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.stime__seg.is-on { background: var(--green); color: var(--paper); border-color: var(--green); }
+
+/* Add-masjid: prominent one-tap "Use my location" */
+.addform-gps {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0.2rem 0 0.6rem;
+  font-size: 1rem;
+}
+.addform-gps svg { flex: 0 0 auto; }
+.addform-gps.is-busy { opacity: 0.7; pointer-events: none; }

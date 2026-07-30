@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reminder sound test</title>
+<style>
+  body { margin:0; min-height:100vh; display:grid; place-items:center;
+    font-family: system-ui, sans-serif; background:#0F2A1E; color:#FAEED4; text-align:center; padding:2rem; }
+  .card { max-width:460px; }
+  h1 { font-weight:600; font-size:1.5rem; margin-bottom:.4rem; }
+  p { color:#DFE9E1; margin:.2rem 0 1.4rem; }
+  button { font-size:1.15rem; font-weight:700; padding:1rem 1.6rem; border:none; border-radius:999px;
+    background:#D4AF37; color:#0F2A1E; cursor:pointer; }
+  button:active { transform:scale(.97); }
+  audio { margin-top:1.4rem; width:100%; }
+  .status { margin-top:1rem; font-size:.9rem; color:#6FCF97; min-height:1.2em; }
+  a { color:#6FCF97; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔔 Reminder sound test</h1>
+    <p>This plays <code>assets/adhan.mp3</code> — the exact sound your namaz &amp; dars reminders now use.</p>
+    <button id="play">▶ Play the azan</button>
+    <audio id="a" src="assets/adhan.mp3" controls preload="auto"></audio>
+    <div class="status" id="s"></div>
+    <p style="margin-top:1.5rem"><a href="/?mock=1#dars">← Back to the app (Dars)</a></p>
+  </div>
+<script>
+  const a = document.getElementById('a');
+  const s = document.getElementById('s');
+  const btn = document.getElementById('play');
+  function play() {
+    a.currentTime = 0;
+    a.play().then(() => { s.textContent = '▶ Playing… (13.9s azan)'; })
+            .catch(e => { s.textContent = 'Tap ▶ once — the browser needs a click first.'; });
+  }
+  btn.addEventListener('click', play);
+  a.addEventListener('ended', () => { s.textContent = '✓ Finished. That is your reminder sound.'; });
+  // Try autoplay on load; browsers usually block it, then the button works.
+  window.addEventListener('load', play);
+</script>
+</body>
+</html>

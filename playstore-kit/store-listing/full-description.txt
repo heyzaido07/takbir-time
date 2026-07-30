@@ -1,0 +1,30 @@
+Takbeer Time helps you find the exact jamat (congregation) prayer times at masjids near you, so you can be in line before the imam says Allahu Akbar.
+
+Free. No ads. Ever. This is a community project — sadqa fe sabilillah.
+
+WHY TAKBEER TIME
+Most prayer-time apps show astronomical begin-times — when the prayer time enters. They don't tell you when YOUR masjid actually holds jamat. Jamat times vary masjid-to-masjid (and season-to-season), and missing the takbeer means missing the prayer in jamat. Takbeer Time fixes that.
+
+CROWD-SOURCED, KEEPER-VERIFIED
+Anyone can submit a timing. Each masjid has one or more "time-keepers" — community members trusted to maintain accurate times. You can follow a keeper's times, or use the consensus across all submissions. When times change (Ramadan, daylight savings, summer schedule), pushes go out to everyone following.
+
+WHAT YOU GET
+- Find masjids near you on the map
+- See today's jamat times for each masjid
+- Set reminders before each prayer (Fajr, Dhuhr, Asr, Maghrib, Isha, Jummah)
+- Track qaza namaz privately on your phone, then mark each one prayed
+- Pin a default masjid — its next prayer is always on your home screen
+- Save favorites
+- Submit timings for masjids you pray at
+- Suggest updates to time-keepers when their times need to change
+- Sun-position prayer times computed locally for any fiqh (Hanafi, Shafi, Maliki, Hanbali, Jafari, ISNA, Egyptian, Umm al-Qura)
+- 10 languages: English, Arabic, Urdu, Indonesian, Bengali, Hindi, Turkish, Persian, Malay, French
+
+PRIVACY
+We collect only what's needed to run the app: your email and the times/notes you submit. Your qaza namaz tracker is stored on your device, not published to the community directory. No analytics SDKs. No advertising trackers. No data sales. You can delete your account at any time, in-app or via our web form.
+
+OPEN API
+The full directory + jamat times are available via a free public API at takbeertime.com/api-docs. Build a widget for your masjid's website, a Slack bot, a dashboard — anything.
+
+OPEN SOURCE
+github.com/mjqazi/Jamat

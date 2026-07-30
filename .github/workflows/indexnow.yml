@@ -1,0 +1,83 @@
+name: Notify IndexNow
+
+on:
+  push:
+    branches: [live]
+    paths:
+      - "blog/**/*.html"
+      - "sitemap.xml"
+      - "robots.txt"
+      - "1badcdd4-dd4e-4de5-84bc-2f82feef1dd9.txt"
+      - ".github/workflows/indexnow.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build IndexNow payload
+        env:
+          INDEXNOW_HOST: takbeertime.com
+          INDEXNOW_KEY: 1badcdd4-dd4e-4de5-84bc-2f82feef1dd9
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const cp = require('child_process');
+
+          const host = process.env.INDEXNOW_HOST;
+          const key = process.env.INDEXNOW_KEY;
+          const before = process.env.BEFORE_SHA || '';
+          const head = process.env.HEAD_SHA || 'HEAD';
+          const eventName = process.env.EVENT_NAME || '';
+          const zeroSha = /^0+$/.test(before);
+
+          const run = (cmd) => cp.execSync(cmd, { encoding: 'utf8' }).trim();
+          let files = [];
+          if (eventName === 'workflow_dispatch' || zeroSha) {
+            files = run('git ls-files "blog/**/*.html" sitemap.xml')
+              .split(/\r?\n/)
+              .filter(Boolean);
+          } else {
+            files = run(`git diff --name-only ${before} ${head}`)
+              .split(/\r?\n/)
+              .filter(Boolean);
+          }
+
+          const urls = new Set();
+          for (const file of files) {
+            const normalized = file.replace(/\\/g, '/');
+            if (!fs.existsSync(normalized)) continue;
+            if (normalized === 'sitemap.xml' || /^blog\/.+\.html$/.test(normalized)) {
+              urls.add(`https://${host}/${normalized}`);
+            }
+          }
+          urls.add(`https://${host}/sitemap.xml`);
+
+          const payload = {
+            host,
+            key,
+            keyLocation: `https://${host}/${key}.txt`,
+            urlList: [...urls],
+          };
+
+          fs.writeFileSync('indexnow-payload.json', JSON.stringify(payload, null, 2));
+          console.log(JSON.stringify(payload, null, 2));
+          NODE
+
+      - name: Submit to IndexNow
+        run: |
+          curl --fail-with-body \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -X POST \
+            --data @indexnow-payload.json \
+            "https://api.indexnow.org/indexnow"

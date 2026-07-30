@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0F2A1E" />
+  <title>Privacy Policy — Takbeer Time</title>
+  <meta name="description" content="What Takbeer Time collects, why, where it lives, and how to delete it. Plain-language privacy policy for a sadqa-jariah, ad-free crowd-sourced jamat-times app." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/jamat.css?v=37" />
+  <style>
+    /* Page-local layout for legal docs. Reuses jamat.css palette + type. */
+    .legal-page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: clamp(1rem, 4vw, 2.5rem) var(--pad) 4rem;
+      font-family: var(--ui);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    .legal-page h1 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      line-height: 1.1;
+      margin: 0 0 0.4rem;
+      color: var(--green);
+      letter-spacing: -0.01em;
+    }
+    .legal-page h1 em { color: var(--green); }
+    .legal-page .legal-meta {
+      font-size: 0.85rem;
+      color: var(--ink-3);
+      margin: 0 0 2rem;
+    }
+    .legal-page h2 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 1.55rem;
+      color: var(--green);
+      margin: 2.2rem 0 0.6rem;
+      letter-spacing: -0.005em;
+    }
+    .legal-page h3 {
+      font-family: var(--ui);
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--ink);
+      margin: 1.4rem 0 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.78rem;
+      color: var(--ink-2);
+    }
+    .legal-page p { margin: 0 0 0.9rem; }
+    .legal-page ul { margin: 0 0 1rem 0; padding-left: 1.2rem; list-style: disc; }
+    .legal-page li { margin: 0.25rem 0; }
+    .legal-page code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      background: var(--paper-2);
+      padding: 0.05em 0.35em;
+      border-radius: 4px;
+      color: var(--ink-2);
+    }
+    .legal-page a { color: var(--green); border-bottom: 1px solid color-mix(in srgb, var(--green) 35%, transparent); }
+    .legal-page a:hover { border-bottom-color: var(--green); }
+    .legal-page .callout {
+      background: var(--paper-2);
+      border-left: 3px solid var(--brass);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      margin: 1.2rem 0;
+      font-size: 0.95rem;
+    }
+    .legal-page .callout strong { color: var(--green); }
+    .legal-page .legal-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      color: var(--ink-2);
+      margin-bottom: 1.8rem;
+      text-decoration: none;
+      border-bottom: 0;
+    }
+    .legal-page .legal-back:hover { color: var(--green); }
+    .legal-page .legal-toc {
+      background: var(--paper-2);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      margin: 0 0 2rem;
+      font-size: 0.92rem;
+    }
+    .legal-page .legal-toc h3 {
+      margin: 0 0 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+    }
+    .legal-page .legal-toc ol {
+      list-style: decimal;
+      padding-left: 1.4rem;
+      margin: 0;
+    }
+    .legal-page .legal-toc li { margin: 0.15rem 0; }
+    .legal-page .legal-toc a { border-bottom: 0; color: var(--ink-2); }
+    .legal-page .legal-toc a:hover { color: var(--green); border-bottom: 1px solid var(--green); }
+    .legal-page table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5rem 0 1.2rem;
+      font-size: 0.92rem;
+    }
+    .legal-page th, .legal-page td {
+      border-bottom: 1px solid var(--paper-3);
+      padding: 0.55rem 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    .legal-page th {
+      font-weight: 600;
+      color: var(--ink-2);
+      background: var(--paper-2);
+    }
+    .legal-page td:first-child { font-weight: 500; white-space: nowrap; width: 30%; }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/" aria-label="Takbeer Time — home">
+    <span class="brand__mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="24" height="24">
+        <path d="M16 3.5 a3 3 0 1 0 2.4 4.9 a2.4 2.4 0 1 1 -2.4 -4.9z" fill="currentColor"/>
+        <line x1="5" y1="15" x2="5" y2="27" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <circle cx="5" cy="13" r="1.2" fill="currentColor"/>
+        <line x1="27" y1="15" x2="27" y2="27" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <circle cx="27" cy="13" r="1.2" fill="currentColor"/>
+        <path d="M9 27 V20 Q9 13 16 13 Q23 13 23 20 V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M14 27 V22 Q14 20.4 16 20.4 Q18 20.4 18 22 V27 Z" fill="currentColor"/>
+        <line x1="2.5" y1="27" x2="29.5" y2="27" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <span class="brand__name">Takbeer Time</span>
+  </a>
+</header>
+
+<main class="legal-page">
+  <a class="legal-back" href="/">← Back to the app</a>
+
+  <h1>Privacy <em>Policy</em></h1>
+  <p class="legal-meta">Effective: 29 April 2026 · Last updated: 14 May 2026</p>
+
+  <p>Takbeer Time is a non-commercial, ad-free, crowd-sourced directory of jamat (congregation) prayer times at masjids. This page tells you exactly what we collect, why, where it lives, and how to remove it.</p>
+
+  <p>We've tried to keep this in plain language. If anything is unclear, email <a href="mailto:qazi.junaid@gmail.com">qazi.junaid@gmail.com</a> and we'll fix it.</p>
+
+  <div class="callout">
+    <strong>The short version.</strong> No ads, no ad networks, and no analytics SDK in the Android app. The public website uses Google Analytics 4 to understand page traffic and referral sources; ad personalization and Google signals are disabled. We collect only what's needed to run the app: your email, the times and notes you submit, and the masjids you favourite or pick as your default. You can delete your account anytime — in-app, or by request at <a href="/delete-account.html">/delete-account.html</a>.
+  </div>
+
+  <div class="legal-toc">
+    <h3>On this page</h3>
+    <ol>
+      <li><a href="#collect">What we collect</a></li>
+      <li><a href="#dont-collect">What we don't collect</a></li>
+      <li><a href="#third-parties">Third-party services we rely on</a></li>
+      <li><a href="#why">Why each item is collected</a></li>
+      <li><a href="#where">Where it lives</a></li>
+      <li><a href="#retention">Data retention</a></li>
+      <li><a href="#rights">Your rights (access, correction, deletion, export)</a></li>
+      <li><a href="#children">Children</a></li>
+      <li><a href="#gdpr">GDPR / California (CCPA) rights</a></li>
+      <li><a href="#changes">Changes to this policy</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <h2 id="collect">1. What we collect</h2>
+
+  <h3>Account data (only if you sign in)</h3>
+  <ul>
+    <li><strong>Email address</strong> (required) — your account identifier and the address Google or Firebase uses to verify your sign-in.</li>
+    <li><strong>Full name</strong> (optional) — only if you choose to set it. Shown next to your submitted timings so other users see who contributed.</li>
+    <li><strong>Phone number</strong> (optional) — currently unused by features; the field exists in the schema for future contact preferences.</li>
+    <li><strong>Password hash</strong> — if you sign up with email + password, we store a bcrypt hash (cost factor 12) of your password. We never see or store the plaintext.</li>
+    <li><strong>Firebase UID</strong> — if you sign in with Google, we store the unique ID Firebase assigns you so we can recognise you on future sign-ins. Email/password users do not have one.</li>
+    <li><strong>Email-verified timestamp</strong> — set automatically when you sign in via Google (which guarantees the email is verified).</li>
+    <li><strong>Timestamps</strong> — when your account was created, last updated, and last signed-in.</li>
+  </ul>
+
+  <h3>Content you submit</h3>
+  <ul>
+    <li><strong>Prayer timings</strong> — the jamat times you submit for a masjid (Fajr, Dhuhr, Asr, Maghrib offset from sunset, Isha, Jummah). These are shown publicly to anyone using the directory or our public API.</li>
+    <li><strong>Submission notes</strong> — free-text notes you optionally attach to a timing submission.</li>
+    <li><strong>Reviews and ratings</strong> — if you write one, your name (or "Anonymous" if you didn't set one) is shown next to it.</li>
+    <li><strong>Suggestions you send</strong> — if you suggest a timing change to a time-keeper, your username and the suggested values are visible to that keeper.</li>
+    <li><strong>Mosques you add</strong> — the basic info (name, city, country, lat/lng) of any masjid you submit to the directory. These are public.</li>
+  </ul>
+
+  <h3>Preferences</h3>
+  <ul>
+    <li><strong>Favorites</strong> — which masjids you saved.</li>
+    <li><strong>Default masjid</strong> — the one shown on your home screen.</li>
+    <li><strong>Preferred time-keepers</strong> — for each masjid you've favourited, which keeper's submitted times you've chosen to follow.</li>
+    <li><strong>Reminder preferences</strong> — which prayers you've enabled reminders for, and how many minutes before jamat you want to be notified.</li>
+    <li><strong>Preferred language</strong> — for app translations.</li>
+  </ul>
+
+  <h3>Device-side state (stored only on your phone or browser)</h3>
+  <ul>
+    <li><strong>Sign-in token</strong> — after you sign in, we keep a JWT in <code>localStorage</code> so you don't have to sign in again on every visit. It's bound to your account and expires after 30 days.</li>
+    <li><strong>Last-known location</strong> — when you tap "Find masjids near me," your phone's GPS coordinates are read by the app and sent to our backend <em>once</em> as part of the search query (so the server can return masjids within radius). We do not store the coordinates on the server. The app may cache them in <code>localStorage</code> on your device so the home screen can recompute sun-position prayer times without re-prompting for location each visit. You can clear them by clearing the app's storage.</li>
+    <li><strong>Reminder schedule</strong> — your prayer reminder preferences are mirrored to <code>localStorage</code> on the device so the app can fire reminders even when offline. They are also synced to your account if you're signed in.</li>
+    <li><strong>FCM topic subscriptions</strong> (mobile only) — when you follow a time-keeper or sign in to receive suggestion notifications, your device subscribes to a Firebase Cloud Messaging topic. The list of topics this device has subscribed to is kept in <code>localStorage</code> under <code>takbeer_fcm_topics_v1</code> so we can clean them up when you sign out.</li>
+    <li><strong>Cached masjids</strong> — masjids you've recently viewed are cached in <code>localStorage</code> so the home screen renders instantly the next time you open the app.</li>
+  </ul>
+
+  <h3>Server-side request logs</h3>
+  <p>Our backend logs each request's method, path, response status, and an approximate timestamp for operational debugging. These logs include your IP address (standard for any web service). Logs are retained for at most 30 days and are not used for analytics or sold to anyone.</p>
+
+  <h3>Push notifications (mobile app only)</h3>
+  <p>If you grant notification permission on the mobile app, Firebase Cloud Messaging (FCM) issues your device a token so we can deliver pushes. The token is stored on Google's servers — not ours — and is associated with topics like <code>keeper-update-&lt;mosqueId&gt;</code> (when you follow a keeper) or <code>suggest-to-&lt;userId&gt;</code> (so a keeper hears about new suggestions). We don't store the FCM token on our backend; we publish to topics, and Google routes the push to subscribed devices.</p>
+
+  <h2 id="dont-collect">2. What we don't collect</h2>
+  <ul>
+    <li><strong>No analytics SDK in the Android app.</strong> The public website uses Google Analytics 4 for aggregate page-traffic reporting. It is disabled on localhost, the LAN deployment host, admin pages, and native app shells.</li>
+    <li><strong>No advertising.</strong> No ad networks, no remarketing pixels, no third-party ad cookies. The app and API are <em>sadqa-jariah</em>; ads would defeat the point.</li>
+    <li><strong>No fingerprinting.</strong> We don't profile your device, browser, or behavior beyond the operational request logs above.</li>
+    <li><strong>No microphone, camera, or contacts access.</strong> The app doesn't ask for them.</li>
+    <li><strong>No selling, sharing, or trading of your data</strong> with anyone, ever. (This bears repeating: there is no business model that would tempt us to.)</li>
+  </ul>
+
+  <p>The codebase mentions an optional <code>SENTRY_DSN</code> environment variable for crash reporting. As of the current production deployment, Sentry is <strong>not</strong> configured — no error reports are sent anywhere. If we enable it in the future, this page will be updated to disclose it before any data is sent.</p>
+
+  <h2 id="third-parties">3. Third-party services we rely on</h2>
+
+  <p>Running a free, open service still requires some infrastructure. These are the third parties involved, and what they receive:</p>
+
+  <table>
+    <tr>
+      <th>Service</th>
+      <th>What it sees</th>
+    </tr>
+    <tr>
+      <td><strong>Firebase Authentication</strong> (Google)</td>
+      <td>Verifies Google sign-ins and email/password sign-ins. Receives your email and a Firebase-issued user ID. <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase privacy</a></td>
+    </tr>
+    <tr>
+      <td><strong>Firebase Cloud Messaging</strong> (Google)</td>
+      <td>Routes push notifications to your device. Sees your device's FCM token and the topics it has subscribed to. <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase privacy</a></td>
+    </tr>
+    <tr>
+      <td><strong>OpenStreetMap</strong></td>
+      <td>The web app and mobile app render maps using OpenStreetMap tiles. When the map is open, your device requests tiles from <code>tile.openstreetmap.org</code>, which sees your IP and the tile coordinates you're viewing. <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">OSMF privacy</a></td>
+    </tr>
+    <tr>
+      <td><strong>Google Fonts</strong></td>
+      <td>The web pages load three font families (Cormorant Garamond, Inter Tight, JetBrains Mono) from <code>fonts.googleapis.com</code>. Google receives the request, including your IP. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google privacy</a></td>
+    </tr>
+    <tr>
+      <td><strong>Google Analytics 4</strong></td>
+      <td>The public website uses GA4 measurement ID <code>G-CHT5XZFH8X</code> to understand page views, referral sources, browser/device information, and approximate geography. Ad personalization and Google signals are disabled in our tag configuration. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google privacy</a></td>
+    </tr>
+    <tr>
+      <td><strong>Hosting / CDN</strong></td>
+      <td>The web app and API are served from our self-hosted server. The host sees standard request metadata (IP, path, user-agent).</td>
+    </tr>
+  </table>
+
+  <p>We do <em>not</em> use Google Maps Platform — the placeholder Maps key referenced in the repo is unused on production. The map is OpenStreetMap-based.</p>
+
+  <h2 id="why">4. Why each item is collected</h2>
+  <ul>
+    <li><strong>Email</strong> — to identify your account, recognise you across devices, and accept Google ID-token sign-ins.</li>
+    <li><strong>Password hash</strong> — to verify email/password sign-ins. Bcrypt with cost factor 12 means even a database leak would take an attacker years per password to brute-force.</li>
+    <li><strong>Firebase UID</strong> — so we can match a Google sign-in token back to your existing account row instead of creating a duplicate.</li>
+    <li><strong>Full name</strong> — to attribute your contributions so the community can see who's keeping the times for their masjid.</li>
+    <li><strong>Submitted timings + notes</strong> — they're the entire point of the app. They're public on purpose.</li>
+    <li><strong>Favourites, default masjid, preferred keepers</strong> — to personalise the home screen and notify you when "your" times change.</li>
+    <li><strong>Reminder preferences</strong> — to fire your prayer reminders at the times you set, and to keep them in sync if you sign in on another device.</li>
+    <li><strong>Location (in-memory)</strong> — to find masjids near you. Sent once per "Find near me" tap; not stored on the server.</li>
+    <li><strong>FCM topic subscriptions</strong> — so push notifications reach the right device when a keeper updates times or a suggestion arrives in your inbox.</li>
+  </ul>
+
+  <h2 id="where">5. Where it lives</h2>
+  <ul>
+    <li><strong>Account data + submitted content</strong> are stored in a PostgreSQL database on our self-hosted server. <em>(Operator note: hosting region needs final human confirmation before launch — please verify the deployment region.)</em></li>
+    <li><strong>FCM tokens and push delivery</strong> are handled by Google's Firebase infrastructure.</li>
+    <li><strong>Local preferences</strong> (favorites cache, sign-in token, reminder schedule, language, FCM topic list) live in your device's <code>localStorage</code> and are never transmitted unless explicitly synced to your account.</li>
+    <li><strong>No audio, photo, or video data</strong> is collected anywhere — there is currently no feature that captures any.</li>
+  </ul>
+
+  <h2 id="retention">6. Data retention</h2>
+  <ul>
+    <li><strong>Active accounts</strong> are retained as long as you keep the account.</li>
+    <li><strong>Account deletion</strong> is a <em>soft delete</em>: when you delete your account (in-app or via the web form), the row is marked <code>deletedAt = NOW()</code> and you can no longer sign in. Personally identifiable fields (email, name, password hash, Firebase UID) become inaccessible from the API.</li>
+    <li><strong>Your submitted prayer timings</strong> are retained even after you delete your account, but they are <strong>re-attributed anonymously</strong> — your name is replaced with "Deleted user" in any public attribution. This is intentional: a deleted account shouldn't erase the timings the community is relying on right now to know when to be at jamat. If you want a specific submission removed, contact us.</li>
+    <li><strong>Favourites, your sent suggestions, and reminder preferences</strong> are removed when your account is soft-deleted.</li>
+    <li><strong>Suggestions sent <em>to</em> you</strong> are retained, since the senders should still see what they suggested (and that the recipient is no longer available).</li>
+    <li><strong>Backups</strong> may retain a snapshot of deleted records for up to 30 days for disaster-recovery purposes; after that, they're rotated out.</li>
+    <li><strong>Server logs</strong> are retained for up to 30 days.</li>
+  </ul>
+
+  <h2 id="rights">7. Your rights</h2>
+  <ul>
+    <li><strong>Access</strong> — sign in to view your profile, favourites, submissions, and preferences.</li>
+    <li><strong>Correction</strong> — you can edit your full name, language, and preferences from the app. Email changes: ask us.</li>
+    <li><strong>Deletion</strong> — there are two ways:
+      <ul>
+        <li><em>In-app:</em> open the app while signed in, then tap "Delete my account" (in the footer or your profile area). You'll get a confirmation screen explaining what will be deleted; on confirm, the deletion happens immediately and you'll be signed out.</li>
+        <li><em>Web (no sign-in needed):</em> visit <a href="/delete-account.html">/delete-account.html</a>, enter the email associated with your account, and we'll process the deletion request manually within 7 days. This path is for users who can't access the app anymore.</li>
+      </ul>
+    </li>
+    <li><strong>Portability</strong> — JSON export of your data is not yet self-serve. Email <a href="mailto:qazi.junaid@gmail.com">qazi.junaid@gmail.com</a> and we'll send you a dump within 30 days.</li>
+    <li><strong>Object / restrict processing</strong> — email us; we'll act on the request.</li>
+  </ul>
+
+  <h2 id="children">8. Children</h2>
+  <p>Takbeer Time is intended for users <strong>13 and older</strong>. We don't knowingly collect data from children under 13. If you believe a child has provided us with personal data, email us and we'll remove it.</p>
+
+  <h2 id="gdpr">9. GDPR / California (CCPA) rights</h2>
+  <p>If you live in the EEA, the UK, or California, you have additional rights including the right to access your data, correct it, delete it, restrict processing, object to processing, and complain to a supervisory authority. To exercise any of these, email <a href="mailto:qazi.junaid@gmail.com">qazi.junaid@gmail.com</a> and we'll respond within 30 days.</p>
+  <p>We do not "sell" personal information as defined by the CCPA, and we do not perform automated decision-making or profiling.</p>
+
+  <h2 id="changes">10. Changes to this policy</h2>
+  <p>If we change anything material, we'll update the "Last updated" date at the top and post a note in the app. We won't expand what we collect without notice.</p>
+
+  <h2 id="contact">11. Contact</h2>
+  <p>Privacy questions, data requests, or concerns:</p>
+  <p><a href="mailto:qazi.junaid@gmail.com">qazi.junaid@gmail.com</a></p>
+  <p>Project owner: Junaid Qazi · Project: Takbeer Time</p>
+
+  <p style="margin-top: 3rem;"><a href="/" class="legal-back">← Back to the app</a></p>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Takbeer Time Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #10291d;
+      --muted: #66736a;
+      --paper: #fffaf1;
+      --panel: #ffffff;
+      --line: #d9d1c1;
+      --green: #0f3b2b;
+      --green-2: #18563f;
+      --brass: #b58b4d;
+      --warn: #8a4b10;
+      --bad: #8d1f1f;
+      --shadow: 0 16px 42px rgba(16, 41, 29, 0.12);
+      font-family: "Inter Tight", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+    }
+    button, input { font: inherit; }
+    a { color: var(--green); text-decoration: none; font-weight: 600; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 64px;
+      padding: 0 24px;
+      background: rgba(255, 250, 241, 0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .brand { font-weight: 700; letter-spacing: 0.02em; }
+    .shell { width: min(1220px, calc(100% - 32px)); margin: 28px auto 64px; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 20px;
+    }
+    h1 { margin: 0 0 6px; font-size: clamp(2rem, 5vw, 4rem); line-height: 0.95; }
+    .muted { color: var(--muted); margin: 0; }
+    .controls {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .signin {
+      max-width: 520px;
+      margin: 40px auto;
+    }
+    .signin form {
+      display: grid;
+      gap: 0.7rem;
+      margin-top: 1rem;
+    }
+    input {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 12px;
+      background: #fffdf8;
+      color: var(--ink);
+    }
+    .btn {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      border: 1px solid var(--green);
+      border-radius: 999px;
+      padding: 0 18px;
+      background: var(--green);
+      color: #fffaf1;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: var(--green);
+    }
+    .btn.danger {
+      border-color: var(--bad);
+      color: var(--bad);
+      background: transparent;
+    }
+    .btn:disabled { opacity: 0.55; cursor: progress; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .stat {
+      background: var(--green);
+      color: #fffaf1;
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 92px;
+    }
+    .stat span {
+      display: block;
+      color: rgba(255, 250, 241, 0.72);
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .stat strong {
+      display: block;
+      margin-top: 0.5rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 2rem;
+    }
+    .section {
+      margin-top: 16px;
+    }
+    .section__head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 10px;
+    }
+    h2 { margin: 0; font-size: 1.25rem; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; min-width: 860px; background: #fffdf8; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      background: #f7efe2;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .mono { font-family: "JetBrains Mono", monospace; font-size: 0.82rem; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #efe5d3;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 0.78rem;
+      margin: 0 4px 4px 0;
+    }
+    .status {
+      color: var(--warn);
+      font-weight: 700;
+      margin-top: 12px;
+    }
+    .empty {
+      padding: 22px;
+      color: var(--muted);
+      background: #fffdf8;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+    }
+    [hidden] { display: none !important; }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .controls { justify-content: flex-start; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .topbar { padding: 0 16px; }
+      .shell { width: min(100% - 20px, 1220px); }
+      .stats { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      .controls { align-items: stretch; }
+      .controls input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Takbeer Time Admin</div>
+    <button class="btn danger" id="signout-btn" type="button" hidden>Sign out</button>
+  </header>
+
+  <main class="shell">
+    <section class="panel signin" id="signin-panel" hidden>
+      <h1>Admin Sign In</h1>
+      <p class="muted">Use the admin account for this portal. The admin API is hidden from non-admin users.</p>
+      <form id="signin-form">
+        <input id="email" type="email" autocomplete="email" value="junaid.qazi.veemed@gmail.com" required />
+        <input id="password" type="password" autocomplete="current-password" placeholder="Password" />
+        <button class="btn" type="submit">Sign in with email</button>
+      </form>
+      <button class="btn secondary" id="google-btn" type="button" style="margin-top: 0.7rem;">Continue with Google</button>
+      <p class="status" id="signin-status" hidden></p>
+    </section>
+
+    <section id="dashboard" hidden>
+      <div class="hero">
+        <div>
+          <h1>Admin Overview</h1>
+          <p class="muted" id="range-label">Loading...</p>
+        </div>
+        <div class="controls">
+          <input id="start-date" type="date" aria-label="Start date" />
+          <input id="end-date" type="date" aria-label="End date" />
+          <button class="btn secondary" id="refresh-btn" type="button">Refresh</button>
+        </div>
+      </div>
+
+      <div class="stats" id="stats"></div>
+
+      <section class="panel section">
+        <div class="section__head">
+          <h2>Active Users</h2>
+          <p class="muted">Signed-in users seen in the selected day.</p>
+        </div>
+        <div id="active-users"></div>
+      </section>
+
+      <section class="panel section">
+        <div class="section__head">
+          <h2>New Signups</h2>
+          <p class="muted">Accounts created in the selected day.</p>
+        </div>
+        <div id="signup-sources" style="margin-bottom: 12px;"></div>
+        <div id="new-signups"></div>
+      </section>
+
+      <section class="panel section">
+        <div class="section__head">
+          <h2>Google Sign-ins</h2>
+          <p class="muted">Users who signed in with a Google account in the selected day.</p>
+        </div>
+        <div id="google-users"></div>
+      </section>
+
+      <section class="panel section">
+        <div class="section__head">
+          <h2>Masjids With Namaz Times Added</h2>
+          <p class="muted">Grouped by masjid from timing submissions.</p>
+        </div>
+        <div id="masjid-times"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="js/config.js?v=4"></script>
+  <script src="js/auth-exchange.js?v=1"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script>
+    const els = {
+      signinPanel: document.getElementById('signin-panel'),
+      signinForm: document.getElementById('signin-form'),
+      signinStatus: document.getElementById('signin-status'),
+      googleBtn: document.getElementById('google-btn'),
+      signoutBtn: document.getElementById('signout-btn'),
+      dashboard: document.getElementById('dashboard'),
+      startDate: document.getElementById('start-date'),
+      endDate: document.getElementById('end-date'),
+      refresh: document.getElementById('refresh-btn'),
+      range: document.getElementById('range-label'),
+      stats: document.getElementById('stats'),
+      activeUsers: document.getElementById('active-users'),
+      newSignups: document.getElementById('new-signups'),
+      googleUsers: document.getElementById('google-users'),
+      masjidTimes: document.getElementById('masjid-times'),
+      signupSources: document.getElementById('signup-sources'),
+      email: document.getElementById('email'),
+      password: document.getElementById('password'),
+    };
+
+    function apiUrl(path) {
+      return new URL(window.JAMAT_CONFIG.apiBase + path, window.location.origin).toString();
+    }
+
+    function esc(value) {
+      return String(value ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function fmtDateTime(value) {
+      if (!value) return '-';
+      return new Date(value).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    function inputDate(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function setDefaultDate() {
+      const end = new Date();
+      end.setDate(end.getDate() - 1);
+      const start = new Date(end);
+      start.setDate(start.getDate() - 6);
+      els.startDate.value = inputDate(start);
+      els.endDate.value = inputDate(end);
+    }
+
+    function setStatus(message) {
+      els.signinStatus.textContent = message || '';
+      els.signinStatus.hidden = !message;
+    }
+
+    function waitForAuth() {
+      return new Promise((resolve, reject) => {
+        const started = Date.now();
+        const timer = setInterval(() => {
+          if (window.auth) {
+            clearInterval(timer);
+            resolve(window.auth);
+          } else if (Date.now() - started > 8000) {
+            clearInterval(timer);
+            reject(new Error('Google auth did not load'));
+          }
+        }, 50);
+      });
+    }
+
+    async function emailSignIn(event) {
+      event.preventDefault();
+      setStatus('Signing in...');
+      const res = await fetch(apiUrl('/auth/login'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: els.email.value.trim(),
+          password: els.password.value,
+        }),
+      });
+      const body = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(body?.error || body?.message || 'Sign in failed');
+      window.authExchange.storeAppJwt(body.token, body.user);
+      els.password.value = '';
+      setStatus('');
+      await loadOverview();
+    }
+
+    async function googleSignIn() {
+      setStatus('Opening Google sign in...');
+      const auth = await waitForAuth();
+      if (!auth.isConfigured()) throw new Error('Google sign in is not configured');
+      const result = await auth.signInWithGoogle();
+      const idToken = await result.user.getIdToken();
+      await window.authExchange.exchangeFirebaseToken(idToken);
+      setStatus('');
+      await loadOverview();
+    }
+
+    async function adminFetch(path) {
+      const token = window.authExchange.getStoredAppJwt();
+      if (!token) throw new Error('No stored admin session');
+      const res = await fetch(apiUrl(path), {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const body = await res.json().catch(() => null);
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 404) {
+          window.authExchange.clearStoredAppJwt();
+          throw new Error('This account is not authorized for the admin panel.');
+        }
+        throw new Error(body?.error || body?.message || `HTTP ${res.status}`);
+      }
+      return body;
+    }
+
+    function locationCell(location) {
+      if (!location) return '<span class="muted">No location yet</span>';
+      const source = location.source === 'last_nearby_search' ? 'Last app location' : 'Default masjid';
+      const label = location.label ? `<div>${esc(location.label)}</div>` : '';
+      return `
+        ${label}
+        <div><span class="chip">${esc(source)}</span></div>
+        <div class="mono">${Number(location.lat).toFixed(5)}, ${Number(location.lng).toFixed(5)}</div>
+        <a href="${esc(location.mapsUrl)}" target="_blank" rel="noopener">Open map</a>
+        ${location.at ? `<div class="muted">${fmtDateTime(location.at)}</div>` : ''}
+      `;
+    }
+
+    function userTable(users, emptyText) {
+      if (!users.length) return `<div class="empty">${esc(emptyText)}</div>`;
+      return `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Last seen</th>
+                <th>Geo location</th>
+                <th>Default masjid</th>
+                <th>Activity</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${users.map(u => `
+                <tr>
+                  <td>
+                    <strong>${esc(u.fullName || u.email)}</strong>
+                    <div class="muted">${esc(u.email)}</div>
+                    <div class="mono">${esc(u.id)}</div>
+                  </td>
+                  <td>
+                    <div>${fmtDateTime(u.lastSeenAt)}</div>
+                    <div class="muted">Created ${fmtDateTime(u.createdAt)}</div>
+                  </td>
+                  <td>${locationCell(u.location)}</td>
+                  <td>
+                    ${u.defaultMosque ? `
+                      <strong>${esc(u.defaultMosque.name)}</strong>
+                      <div class="muted">${esc([u.defaultMosque.city, u.defaultMosque.country].filter(Boolean).join(', '))}</div>
+                    ` : '<span class="muted">None</span>'}
+                  </td>
+                  <td>
+                    <div><span class="chip">${esc(u.lastActivityType || 'signup')}</span></div>
+                    ${u.authProvider ? `<div><span class="chip">provider: ${esc(u.authProvider)}</span></div>` : ''}
+                    ${u.acquisitionSource ? `<div><span class="chip">source: ${esc(u.acquisitionSource)}</span></div>` : ''}
+                    ${u.googleSignInCount ? `<div>${Number(u.googleSignInCount)} Google sign-in(s)</div>` : ''}
+                    <div>${Number(u.requestCount || 0)} logged request(s)</div>
+                    <div class="muted">${Number(u.timingSubmissionCount || 0)} timing submissions</div>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function timingSummary(timings) {
+      if (!timings || typeof timings !== 'object') return '';
+      return Object.entries(timings).map(([key, value]) => {
+        const v = Array.isArray(value) ? value.join(', ') : value;
+        return `<span class="chip">${esc(key)}: ${esc(v)}</span>`;
+      }).join('');
+    }
+
+    function masjidTable(rows) {
+      if (!rows.length) return '<div class="empty">No timing submissions for this day.</div>';
+      return `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Masjid</th>
+                <th>Latest</th>
+                <th>Submitters</th>
+                <th>Submissions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map(row => `
+                <tr>
+                  <td>
+                    <strong>${esc(row.mosque.name)}</strong>
+                    <div class="muted">${esc([row.mosque.city, row.mosque.country].filter(Boolean).join(', '))}</div>
+                    <div class="mono">${Number(row.mosque.latitude).toFixed(5)}, ${Number(row.mosque.longitude).toFixed(5)}</div>
+                    <a href="${esc(row.mosque.mapsUrl)}" target="_blank" rel="noopener">Open map</a>
+                  </td>
+                  <td>${fmtDateTime(row.latestAt)}</td>
+                  <td>
+                    ${row.submitters.map(s => `
+                      <div><strong>${esc(s.fullName || s.email)}</strong></div>
+                      <div class="muted">${esc(s.email)}</div>
+                    `).join('')}
+                  </td>
+                  <td>
+                    <div><span class="chip">${Number(row.submissionCount)} added</span></div>
+                    ${row.submissions.map(s => `
+                      <div style="margin-top: 8px;">
+                        <div class="muted">${fmtDateTime(s.createdAt)} - ${esc(s.status)}</div>
+                        <div>${timingSummary(s.timings)}</div>
+                      </div>
+                    `).join('')}
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function render(data) {
+      els.signinPanel.hidden = true;
+      els.dashboard.hidden = false;
+      els.signoutBtn.hidden = false;
+      const rangeLabel = data.range.startDate === data.range.endDate
+        ? `${data.range.startDate} local day`
+        : `${data.range.startDate} to ${data.range.endDate}, ${Number(data.range.days)} local days`;
+      els.range.textContent = `${rangeLabel}, ${fmtDateTime(data.range.start)} to ${fmtDateTime(data.range.end)}`;
+      els.stats.innerHTML = [
+        ['Active users', data.summary.activeUsers],
+        ['New signups', data.summary.newSignups],
+        ['Google users', data.summary.googleUsers || 0],
+        ['Google sign-ins', data.summary.googleSignIns || 0],
+        ['Masjids updated', data.summary.masjidsWithTimesAdded],
+        ['Timing submissions', data.summary.timingSubmissions],
+      ].map(([label, value]) => `<div class="stat"><span>${esc(label)}</span><strong>${Number(value)}</strong></div>`).join('');
+      els.activeUsers.innerHTML = userTable(data.activeUsers, 'No active signed-in users for this day.');
+      els.signupSources.innerHTML = data.summary.acquisitionSources?.length
+        ? data.summary.acquisitionSources.map(s => `<span class="chip">${esc(s.source)}: ${Number(s.count)}</span>`).join('')
+        : '<span class="muted">No signup source data for this day.</span>';
+      els.newSignups.innerHTML = userTable(data.newSignups, 'No new signups for this day.');
+      els.googleUsers.innerHTML = userTable(data.googleUsers || [], 'No Google account sign-ins for this day.');
+      els.masjidTimes.innerHTML = masjidTable(data.mosquesWithTimes);
+    }
+
+    async function loadOverview() {
+      const token = window.authExchange.getStoredAppJwt();
+      if (!token) {
+        els.signinPanel.hidden = false;
+        els.dashboard.hidden = true;
+        els.signoutBtn.hidden = true;
+        return;
+      }
+      els.refresh.disabled = true;
+      try {
+        const qs = new URLSearchParams({
+          startDate: els.startDate.value,
+          endDate: els.endDate.value,
+          tzOffsetMinutes: String(new Date().getTimezoneOffset()),
+        });
+        render(await adminFetch(`/admin/overview?${qs}`));
+      } finally {
+        els.refresh.disabled = false;
+      }
+    }
+
+    els.signinForm.addEventListener('submit', (e) => {
+      emailSignIn(e).catch(err => setStatus(err.message));
+    });
+    els.googleBtn.addEventListener('click', () => {
+      googleSignIn().catch(err => setStatus(err.message));
+    });
+    els.refresh.addEventListener('click', () => {
+      loadOverview().catch(err => {
+        els.signinPanel.hidden = false;
+        els.dashboard.hidden = true;
+        setStatus(err.message);
+      });
+    });
+    els.signoutBtn.addEventListener('click', async () => {
+      window.authExchange.clearStoredAppJwt();
+      try { await window.auth?.signOut?.(); } catch {}
+      await loadOverview();
+    });
+
+    setDefaultDate();
+    waitForAuth().then(auth => {
+      els.googleBtn.hidden = !auth.isConfigured();
+    }).catch(() => {
+      els.googleBtn.hidden = true;
+    });
+    loadOverview().catch(err => {
+      els.signinPanel.hidden = false;
+      els.dashboard.hidden = true;
+      setStatus(err.message);
+    });
+  </script>
+</body>
+</html>

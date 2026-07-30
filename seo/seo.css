@@ -1,0 +1,98 @@
+/* Styling for generated SEO landing pages (mosque + city).
+   Deliberately tiny and self-contained — these pages must be fast and
+   render instantly for crawlers and users on slow connections. */
+:root {
+  --ink: #10231a;
+  --muted: #5c6b63;
+  --line: #e2e8e3;
+  --green: #0f2a1e;
+  --accent: #1f7a4d;
+  --bg: #f7faf8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Inter Tight", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.5;
+}
+.seo-breadcrumb {
+  font-size: 0.85rem;
+  color: var(--muted);
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.seo-breadcrumb a { color: var(--accent); text-decoration: none; }
+.seo-breadcrumb a:hover { text-decoration: underline; }
+.seo-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+h1 { font-size: 1.6rem; line-height: 1.2; margin: 0.4rem 0; color: var(--green); }
+h2 { font-size: 1.2rem; margin: 2rem 0 0.5rem; color: var(--green); }
+h3 { font-size: 1rem; margin: 1.1rem 0 0.2rem; }
+.seo-arabic { font-family: "Amiri", serif; font-size: 1.4rem; margin: 0.2rem 0; }
+.seo-region { color: var(--muted); margin: 0.2rem 0 1rem; }
+.seo-times {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.seo-times caption {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  background: var(--green);
+  color: #fff;
+}
+.seo-times th, .seo-times td { padding: 0.7rem 1rem; text-align: left; border-top: 1px solid var(--line); }
+.seo-times th { font-weight: 600; width: 45%; }
+.seo-times td { font-variant-numeric: tabular-nums; font-size: 1.05rem; }
+.seo-empty { background: #fff; border: 1px dashed var(--line); border-radius: 10px; padding: 1rem; color: var(--muted); }
+.seo-list { list-style: none; padding: 0; margin: 1rem 0; }
+.seo-list li {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.seo-list a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.seo-list a:hover { text-decoration: underline; }
+.seo-addr, .seo-preview, .seo-count { font-size: 0.85rem; color: var(--muted); }
+.seo-preview { font-variant-numeric: tabular-nums; }
+.seo-updated { font-size: 0.8rem; color: var(--muted); margin-top: 1rem; }
+.seo-cta {
+  margin: 2rem 0 1rem;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+}
+.seo-cta p { margin: 0 0 0.8rem; }
+.seo-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.seo-more { margin-top: 1.5rem; }
+.seo-more a { color: var(--accent); }
+@media (max-width: 480px) {
+  h1 { font-size: 1.35rem; }
+  .seo-times th { width: 50%; }
+}

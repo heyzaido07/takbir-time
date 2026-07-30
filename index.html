@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <meta name="theme-color" content="#0F2A1E" />
+  <title>Takbeer Time — Masjid Jamat &amp; Iqamah Times Near You</title>
+  <meta name="description" content="Find real masjid jamat, jamaat, and iqamah times near you. Follow trusted timekeepers, get prayer reminders before Fajr, Jummah, and Isha, and never miss the first takbeer." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="application-name" content="Takbeer Time" />
+  <meta name="apple-mobile-web-app-title" content="Takbeer Time" />
+  <meta name="google-play-app" content="app-id=com.takbeertime.android" />
+  <link rel="canonical" href="https://takbeertime.com/" />
+  <!-- The <html lang> + <title> + meta will be re-set by i18n.js once the user's language is detected. -->
+  <link rel="alternate" hreflang="en" href="https://takbeertime.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://takbeertime.com/" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32x32.png?v=2" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16x16.png?v=2" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/brand/takbeer-time-icon-192.png?v=2" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/brand/takbeer-time-icon-512.png?v=2" />
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png?v=2" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Takbeer Time" />
+  <meta property="og:title" content="Takbeer Time — Real Masjid Jamat &amp; Iqamah Times" />
+  <meta property="og:description" content="Find real masjid jamat, jamaat, and iqamah times near you with trusted timekeeper updates and prayer reminders." />
+  <meta property="og:url" content="https://takbeertime.com/" />
+  <meta property="og:image" content="https://takbeertime.com/assets/brand/takbeer-time-icon-512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="og:image:alt" content="Takbeer Time app icon" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="ar_AR" />
+  <meta property="og:locale:alternate" content="ur_PK" />
+  <meta property="og:locale:alternate" content="id_ID" />
+  <meta property="og:locale:alternate" content="bn_BD" />
+  <meta property="og:locale:alternate" content="hi_IN" />
+  <meta property="og:locale:alternate" content="tr_TR" />
+  <meta property="og:locale:alternate" content="fa_IR" />
+  <meta property="og:locale:alternate" content="ms_MY" />
+  <meta property="og:locale:alternate" content="fr_FR" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Takbeer Time — Masjid Jamat &amp; Iqamah Times" />
+  <meta name="twitter:description" content="Find real masjid jamat, jamaat, and iqamah times near you and follow trusted timekeepers." />
+  <meta name="twitter:image" content="https://takbeertime.com/assets/brand/takbeer-time-icon-512.png" />
+  <meta name="twitter:image:alt" content="Takbeer Time app icon" />
+  <script src="/js/analytics.js?v=1" defer></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link rel="dns-prefetch" href="https://unpkg.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="css/jamat.css?v=71" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://takbeertime.com/#organization",
+        "name": "Takbeer Time",
+        "url": "https://takbeertime.com/",
+        "logo": "https://takbeertime.com/assets/brand/takbeer-time-icon-512.png",
+        "sameAs": [
+          "https://github.com/mjqazi/Jamat",
+          "https://play.google.com/store/apps/details?id=com.takbeertime.android"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://takbeertime.com/#website",
+        "url": "https://takbeertime.com/",
+        "name": "Takbeer Time",
+        "alternateName": ["TakbeerTime", "Jamat Times Directory", "Masjid Iqamah Times"],
+        "description": "Crowd-sourced real jamat and iqamah times at local masjids.",
+        "inLanguage": "en",
+        "publisher": { "@id": "https://takbeertime.com/#organization" }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://takbeertime.com/#webpage",
+        "url": "https://takbeertime.com/",
+        "name": "Takbeer Time - Masjid Jamat & Iqamah Times Near You",
+        "description": "Find real masjid jamat, jamaat, and iqamah times near you, follow trusted timekeepers, and set prayer reminders.",
+        "isPartOf": { "@id": "https://takbeertime.com/#website" },
+        "about": "Crowd-sourced masjid jamat and iqamah times",
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://takbeertime.com/assets/brand/takbeer-time-icon-512.png",
+          "width": 512,
+          "height": 512
+        }
+      },
+      {
+        "@type": "MobileApplication",
+        "@id": "https://takbeertime.com/#androidapp",
+        "name": "Takbeer Time",
+        "operatingSystem": "Android",
+        "applicationCategory": "LifestyleApplication",
+        "description": "Find real masjid jamat, jamaat and iqamah times near you, follow trusted timekeepers, and get prayer reminders before Fajr, Jummah and Isha.",
+        "downloadUrl": "https://play.google.com/store/apps/details?id=com.takbeertime.android",
+        "installUrl": "https://play.google.com/store/apps/details?id=com.takbeertime.android",
+        "image": "https://takbeertime.com/assets/brand/takbeer-time-icon-512.png",
+        "publisher": { "@id": "https://takbeertime.com/#organization" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!-- ─── INBOX BANNER (only shown to keepers with pending suggestions) ─── -->
+  <div class="inbox-banner" id="inbox-banner" hidden role="alert" aria-live="polite">
+    <span class="inbox-banner__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M3 7l9 6 9-6M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7M3 7l2-2h14l2 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+    </span>
+    <span class="inbox-banner__text" id="inbox-banner-text">—</span>
+    <button class="inbox-banner__btn" id="inbox-banner-btn" type="button" data-i18n="inbox.review">Review</button>
+  </div>
+
+  <!-- ─── TOP BAR ─── -->
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Takbeer Time — home">
+      <img class="brand__mark" src="assets/branding/logo-icon.png?v=1" width="30" height="27" alt="" aria-hidden="true" decoding="async" />
+      <span class="brand__name">Takbeer Time</span>
+    </a>
+
+    <div class="topbar__actions">
+      <button class="qaza-pill" id="qaza-pill" type="button" aria-controls="qaza-drawer" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+          <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M12 7.5V12l3 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span data-i18n="qaza.pill">Qaza Namaz Tracker</span>
+        <span class="qaza-pill__count" id="qaza-pill-count" hidden>0</span>
+      </button>
+      <button class="qaza-pill dars-pill" id="dars-pill" type="button" aria-controls="dars-drawer" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+          <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+        <span data-i18n="dars.pill">Dars</span>
+        <span class="qaza-pill__count dars-pill__count" id="dars-pill-count" hidden>0</span>
+      </button>
+      <div class="langmenu" id="langmenu">
+        <button class="langmenu__trigger" id="lang-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="lang-pop" data-i18n-aria-label="lang.aria" data-i18n-title="lang.aria">
+          <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M3 12h18 M12 3a14 14 0 0 1 0 18 M12 3a14 14 0 0 0 0 18" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          </svg>
+          <span class="langmenu__current" id="lang-current">English</span>
+          <span class="langmenu__caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="langmenu__pop" id="lang-pop" role="listbox" tabindex="-1" aria-label="Language" hidden>
+          <div class="langmenu__pointer" aria-hidden="true"></div>
+          <div class="langmenu__head">
+            <p class="langmenu__eyebrow" data-i18n="lang.eyebrow">Language</p>
+            <p class="langmenu__title" data-i18n="lang.choose">Choose your language</p>
+          </div>
+          <div class="langmenu__list" id="lang-list"></div>
+        </div>
+      </div>
+      <button class="auth-btn" id="auth-btn" type="button" data-i18n-aria-label="auth.signIn">
+        <span class="auth-btn__avatar" aria-hidden="true">?</span>
+        <span class="auth-btn__label" data-i18n="auth.signIn">Sign in</span>
+        <span class="auth-btn__followers" id="auth-followers" hidden></span>
+      </button>
+      <div class="account-menu" id="account-menu" hidden role="dialog" aria-labelledby="account-title">
+        <p class="account-menu__eyebrow" data-i18n="account.eyebrow">Account</p>
+        <h2 class="account-menu__title" id="account-title" data-i18n="account.title">Signed in</h2>
+        <p class="account-menu__email" id="account-email"></p>
+        <div class="account-menu__stat" aria-live="polite">
+          <span class="account-menu__stat-number" id="account-followers-count">0</span>
+          <span class="account-menu__stat-label" id="account-followers-label" data-i18n="account.followers">followers</span>
+        </div>
+        <button class="account-menu__logout" id="account-logout" type="button" data-i18n="auth.signOut">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── HERO ─── -->
+  <main class="page">
+    <section class="hero" aria-labelledby="hero-headline">
+      <p class="kicker" data-i18n="hero.kicker">A crowd-sourced jamat times directory</p>
+      <div class="hero-headline-row">
+        <h1 class="headline" id="hero-headline" data-i18n="hero.headlineHtml:html">
+          Never miss the first <em>takbeer</em>.
+        </h1>
+        <button class="share-app-btn hero-share-btn" id="share-app-btn" type="button" data-i18n-aria-label="share.aria">
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+            <path d="M18 8a3 3 0 1 0-2.8-4.08L8.7 7.17a3 3 0 1 0 0 1.66l6.5 3.25A3 3 0 1 0 16 10.7L9.5 7.45" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span data-i18n="share.button">Share App on WhatsApp</span>
+        </button>
+      </div>
+
+      <div class="hero-cards">
+      <!-- The next-prayer card for the user's default mosque -->
+      <article class="next-card" id="next-card" aria-live="polite">
+        <header class="next-card__head">
+          <p class="next-card__eyebrow" id="next-eyebrow" data-i18n="next.eyebrow">Your default masjid</p>
+          <div class="next-card__head-actions">
+            <button class="next-card__refresh" id="next-refresh" type="button" hidden data-i18n-aria-label="next.refreshAria" data-i18n-title="next.refreshAria">
+              <svg class="next-card__refresh-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="visually-hidden" data-i18n="next.refresh">Refresh times</span>
+            </button>
+            <div class="reminder-toggle" id="reminder-toggle-wrap" hidden>
+              <span class="reminder-toggle__hint" data-i18n="next.reminders">Reminders</span>
+              <button class="next-card__bell" id="next-bell" type="button" data-i18n-aria-label="next.bellOpenAria" aria-expanded="false" aria-pressed="false">
+                <svg class="next-card__bell-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9zM10 21a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
+                <span class="next-card__bell-badge" id="next-bell-count" hidden>0</span>
+                <span class="visually-hidden" id="next-bell-label" data-i18n="next.bell">Remind me</span>
+              </button>
+            </div>
+            <!-- Fallback link to the detail drawer when there's no keeper.
+                 When a keeper exists, the keeper line below takes over the
+                 same role (tappable + chevron) and this button hides. -->
+            <button class="next-card__change" id="next-change" type="button" hidden data-i18n="next.viewKeepers">See time keepers</button>
+          </div>
+        </header>
+
+        <div class="next-card__name-row">
+          <div class="next-card__name-text">
+            <h2 class="next-card__mosque" id="next-mosque" data-i18n="next.empty">No masjid selected yet</h2>
+            <p class="next-card__sub" id="next-sub" data-i18n="next.emptyHint">Tap a masjid below and choose “Make this my default”.</p>
+          </div>
+          <button class="next-card__go" id="next-navigate" type="button" hidden data-i18n-aria-label="nav.navigate" data-i18n-title="nav.navigate" title="Navigate to masjid">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2 4 21l8-4 8 4-8-19Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            <span class="next-card__go-label" data-i18n="nav.go">Go</span>
+          </button>
+        </div>
+        <button class="next-card__locate" id="next-locate" type="button" hidden>
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span data-i18n="next.findNearby">Find nearby masjid</span>
+        </button>
+        <div class="next-card__clock" id="next-clock" hidden>
+          <div class="next-card__row">
+            <span class="next-card__label" data-i18n="next.label">Next takbeer</span>
+            <span class="next-card__prayer" id="next-prayer">—</span>
+            <span class="next-card__at" id="next-at">—</span>
+          </div>
+          <div class="next-card__countdown">
+            <span class="next-card__in" data-i18n="next.in">in</span>
+            <span class="cd-unit">
+              <span class="cd-num" id="cd-h">00</span>
+              <span class="cd-label" data-i18n="next.unitH">hr</span>
+            </span>
+            <span class="cd-sep">:</span>
+            <span class="cd-unit">
+              <span class="cd-num" id="cd-m">00</span>
+              <span class="cd-label" data-i18n="next.unitM">min</span>
+            </span>
+            <span class="cd-sep">:</span>
+            <span class="cd-unit">
+              <span class="cd-num cd-sec" id="cd-s">00</span>
+              <span class="cd-label" data-i18n="next.unitS">sec</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Tappable keeper line — opens the detail drawer where the user can
+             see other keepers, follow a different one, or send a suggestion.
+             The chevron makes the affordance discoverable; for screen readers
+             the visible text ("Times by X · …") is the button name. -->
+        <button class="next-card__keeper" id="next-keeper" type="button" hidden data-i18n-title="next.openKeepersAria" title="See other time keepers">
+          <span class="next-card__keeper-main">
+            <span class="next-card__keeper-prefix" data-i18n="next.byKeeper">Times by</span>
+            <strong id="next-keeper-name">—</strong>
+            <span class="next-card__keeper-hint" id="next-keeper-hint"></span>
+          </span>
+          <span class="next-card__keeper-switch" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+              <path d="M7 7h10l-3-3M17 17H7l3 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span data-i18n="next.switch">Switch</span>
+          </span>
+        </button>
+
+        <!-- Reminder settings panel (slides in below clock when bell is tapped) -->
+        <div class="reminder-panel" id="reminder-panel" hidden>
+          <!-- Populated by app.js updateNextReminderLine(); shows the very
+               next reminder that's queued so the user gets immediate
+               feedback after tweaking minutes / prayer toggles. -->
+          <p class="reminder-panel__next" id="reminder-next-line" hidden></p>
+          <p class="reminder-panel__line reminder-panel__line--friday" data-i18n="reminders.fridayHintHtml:html">
+            <em>Jummah replaces Dhuhr on Fridays — set both, the right one fires for the day.</em>
+          </p>
+          <ul class="reminder-prayer-list" id="reminder-prayer-list">
+            <li data-prayer="fajr">
+              <button type="button" class="rpl__toggle" role="switch" aria-checked="false" data-prayer-toggle="fajr" aria-label="Enable Fajr reminder"><span class="rpl__toggle-track"></span><span class="rpl__toggle-thumb"></span></button>
+              <span class="rpl__name" data-i18n="prayer.fajr">Fajr</span>
+              <input type="number" inputmode="numeric" min="0" max="180" data-prayer-input="fajr" />
+              <span class="rpl__suffix" data-i18n="reminders.minBefore">min before</span>
+            </li>
+            <li data-prayer="dhuhr">
+              <button type="button" class="rpl__toggle" role="switch" aria-checked="false" data-prayer-toggle="dhuhr" aria-label="Enable Dhuhr reminder"><span class="rpl__toggle-track"></span><span class="rpl__toggle-thumb"></span></button>
+              <span class="rpl__name" data-i18n="prayer.dhuhr">Dhuhr</span>
+              <input type="number" inputmode="numeric" min="0" max="180" data-prayer-input="dhuhr" />
+              <span class="rpl__suffix" data-i18n="reminders.minBefore">min before</span>
+            </li>
+            <li data-prayer="asr">
+              <button type="button" class="rpl__toggle" role="switch" aria-checked="false" data-prayer-toggle="asr" aria-label="Enable Asr reminder"><span class="rpl__toggle-track"></span><span class="rpl__toggle-thumb"></span></button>
+              <span class="rpl__name" data-i18n="prayer.asr">Asr</span>
+              <input type="number" inputmode="numeric" min="0" max="180" data-prayer-input="asr" />
+              <span class="rpl__suffix" data-i18n="reminders.minBefore">min before</span>
+            </li>
+            <li data-prayer="maghrib">
+              <button type="button" class="rpl__toggle" role="switch" aria-checked="false" data-prayer-toggle="maghrib" aria-label="Enable Maghrib reminder"><span class="rpl__toggle-track"></span><span class="rpl__toggle-thumb"></span></button>
+              <span class="rpl__name" data-i18n="prayer.maghrib">Maghrib</span>
+              <input type="number" inputmode="numeric" min="0" max="180" data-prayer-input="maghrib" />
+              <span class="rpl__suffix" data-i18n="reminders.minBefore">min before</span>
+            </li>
+            <li data-prayer="isha">
+              <button type="button" class="rpl__toggle" role="switch" aria-checked="false" data-prayer-toggle="isha" aria-label="Enable Isha reminder"><span class="rpl__toggle-track"></span><span class="rpl__toggle-thumb"></span></button>
+              <span class="rpl__name" data-i18n="prayer.isha">Isha</span>
+              <input type="number" inputmode="numeric" min="0" max="180" data-prayer-input="isha" />
+              <span class="rpl__suffix" data-i18n="reminders.minBefore">min before</span>
+            </li>
+            <li data-prayer="jummah">
+              <button type="button" class="rpl__toggle" role="switch" aria-checked="false" data-prayer-toggle="jummah" aria-label="Enable Jummah reminder"><span class="rpl__toggle-track"></span><span class="rpl__toggle-thumb"></span></button>
+              <span class="rpl__name" data-i18n="prayer.jummah">Jummah</span>
+              <input type="number" inputmode="numeric" min="0" max="180" data-prayer-input="jummah" />
+              <span class="rpl__suffix" data-i18n="reminders.minBeforeFri">min before · Fri only</span>
+            </li>
+          </ul>
+          <div class="reminder-panel__actions">
+            <button type="button" class="btn btn--primary" id="reminder-save" data-i18n="reminders.save">Save</button>
+            <button type="button" class="btn btn--ghost" id="reminder-test" data-i18n="reminders.test">Test ring</button>
+            <button type="button" class="btn btn--ghost" id="reminder-off" data-i18n="reminders.off">Turn all off</button>
+          </div>
+          <p class="reminder-panel__hint" id="reminder-status"></p>
+        </div>
+
+        <!-- All takbeer times for the selected mosque -->
+        <div class="next-card__all" id="next-all-wrap" hidden>
+          <div class="next-card__all-head">
+            <span class="next-card__all-title" data-i18n="next.allTimesToday">All takbeer times · today</span>
+            <span class="next-card__all-count" id="next-all-count"></span>
+          </div>
+          <div class="next-card__all-cols" aria-hidden="true">
+            <span></span>
+            <span class="next-card__col-jamat" data-i18n="next.colJamat">Jamat</span>
+            <span class="next-card__col-sun" data-i18n="next.colStarts">Starts</span>
+            <span class="next-card__col-sun" data-i18n="next.colEnds">Ends</span>
+          </div>
+          <ul class="next-card__all-list" id="next-all-list"></ul>
+          <p class="next-card__all-caption" data-i18n="next.timesCaption:html">
+            <strong>Jamat</strong> = announced congregation time · Starts/Ends = sun-position window for this masjid.
+          </p>
+        </div>
+      </article>
+
+      <!-- Sun-position salah times: computed from the user's GPS + chosen fiqh.
+           Pure client-side astronomy — no server call required. Persists the
+           fiqh choice in localStorage so subsequent loads pick up where the
+           user left off. Sits visually beside the next-card on desktop. -->
+      <article class="sun-card" id="sun-card" hidden>
+        <header class="sun-card__head">
+          <h3 class="sun-card__title" data-i18n="sun.title">Salah by sun position</h3>
+          <label class="sun-card__fiqh">
+            <span class="sun-card__fiqh-label" data-i18n="sun.fiqh">Fiqh</span>
+            <select id="sun-fiqh">
+              <option value="hanafi" data-i18n="sun.fiqh.hanafi">Hanafi</option>
+              <option value="shafi" data-i18n="sun.fiqh.shafi">Shafi'i</option>
+              <option value="maliki" data-i18n="sun.fiqh.maliki">Maliki</option>
+              <option value="hanbali" data-i18n="sun.fiqh.hanbali">Hanbali</option>
+              <option value="jafari" data-i18n="sun.fiqh.jafari">Jafari (Shia)</option>
+              <option value="isna" data-i18n="sun.fiqh.isna">ISNA (N. America)</option>
+              <option value="egypt" data-i18n="sun.fiqh.egypt">Egyptian Authority</option>
+              <option value="ummalqura" data-i18n="sun.fiqh.ummalqura">Umm al-Qura</option>
+            </select>
+          </label>
+        </header>
+        <p class="sun-card__sub" id="sun-loc-sub" data-i18n="sun.locHint">Computed from your phone's GPS location.</p>
+        <button class="sun-card__locate" id="sun-locate" type="button" hidden data-i18n="sun.locate">Use my location</button>
+        <ul class="sun-card__list" id="sun-list"></ul>
+      </article>
+      </div>
+
+      <!-- Quick actions — only locate, the map opens automatically as part of the locate flow. -->
+      <div class="quick">
+        <button class="quick__btn quick__btn--primary" id="btn-locate" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span data-i18n="quick.locate">Find masjids near me</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── APP DOWNLOAD ─── -->
+    <section class="app-section" id="app" aria-labelledby="app-title">
+      <div class="app-section__copy">
+        <p class="kicker" data-i18n="appDownload.kicker">Takbeer Time mobile app</p>
+        <h2 class="app-section__title" id="app-title" data-i18n="appDownload.title">Take your local jamat times with you.</h2>
+        <p class="app-section__body" data-i18n="appDownload.body">
+          Download the Android app to find nearby masjids, follow trusted time keepers, and set prayer reminders that ring even when the app is closed.
+        </p>
+        <ul class="app-section__points">
+          <li data-i18n="appDownload.pointMap">Map and list views for nearby masjids</li>
+          <li data-i18n="appDownload.pointReminders">Native reminders before each jamat</li>
+          <li data-i18n="appDownload.pointCommunity">Crowd-sourced updates from local time keepers</li>
+        </ul>
+        <div class="app-section__actions">
+          <a class="btn btn--primary app-section__play" href="https://play.google.com/store/apps/details?id=com.takbeertime.android" target="_blank" rel="noopener" data-i18n-aria-label="appDownload.playAria">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path d="M4.5 3.5v17l14-8.5-14-8.5z" fill="currentColor"/>
+            </svg>
+            <span data-i18n="appDownload.play">Get it on Google Play</span>
+          </a>
+          <a class="btn btn--ghost app-section__watch" href="#app-demo" data-i18n="appDownload.watch">Watch the app demo</a>
+        </div>
+      </div>
+
+      <div class="app-section__media" id="app-demo">
+        <div class="app-video">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/l6vv0jL8rtk"
+            title="Takbeer Time app demo"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <div class="app-screenshots" aria-label="Takbeer Time app screenshots">
+        <figure class="app-shot">
+          <img src="assets/app/takbeer-time-home.jpeg" width="746" height="1600" loading="lazy" decoding="async" alt="Takbeer Time Android home screen showing the default masjid and next takbeer countdown" />
+          <figcaption data-i18n="appDownload.shotHome">Home</figcaption>
+        </figure>
+        <figure class="app-shot">
+          <img src="assets/app/takbeer-time-countdown.jpeg" width="746" height="1600" loading="lazy" decoding="async" alt="Takbeer Time app showing all takbeer times and salah by sun position" />
+          <figcaption data-i18n="appDownload.shotTimes">Times</figcaption>
+        </figure>
+        <figure class="app-shot">
+          <img src="assets/app/takbeer-time-reminders.jpeg" width="746" height="1600" loading="lazy" decoding="async" alt="Takbeer Time app reminder settings for Fajr, Dhuhr, Asr, Maghrib, Isha, and Jummah" />
+          <figcaption data-i18n="appDownload.shotReminders">Reminders</figcaption>
+        </figure>
+        <figure class="app-shot">
+          <img src="assets/app/takbeer-time-map.jpeg" width="746" height="1600" loading="lazy" decoding="async" alt="Takbeer Time map view with nearby masjid pins and a default masjid card" />
+          <figcaption data-i18n="appDownload.shotMap">Map</figcaption>
+        </figure>
+        <figure class="app-shot">
+          <img src="assets/app/takbeer-time-sun-directory.jpeg" width="746" height="1600" loading="lazy" decoding="async" alt="Takbeer Time app showing sun-position salah times above the masjid directory" />
+          <figcaption data-i18n="appDownload.shotSun">Salah</figcaption>
+        </figure>
+        <figure class="app-shot">
+          <img src="assets/app/takbeer-time-directory.jpeg" width="746" height="1600" loading="lazy" decoding="async" alt="Takbeer Time directory showing browse and favorites tabs with masjid cards" />
+          <figcaption data-i18n="appDownload.shotDirectory">Directory</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ─── SEARCH INTENT ─── -->
+    <section class="intent-section" aria-labelledby="intent-title">
+      <p class="kicker" data-i18n="intent.kicker">Built for real masjid jamat times</p>
+      <h2 class="intent-section__title" id="intent-title" data-i18n="intent.title">Jamat times, iqamah times, and masjid updates in one place.</h2>
+      <p class="intent-section__body" data-i18n="intent.body">
+        Most prayer times, salah, and namaz apps show when the prayer window begins. Takbeer Time is for the moment your local masjid actually starts jamaat: Fajr, Dhuhr, Asr, Maghrib, Isha, and Jummah. Search nearby masjids, follow a trusted timekeeper, and keep your family on time for the first takbeer.
+      </p>
+      <div class="intent-grid">
+        <article>
+          <h3 data-i18n="intent.worshippersTitle">For worshippers</h3>
+          <p data-i18n="intent.worshippersBody">Find “jamat times near me,” check the next iqamah at your default masjid, and set reminders before jamaat.</p>
+        </article>
+        <article>
+          <h3 data-i18n="intent.timekeepersTitle">For timekeepers</h3>
+          <p data-i18n="intent.timekeepersBody">Publish accurate masjid prayer times, receive suggested corrections, and let followers know when timings change.</p>
+        </article>
+        <article>
+          <h3 data-i18n="intent.developersTitle">For masjid websites</h3>
+          <p data-i18n="intent.developersBody">Use the open API to show crowd-sourced jamaat and Jummah times on your own site or community display.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ─── DIRECTORY ─── -->
+    <section class="directory" aria-label="Masjid directory">
+      <div class="dir-tabs" role="tablist">
+        <button class="dir-tab is-active" data-tab="nearby" role="tab" aria-selected="true" data-i18n="dir.tabBrowse">Browse</button>
+        <button class="dir-tab" data-tab="favorites" role="tab" aria-selected="false" data-i18n="dir.tabFavorites">Favorites</button>
+      </div>
+
+      <label class="dir-search">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input type="search" id="search" data-i18n-placeholder="dir.searchPh" placeholder="Filter by name, area, or city…" autocomplete="off" />
+      </label>
+
+      <ol class="cards" id="list-nearby" data-panel="nearby"></ol>
+      <ol class="cards is-hidden" id="list-favorites" data-panel="favorites"></ol>
+
+      <p class="empty" id="empty-state" hidden>
+        <span data-i18n="dir.empty">Nothing to show here.</span> <button class="link" id="empty-locate" type="button" data-i18n="dir.emptyLocate">Find masjids near you →</button>
+      </p>
+    </section>
+  </main>
+
+  <!-- ─── MAP VIEW (full-screen takeover) ─── -->
+  <section class="mapview" id="mapview" aria-hidden="true" aria-label="Map of nearby masjids">
+    <header class="mapview__head">
+      <h2 data-i18n="map.title">Masjids near you</h2>
+      <div class="mapview__head-actions">
+        <button class="mapview__addbtn" id="map-add" type="button" data-i18n-title="map.addTitle">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span data-i18n="map.addBtn">Add a masjid</span>
+        </button>
+        <button class="mapview__close" id="map-close" type="button" data-i18n-aria-label="map.closeAria">×</button>
+      </div>
+    </header>
+
+    <!-- Add flow panel: details first, then tap/drag the pin to set location -->
+    <form class="mapview__addform" id="map-addform" hidden>
+      <div class="mapview__addform-head">
+        <div>
+          <p class="mapview__addform-eyebrow">New masjid</p>
+          <h3>Add details and place the pin</h3>
+        </div>
+      </div>
+      <p class="mapview__addform-help" id="addform-help">Type the masjid name, then tap <strong>“Use my location”</strong> if you are standing at the masjid. City and country fill in for you. You can also tap the map to place the pin.</p>
+      <button class="btn btn--primary addform-gps" id="map-addform-gps" type="button">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span data-i18n="add.useLocation">Use my location</span>
+      </button>
+      <p class="mapview__addform-location" aria-live="polite">
+        <span id="addform-location-status">No location selected</span>
+        <span id="addform-coords">Tap “Use my location” or the map</span>
+      </p>
+      <div class="mapview__addform-grid">
+        <label><span data-i18n="add.name">Name</span> <input name="name" required maxlength="120" data-i18n-placeholder="add.namePh" placeholder="e.g. Masjid Al-Falah" /></label>
+        <label><span data-i18n="add.city">City</span> <input name="city" required maxlength="80" data-i18n-placeholder="add.cityPh" placeholder="e.g. Lahore" /></label>
+        <label><span data-i18n="add.country">Country</span> <input name="country" required maxlength="80" data-i18n-placeholder="add.countryPh" placeholder="e.g. Pakistan" /></label>
+        <label class="mapview__addform-full"><span data-i18n="add.address">Address</span> <input name="addressLine1" maxlength="200" data-i18n-placeholder="add.addressPh" placeholder="optional — e.g. Block 4, Garden Town" /></label>
+        <label class="mapview__addform-full mapview__captcha">
+          <span>Human check</span>
+          <div class="mapview__captcha-row">
+            <strong id="addform-captcha-question">Loading question…</strong>
+            <button class="btn btn--ghost" type="button" id="map-addform-captcha-refresh">Refresh</button>
+          </div>
+          <input name="captchaAnswer" required inputmode="numeric" autocomplete="off" maxlength="8" placeholder="Answer" />
+        </label>
+      </div>
+      <div class="mapview__addform-actions">
+        <button class="btn btn--ghost" type="button" id="map-addform-center">Use map center</button>
+        <button class="btn btn--primary" type="submit" data-i18n="add.submit">Add masjid</button>
+        <button class="btn btn--ghost" type="button" id="map-addform-cancel" data-i18n="add.cancel">Cancel</button>
+      </div>
+    </form>
+
+    <div class="mapview__addhint" id="map-addhint" hidden>
+      <span data-i18n="map.tapHint">Tap the map where the masjid is located.</span>
+      <button class="link" type="button" id="map-addhint-cancel" data-i18n="map.cancel">cancel</button>
+    </div>
+
+    <div id="map" class="mapview__canvas"></div>
+    <ol class="mapview__list" id="mapview-list"></ol>
+  </section>
+
+  <!-- ─── DETAIL DRAWER ─── -->
+  <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="drawer-title">
+    <div class="drawer__scrim" data-close-drawer></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true">
+      <header class="drawer__head">
+        <button class="drawer__close" data-close-drawer data-i18n-aria-label="drawer.closeAria">×</button>
+        <div class="drawer__hero-mark" aria-hidden="true">
+          <span class="drawer__hero-moon"></span>
+          <span class="drawer__hero-dome"></span>
+          <span class="drawer__hero-minaret drawer__hero-minaret--left"></span>
+          <span class="drawer__hero-minaret drawer__hero-minaret--right"></span>
+        </div>
+        <div class="drawer__status">
+          <span class="drawer__status-dot" aria-hidden="true"></span>
+          <span class="drawer__status-label" id="drawer-status" data-i18n="drawer.statusCommunity">Community masjid</span>
+          <span class="drawer__status-sep" aria-hidden="true">·</span>
+          <span class="drawer__status-distance" id="drawer-distance">nearby</span>
+        </div>
+        <div class="drawer__title-row">
+          <h2 class="drawer__title" id="drawer-title">—</h2>
+          <button class="drawer__rename" id="btn-rename-masjid" type="button" hidden data-i18n-aria-label="drawer.renameAria" aria-label="Name this masjid">
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+              <path d="M14.5 4.5 19.5 9.5 8.5 20.5 3 22 4.5 16.5Z M13 6l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <p class="drawer__addr" id="drawer-addr">—</p>
+        <button class="drawer__head-default" id="btn-set-default" type="button" aria-pressed="false">
+          <span class="drawer__head-default-icon" aria-hidden="true">☆</span>
+          <span data-i18n="drawer.makeDefault">Make this my default</span>
+        </button>
+        <div class="keeper-credit" id="keeper-credit" hidden>
+          <div class="keeper-credit__avatar" id="keeper-credit-avatar" aria-hidden="true">TK</div>
+          <div class="keeper-credit__body">
+            <p class="keeper-credit__meta">
+              <span data-i18n="drawer.byKeeper">Times by</span>
+              <span id="keeper-credit-rating">★ —</span>
+            </p>
+            <p class="keeper-credit__name">
+              <strong id="keeper-credit-name">—</strong>
+            </p>
+            <p class="keeper-credit__hint">
+              <span id="keeper-credit-hint">—</span>
+              <span id="keeper-credit-count"></span>
+            </p>
+          </div>
+          <button class="keeper-credit__switch" id="keeper-credit-switch" type="button" data-i18n="keeper.switch">Switch</button>
+        </div>
+      </header>
+
+      <section id="drawer-times-section">
+        <div class="drawer-times-head">
+          <h3 class="section-title" data-i18n="drawer.today">Today's jamat</h3>
+          <p class="drawer-times-updated" id="drawer-times-updated" hidden></p>
+        </div>
+        <table class="times" id="drawer-times"><tbody></tbody></table>
+        <div class="stale-pill" id="stale-pill" hidden>
+          <div class="stale-pill__icon" aria-hidden="true">!</div>
+          <div class="stale-pill__body">
+            <p class="stale-pill__title" data-i18n="stale.title">These timings look stale</p>
+            <p class="stale-pill__sub">
+              <span data-i18n="stale.nudgePrefix">Nudge</span>
+              <strong id="stale-keeper-name">—</strong>
+              <span data-i18n="stale.nudgeSuffix">to refresh them - or submit your own.</span>
+            </p>
+          </div>
+          <button class="stale-pill__cta" id="btn-open-nudge" type="button" data-i18n="stale.cta">Nudge</button>
+        </div>
+        <div class="times-empty" id="times-empty" hidden>
+          <div class="times-empty__mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="36" height="36" fill="none">
+              <rect x="5" y="14" width="2" height="13" fill="currentColor"/>
+              <path d="M4.5 14Q6 11.5 7.5 14Z" fill="currentColor"/>
+              <rect x="25" y="14" width="2" height="13" fill="currentColor"/>
+              <path d="M24.5 14Q26 11.5 27.5 14Z" fill="currentColor"/>
+              <rect x="9" y="18" width="14" height="9" fill="currentColor"/>
+              <path d="M11 18C11 12 21 12 21 18Z" fill="currentColor"/>
+              <path d="M14.5 8A2.5 2.5 0 1 0 14.5 4A2 2 0 1 1 14.5 8Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <p class="times-empty__lead" data-i18n="drawer.emptyLead">Be the first to add jamat times here.</p>
+          <p class="times-empty__sub" data-i18n="drawer.emptySub">Earn ajar for every prayer prayed using your timings.</p>
+          <button class="btn btn--primary times-empty__cta" id="btn-submit-from-empty" type="button" data-i18n="drawer.beFirst">
+            + Submit jamat times
+          </button>
+          <div class="jumma-shortcut">
+            <div class="jumma-shortcut__chip" aria-hidden="true">ج</div>
+            <div class="jumma-shortcut__body">
+              <p class="jumma-shortcut__title" data-i18n="drawer.jummaTitle">Only know Jummah? Start there.</p>
+              <p class="jumma-shortcut__sub" data-i18n="drawer.jummaSub">It rarely changes - most-searched by travellers. Easy ajar every week.</p>
+            </div>
+            <button class="btn jumma-shortcut__cta" id="btn-submit-jumma-only" type="button" data-i18n="drawer.jummaCta">+ Add</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="keepers-section" hidden>
+        <div class="keepers-screen__head">
+          <p class="keepers-screen__masjid" id="keepers-screen-masjid">—</p>
+          <h3 class="keepers-screen__title" data-i18n="drawer.keepers">Time keepers</h3>
+          <button class="keepers-screen__close" id="btn-close-keeper-screen" type="button" aria-label="Back to masjid details">×</button>
+        </div>
+        <div class="keepers-banner">
+          <span class="keepers-banner__icon" aria-hidden="true">ⓘ</span>
+          <p>
+            <span data-i18n="keepers.bannerBody1">Your app uses the</span>
+            <strong data-i18n="keepers.bannerBody2">highest-rated keeper</strong>
+            <span data-i18n="keepers.bannerBody3">by default. Switch by tapping</span>
+            <em data-i18n="keepers.useThese">Use these times</em>
+            <span data-i18n="keepers.bannerBody4">on any card.</span>
+          </p>
+        </div>
+        <ol class="keepers-list" id="keepers-list"></ol>
+      </section>
+
+      <section class="amenities-section">
+        <div class="amenities-section__head">
+          <h3 class="section-title" data-i18n="amenities.title">Masjid details</h3>
+          <span class="amenities-section__eyebrow" data-i18n="amenities.eyebrow">community-rated</span>
+        </div>
+        <ol class="amenities-list" id="drawer-amenities"></ol>
+        <button class="amenities-cta" id="btn-rate-masjid" type="button" data-i18n="amenities.rate">
+          <span class="amenities-cta__icon" aria-hidden="true">★</span>
+          <span>Rate this masjid</span>
+        </button>
+      </section>
+
+      <section class="drawer__actions">
+        <button class="btn btn--primary" id="btn-navigate" type="button">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 2 4 21l8-4 8 4-8-19Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 2v15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <span data-i18n="nav.navigate">Navigate to Masjid</span>
+        </button>
+        <button class="btn btn--primary" id="btn-favorite" type="button">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.5-9.5 9-9.5 9Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <span data-i18n="drawer.favSave">Save to favorites</span>
+        </button>
+        <button class="btn btn--ghost" id="btn-submit-update" type="button" data-i18n="drawer.submitUpdate">Submit a timing update</button>
+        <button class="btn btn--ghost" id="btn-edit-mosque" type="button" hidden>Edit masjid details</button>
+        <button class="btn btn--ghost btn--danger" id="btn-close-mosque" type="button" hidden data-i18n="drawer.closedForever">This masjid has closed forever</button>
+        <button class="btn btn--ghost" id="btn-reactivate-mosque" type="button" hidden>Reactivate masjid</button>
+      </section>
+
+      <section class="drawer__edit" id="edit-mosque-form" hidden>
+        <h3 class="section-title">Edit masjid details</h3>
+        <p class="muted" id="edit-mosque-hint">You can edit the masjid details you added.</p>
+        <div class="submit-grid">
+          <label><span>Name</span> <input name="name" required maxlength="120" /></label>
+          <label><span>City</span> <input name="city" required maxlength="80" /></label>
+          <label><span>Country</span> <input name="country" required maxlength="80" /></label>
+          <label><span>Address</span> <input name="addressLine1" maxlength="200" /></label>
+        </div>
+        <div class="submit-actions">
+          <button class="btn btn--primary" id="btn-edit-confirm" type="button">Save details</button>
+          <button class="btn btn--ghost" id="btn-edit-cancel" type="button">Cancel</button>
+        </div>
+      </section>
+
+      <section class="drawer__submit" id="submit-form" hidden>
+        <h3 class="section-title" data-i18n="submit.titleNew">Submit Jamat times</h3>
+        <p class="muted" data-i18n="submit.noteNew">Leave unknown times blank. If you know Jummah, submit it - travellers are often looking for Jummah times nearby.</p>
+        <div class="submit-grid">
+          <label><span data-i18n="prayer.fajr">Fajr</span> <input type="time" name="fajr" /></label>
+          <label><span data-i18n="prayer.dhuhr">Dhuhr</span> <input type="time" name="dhuhr" /></label>
+          <label><span data-i18n="prayer.asr">Asr</span> <input type="time" name="asr" /></label>
+          <label><span data-i18n="submit.maghribLabel">Maghrib offset</span>
+            <select name="maghribOffset">
+              <option value="0" data-i18n="submit.offsetAt">at sunset</option>
+              <option value="1">+1 min</option>
+              <option value="2">+2 min</option>
+              <option value="3" selected>+3 min</option>
+              <option value="4">+4 min</option>
+              <option value="5">+5 min</option>
+              <option value="7">+7 min</option>
+              <option value="10">+10 min</option>
+              <option value="15">+15 min</option>
+            </select>
+          </label>
+          <label><span data-i18n="prayer.isha">Isha</span> <input type="time" name="isha" /></label>
+          <label><span data-i18n="prayer.jummah">Jummah</span> <input type="time" name="jummah" /></label>
+        </div>
+        <label class="submit-notes"><span data-i18n="submit.notes">Notes (optional)</span>
+          <textarea name="notes" rows="2" data-i18n-placeholder="submit.notesPh" placeholder="e.g. winter schedule, board outside main entrance"></textarea>
+        </label>
+        <div class="submit-actions">
+          <button class="btn btn--primary" id="btn-submit-confirm" type="button" data-i18n="submit.send">Submit</button>
+          <button class="btn btn--ghost" id="btn-submit-cancel" type="button" data-i18n="submit.cancel">Cancel</button>
+        </div>
+      </section>
+
+      <section id="recent-section">
+        <h3 class="section-title" data-i18n="drawer.recent">Recent submissions</h3>
+        <ul class="contributors" id="drawer-contributors"><li class="muted" data-i18n="drawer.loading">Loading…</li></ul>
+      </section>
+    </div>
+  </aside>
+
+  <!-- ─── QAZA DRAWER ─── -->
+  <aside class="drawer qaza-drawer" id="qaza-drawer" aria-hidden="true" aria-labelledby="qaza-title">
+    <div class="drawer__scrim" data-close-qaza></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true">
+      <header class="drawer__head qaza-drawer__head">
+        <button class="drawer__close" data-close-qaza aria-label="Close qaza drawer">×</button>
+        <p class="drawer__eyebrow">Personal record</p>
+        <h2 class="drawer__title" id="qaza-title">Qaza Namaz</h2>
+        <p class="drawer__addr" id="qaza-summary">Record missed namaz and mark them prayed later.</p>
+      </header>
+
+      <section class="qaza-record">
+        <h3 class="section-title">Mark missed for a day</h3>
+        <label class="qaza-date">
+          <span>Date</span>
+          <input type="date" id="qaza-date" />
+        </label>
+        <div class="qaza-prayers" id="qaza-prayers" aria-label="Select missed namaz"></div>
+        <div class="submit-actions qaza-actions">
+          <button class="btn btn--primary" id="qaza-record-btn" type="button">Record selected</button>
+          <button class="btn btn--ghost" id="qaza-today-btn" type="button">Today</button>
+        </div>
+      </section>
+
+      <section class="qaza-pending">
+        <h3 class="section-title">Unprayed qaza</h3>
+        <p class="muted muted--small" id="qaza-next-hint" hidden></p>
+        <ul class="qaza-list" id="qaza-list"></ul>
+        <p class="qaza-empty" id="qaza-empty" hidden>No qaza namaz pending.</p>
+      </section>
+    </div>
+  </aside>
+
+  <!-- ─── DARS (Islamic lessons) DRAWER ─── -->
+  <!-- Body content is rendered by js/dars.js; the shell reuses the shared
+       .drawer / .drawer__panel styling so it slides in like the qaza drawer. -->
+  <aside class="drawer dars-drawer" id="dars-drawer" aria-hidden="true" aria-labelledby="dars-title">
+    <div class="drawer__scrim" data-close-dars></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true">
+      <header class="drawer__head dars-drawer__head">
+        <button class="drawer__close" data-close-dars aria-label="Close Dars">×</button>
+        <button class="dars-back" id="dars-back" type="button" hidden aria-label="Back to my groups">‹ <span data-i18n="dars.back">Groups</span></button>
+        <p class="drawer__eyebrow" data-i18n="dars.eyebrow">Islamic lessons</p>
+        <h2 class="drawer__title" id="dars-title" data-i18n="dars.title">Dars</h2>
+        <p class="drawer__addr" id="dars-subtitle" data-i18n="dars.subtitle">Create a study circle, invite people, schedule lessons and remind everyone.</p>
+      </header>
+      <div class="dars-body" id="dars-body" aria-live="polite"><!-- rendered by js/dars.js --></div>
+    </div>
+  </aside>
+
+  <aside class="nudge-sheet" id="nudge-sheet" aria-hidden="true" aria-labelledby="nudge-title">
+    <div class="nudge-sheet__scrim" data-close-nudge></div>
+    <div class="nudge-sheet__panel" role="dialog" aria-modal="true">
+      <div class="nudge-sheet__grabber" aria-hidden="true"></div>
+      <header class="nudge-sheet__head">
+        <div class="nudge-sheet__avatar" id="nudge-keeper-avatar" aria-hidden="true">—</div>
+        <div class="nudge-sheet__credit">
+          <p class="nudge-sheet__eyebrow" data-i18n="nudge.eyebrow">Suggest an update</p>
+          <p class="nudge-sheet__to">
+            <span data-i18n="nudge.toPrefix">To</span>
+            <strong id="nudge-keeper-name">—</strong>
+            <span class="nudge-sheet__sep">·</span>
+            <span id="nudge-masjid-name">—</span>
+          </p>
+        </div>
+      </header>
+      <h2 class="nudge-sheet__title" id="nudge-title" data-i18n="nudge.title">Suggest the right times</h2>
+      <p class="nudge-sheet__lede" data-i18n="nudge.lede">Tap any prayer to propose a new time. Leave them as-is to just send a heads-up.</p>
+      <ol class="nudge-sheet__list" id="nudge-prayer-list"></ol>
+      <p class="nudge-sheet__summary" id="nudge-summary" hidden>
+        <span class="nudge-sheet__count" id="nudge-count">0</span>
+        <span data-i18n="nudge.changesProposed">changes proposed</span>
+        <span class="nudge-sheet__sep">·</span>
+        <span data-i18n="nudge.willSee">will see the diff</span>
+      </p>
+      <button class="nudge-sheet__alt" id="btn-nudge-become-keeper" type="button">
+        <span class="nudge-sheet__alt-icon" aria-hidden="true">✎</span>
+        <span class="nudge-sheet__alt-body">
+          <span class="nudge-sheet__alt-title" data-i18n="nudge.becomeTitle">I want to become a time keeper · earn ajar</span>
+          <span class="nudge-sheet__alt-sub" data-i18n="nudge.becomeSub">Submit your own timings — every prayer prayed earns ajar for you.</span>
+        </span>
+        <span aria-hidden="true">›</span>
+      </button>
+      <div class="nudge-sheet__actions">
+        <button class="btn btn--primary" id="btn-send-nudge" type="button" data-i18n="nudge.send">Send nudge</button>
+        <button class="btn btn--ghost" data-close-nudge type="button" data-i18n="nudge.cancel">Cancel</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="nudge-time-popup" id="nudge-time-popup" aria-hidden="true" role="dialog" aria-labelledby="nudge-time-title">
+    <div class="nudge-time-popup__scrim" data-close-nudge-time></div>
+    <div class="nudge-time-popup__card">
+      <button class="modal__close" data-close-nudge-time aria-label="Close">×</button>
+      <p class="modal__eyebrow" data-i18n="nudge.timeEyebrow">Edit time</p>
+      <h2 id="nudge-time-title">Fajr</h2>
+      <p class="nudge-time-popup__current">
+        <span data-i18n="nudge.currentTime">Current</span>
+        <strong id="nudge-time-current">—</strong>
+      </p>
+      <label class="nudge-time-popup__field">
+        <span data-i18n="nudge.newTime">New time</span>
+        <input id="nudge-time-input" type="time" />
+      </label>
+      <div class="nudge-time-popup__actions">
+        <button class="btn btn--primary" id="btn-nudge-time-apply" type="button" data-i18n="nudge.applyTime">Apply</button>
+        <button class="btn btn--ghost" id="btn-nudge-time-clear" type="button" data-i18n="nudge.clearTime">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SUGGESTIONS INBOX MODAL ─── -->
+  <div class="modal" id="inbox-modal" aria-hidden="true" role="dialog" aria-labelledby="inbox-title">
+    <div class="modal__scrim" data-close-modal></div>
+    <div class="modal__card modal__card--wide">
+      <button class="modal__close" data-close-modal data-i18n-aria-label="drawer.closeAria">×</button>
+      <h2 id="inbox-title" data-i18n="inbox.title">Suggested timing updates</h2>
+      <p class="muted muted--small" data-i18n="inbox.body">Users you trust have suggested new times for masjids you keep. Accept to update your record (everyone following you will see the new times) or decline.</p>
+      <div class="inbox-alerts" id="inbox-alerts" hidden>
+        <span class="inbox-alerts__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9zM10 21a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>
+        </span>
+        <span class="inbox-alerts__copy">
+          <strong id="inbox-alerts-title" data-i18n="inbox.alertsTitle">Suggestion alerts are off</strong>
+          <span id="inbox-alerts-body" data-i18n="inbox.alertsBody">Enable alerts on this phone so timing requests show as notifications, even when Takbeer Time is closed.</span>
+        </span>
+        <button class="btn btn--primary btn--small" id="inbox-alerts-enable" type="button" data-i18n="inbox.alertsEnable">Enable alerts</button>
+      </div>
+      <ol class="inbox-list" id="inbox-list"></ol>
+    </div>
+  </div>
+
+  <!-- ─── FIRST-RUN TIME KEEPER EXPLAINER ─── -->
+  <div class="modal keeper-intro" id="keeper-intro-modal" aria-hidden="true" role="dialog" aria-labelledby="keeper-intro-title">
+    <div class="modal__scrim" data-close-keeper-intro></div>
+    <div class="modal__card modal__card--wide">
+      <button class="modal__close" data-close-keeper-intro aria-label="Close">×</button>
+      <p class="modal__eyebrow" data-i18n="keeperIntro.eyebrow">Time keeper ratings</p>
+      <h2 id="keeper-intro-title" data-i18n="keeperIntro.title">One masjid can have several time keepers.</h2>
+      <p class="muted" data-i18n="keeperIntro.body">
+        Takbeer Time chooses the highest-rated time keeper by default, so the app starts with the timings most likely to be trusted.
+      </p>
+      <div class="keeper-intro__points">
+        <p data-i18n="keeperIntro.rating">Rating uses votes, fresh updates, verification, contribution history, and keeper trust.</p>
+        <p data-i18n="keeperIntro.followers">Followers show how many people use that keeper's timings.</p>
+        <p data-i18n="keeperIntro.choose">To use someone else's timings, open a masjid, scroll to Time keepers, and tap "Use this time keeper's timings."</p>
+      </div>
+      <button class="btn btn--primary keeper-intro__ok" type="button" data-close-keeper-intro data-i18n="keeperIntro.ok">I understand</button>
+    </div>
+  </div>
+
+  <!-- ─── SUGGEST-UPDATE MODAL (compose a new suggestion) ─── -->
+  <div class="modal" id="suggest-modal" aria-hidden="true" role="dialog" aria-labelledby="suggest-title">
+    <div class="modal__scrim" data-close-modal></div>
+    <div class="modal__card">
+      <button class="modal__close" data-close-modal data-i18n-aria-label="drawer.closeAria">×</button>
+      <h2 id="suggest-title"><span data-i18n="suggest.title">Suggest a timing update</span></h2>
+      <p class="muted muted--small" id="suggest-target">—</p>
+      <div class="submit-grid">
+        <label><span data-i18n="prayer.fajr">Fajr</span> <input type="time" name="fajr" /></label>
+        <label><span data-i18n="prayer.dhuhr">Dhuhr</span> <input type="time" name="dhuhr" /></label>
+        <label><span data-i18n="prayer.asr">Asr</span> <input type="time" name="asr" /></label>
+        <label><span data-i18n="submit.maghribLabel">Maghrib offset</span>
+          <select name="maghribOffset">
+            <option value="0" data-i18n="submit.offsetAt">at sunset</option>
+            <option value="1">+1 min</option>
+            <option value="2">+2 min</option>
+            <option value="3" selected>+3 min</option>
+            <option value="5">+5 min</option>
+            <option value="7">+7 min</option>
+            <option value="10">+10 min</option>
+            <option value="15">+15 min</option>
+          </select>
+        </label>
+        <label><span data-i18n="prayer.isha">Isha</span> <input type="time" name="isha" /></label>
+        <label><span data-i18n="prayer.jummah">Jummah</span> <input type="time" name="jummah" /></label>
+      </div>
+      <label class="submit-notes"><span data-i18n="suggest.notes">Note to the keeper (optional)</span>
+        <textarea name="notes" rows="2" data-i18n-placeholder="suggest.notesPh" placeholder="e.g. Ramadan schedule starts tomorrow"></textarea>
+      </label>
+      <div class="submit-actions">
+        <button class="btn btn--primary" id="suggest-send" type="button" data-i18n="suggest.send">Send suggestion</button>
+        <button class="btn btn--ghost" data-close-modal type="button" data-i18n="submit.cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MASJID RATING MODAL ─── -->
+  <div class="modal rating-modal" id="rating-modal" aria-hidden="true" role="dialog" aria-labelledby="rating-title">
+    <div class="modal__scrim" data-close-rating></div>
+    <div class="modal__card rating-modal__card">
+      <button class="modal__close" data-close-rating data-i18n-aria-label="drawer.closeAria">×</button>
+      <p class="modal__eyebrow" data-i18n="amenities.ratingEyebrow">Masjid rating</p>
+      <h2 id="rating-title" data-i18n="amenities.ratingTitle">Rate this masjid</h2>
+      <p class="muted muted--small" id="rating-target">—</p>
+      <label class="rating-modal__field">
+        <span data-i18n="amenities.ratingCategory">Category</span>
+        <select id="rating-kind">
+          <option value="size" data-i18n="amenities.size">Size</option>
+          <option value="wudu" data-i18n="amenities.wudu">Wudu area</option>
+          <option value="washrooms" data-i18n="amenities.washrooms">Washrooms</option>
+          <option value="accessibility" data-i18n="amenities.accessibility">Accessibility</option>
+        </select>
+      </label>
+      <div class="rating-modal__stars" id="rating-stars" role="radiogroup" aria-label="Rating out of five">
+        <button type="button" data-rating-value="1" aria-label="1 star">★</button>
+        <button type="button" data-rating-value="2" aria-label="2 stars">★</button>
+        <button type="button" data-rating-value="3" aria-label="3 stars">★</button>
+        <button type="button" data-rating-value="4" aria-label="4 stars">★</button>
+        <button type="button" data-rating-value="5" aria-label="5 stars">★</button>
+      </div>
+      <div class="submit-actions">
+        <button class="btn btn--primary" id="rating-save" type="button" data-i18n="amenities.ratingSave">Save rating</button>
+        <button class="btn btn--ghost" data-close-rating type="button" data-i18n="submit.cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── LOGIN MODAL ─── -->
+  <div class="modal" id="login-modal" aria-hidden="true" role="dialog" aria-labelledby="login-title">
+    <div class="modal__scrim" data-close-modal></div>
+    <div class="modal__card">
+      <button class="modal__close" data-close-modal data-i18n-aria-label="drawer.closeAria">×</button>
+      <h2 id="login-title" data-i18n="login.title">Sign in</h2>
+      <p class="muted" data-i18n="login.body">Sign in with Google, or with email and password. We'll create the account if it doesn't exist.</p>
+      <button class="btn btn--google" id="login-google" type="button" hidden>
+        <svg class="login-google__icon" viewBox="0 0 18 18" width="18" height="18" aria-hidden="true">
+          <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.17-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.91c1.7-1.57 2.69-3.88 2.69-6.62z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.47-.81 5.96-2.18l-2.91-2.26c-.81.54-1.84.86-3.05.86-2.34 0-4.32-1.58-5.03-3.71H.96v2.33A9 9 0 0 0 9 18z"/>
+          <path fill="#FBBC05" d="M3.97 10.71c-.18-.54-.28-1.12-.28-1.71 0-.59.1-1.17.28-1.71V4.96H.96A9 9 0 0 0 0 9c0 1.45.35 2.82.96 4.04l3.01-2.33z"/>
+          <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58A9 9 0 0 0 .96 4.96l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/>
+        </svg>
+        <span data-i18n="login.google">Continue with Google</span>
+      </button>
+      <p class="muted muted--small" id="login-divider" hidden data-i18n="login.or">or with email</p>
+      <form id="login-form">
+        <input type="email" name="email" data-i18n-placeholder="login.emailPh" placeholder="you@example.com" required autocomplete="email" />
+        <input type="password" name="password" data-i18n-placeholder="login.passwordPh" placeholder="Password" autocomplete="current-password" minlength="8" />
+        <p class="login-form__hint muted muted--small" data-i18n="login.passwordHint">8+ characters. Email-only sign-in is available in local development only.</p>
+        <button class="btn btn--primary" type="submit" data-i18n="login.continue">Continue</button>
+      </form>
+      <p class="login-version muted muted--small" id="login-version" hidden>Version</p>
+    </div>
+  </div>
+
+  <!-- ─── TOAST ─── -->
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- ─── PLEDGE MODAL (opens when the brand / logo is tapped) ─── -->
+  <div class="modal pledge-modal" id="pledge-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="pledge-modal-title">
+    <div class="modal__scrim" data-close-pledge></div>
+    <div class="modal__card pledge-modal__card">
+      <button class="modal__close" data-close-pledge data-i18n-aria-label="drawer.closeAria">×</button>
+      <p class="foot__pledge">
+        <span class="foot__pledge-line" id="pledge-modal-title" data-i18n="footer.noAds">No ads. Ever.</span>
+        <span class="foot__pledge-arabic" lang="ar" data-i18n="footer.sadqaArabic">صدقة في سبيل الله</span>
+        <span class="foot__pledge-trans" data-i18n="footer.sadqaTrans">This initiative is sadqa fe sabilillah.</span>
+      </p>
+      <p class="foot__sadqa" data-i18n="footer.sadqaJariaHtml:html">
+        <strong>This is sadqa jaria.</strong>
+        <a href="https://takbeertime.com/api-docs.html" target="_blank" rel="noopener">The API</a> is open — call it from your own app, your masjid's website, anywhere a jamat time is needed. One shared database, kept by volunteer timekeepers — please use the API rather than copy the data, so their work reaches everyone. There's an angel out there counting every API hit. Not us.
+      </p>
+      <p class="foot__colophon" data-i18n="footer.colophon">Built for the ummah · Open source</p>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="foot">
+    <p class="foot__pledge">
+      <span class="foot__pledge-line" data-i18n="footer.noAds">No ads. Ever.</span>
+      <span class="foot__pledge-arabic" lang="ar" data-i18n="footer.sadqaArabic">صدقة في سبيل الله</span>
+      <span class="foot__pledge-trans" data-i18n="footer.sadqaTrans">This initiative is sadqa fe sabilillah.</span>
+    </p>
+    <p class="foot__sadqa" data-i18n="footer.sadqaJariaHtml:html">
+      <strong>This is sadqa jaria.</strong>
+      <a href="https://takbeertime.com/api-docs.html" target="_blank" rel="noopener">The API</a> is open — call it from your own app, your masjid's website, anywhere a jamat time is needed. One shared database, kept by volunteer timekeepers — please use the API rather than copy the data, so their work reaches everyone. There's an angel out there counting every API hit. Not us.
+    </p>
+    <p class="foot__colophon" data-i18n="footer.colophon">Built for the ummah · Open source</p>
+    <p class="foot__version" id="app-version" hidden>Version</p>
+    <p class="foot__links">
+      <a href="/privacy.html">Privacy</a>
+      <span aria-hidden="true">·</span>
+      <a href="/terms.html">Terms</a>
+      <span aria-hidden="true">·</span>
+      <a href="/api-docs.html" data-i18n="footer.apiDocs">API for developers</a>
+      <span aria-hidden="true">·</span>
+      <!-- In-app account deletion: hidden by js/delete-account.js until
+           the user is signed in. Authenticated click triggers an in-page
+           confirm dialog and DELETE /api/users/me. The fallback href
+           points at the no-auth public form for the same outcome. -->
+      <a href="/delete-account.html" id="foot-delete-account" data-action="delete-account" hidden>Delete account</a>
+      <a href="/delete-account.html" id="foot-delete-request">Delete account</a>
+    </p>
+  </footer>
+
+  <!-- ─── DELETE-ACCOUNT CONFIRM MODAL (in-app, signed-in users only) ─── -->
+  <div class="modal" id="delete-modal" aria-hidden="true" role="dialog" aria-labelledby="delete-modal-title">
+    <div class="modal__scrim" data-close-modal></div>
+    <div class="modal__card">
+      <button class="modal__close" data-close-modal aria-label="Close">×</button>
+      <h2 id="delete-modal-title">Delete your account?</h2>
+      <p class="muted">This is permanent. Here's exactly what happens:</p>
+      <ul class="muted muted--small" style="padding-left: 1.2rem; list-style: disc; line-height: 1.55; margin-bottom: 0.8rem;">
+        <li>Your account row (email, name, password hash, Firebase ID) is removed.</li>
+        <li>Your favourites, default masjid, preferred keepers, and reminder preferences are deleted.</li>
+        <li>Suggestions you've sent to time-keepers are deleted.</li>
+        <li>Submitted jamat timings stay in the directory but are re-attributed as "Deleted user," because other users are relying on them right now.</li>
+        <li>Your push-notification subscriptions on this device are dropped.</li>
+        <li>You'll be signed out and the page will reload.</li>
+      </ul>
+      <p class="muted muted--small">If you want specific submissions removed too, email <a href="mailto:qazi.junaid@gmail.com">qazi.junaid@gmail.com</a>.</p>
+      <div class="submit-actions">
+        <button class="btn btn--primary" id="delete-confirm" type="button" style="background: var(--crimson); color: var(--paper);">Yes, delete my account</button>
+        <button class="btn btn--ghost" data-close-modal type="button">Cancel</button>
+      </div>
+      <p class="delete-form-status" id="delete-modal-status" hidden style="margin-top: 0.8rem; font-size: 0.92rem;"></p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/config.js?v=6"></script>
+  <script src="js/auth-exchange.js?v=1"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script src="js/state.js?v=2"></script>
+  <script src="js/i18n.js?v=56"></script>
+  <script src="js/sun.js?v=36"></script>
+  <script src="js/api.js?v=43"></script>
+  <script src="js/components.js?v=49"></script>
+  <script src="js/reminders.js?v=38"></script>
+  <script src="js/simple-time.js?v=1"></script>
+  <script src="js/dars.js?v=3"></script>
+  <script src="js/app.js?v=71"></script>
+  <script src="js/delete-account.js?v=1"></script>
+</body>
+</html>

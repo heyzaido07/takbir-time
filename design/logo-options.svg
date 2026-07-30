@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs>
+    <style>
+      .bg { fill: #fdfaf3; }
+      .card { fill: #ffffff; stroke: #eae0c8; stroke-width: 2; }
+      .title { font: 700 34px Inter, Arial, sans-serif; fill: #161614; }
+      .sub { font: 500 18px Inter, Arial, sans-serif; fill: #76716a; }
+      .label { font: 700 20px Inter, Arial, sans-serif; fill: #161614; }
+      .note { font: 500 14px Inter, Arial, sans-serif; fill: #76716a; }
+      .green { fill: #0f2a1e; }
+      .green2 { fill: #1f3a2c; }
+      .brass { fill: #d6b266; }
+      .brassStroke { stroke: #d6b266; }
+      .paper { fill: #fdfaf3; }
+      .mutedStroke { stroke: #dfe9e1; }
+      .line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="900"/>
+  <text x="70" y="78" class="title">Takbeer Time logo directions</text>
+  <text x="70" y="112" class="sub">Quick vector concepts based on the current green/brass app palette. These are for choosing a direction, not final exported launcher assets.</text>
+
+  <!-- Current shipped store/source mark -->
+  <g transform="translate(70 170)">
+    <rect class="card" width="240" height="310" rx="22"/>
+    <rect x="38" y="34" width="164" height="164" rx="28" fill="#fff" stroke="#d9dee8" stroke-width="2"/>
+    <g opacity="0.75" stroke="#d9dee8" stroke-width="2">
+      <path d="M28 74 L118 -16"/>
+      <path d="M28 164 L208 -16"/>
+      <path d="M28 254 L298 -16"/>
+      <path d="M-18 20 L218 256"/>
+      <path d="M72 -16 L238 150"/>
+    </g>
+    <path d="M80 144 L119 105 L80 66 L105 41 L183 119 L144 158 Z" fill="#53afea"/>
+    <path d="M56 119 L95 80 L173 158 L134 197 Z" fill="#67c1ee"/>
+    <text x="24" y="238" class="label">Current store mark</text>
+    <text x="24" y="266" class="note">Clean, but reads generic</text>
+    <text x="24" y="286" class="note">and off-palette.</text>
+  </g>
+
+  <!-- Option A: refined current mosque-clock -->
+  <g transform="translate(340 170)">
+    <rect class="card" width="240" height="310" rx="22"/>
+    <rect x="38" y="34" width="164" height="164" rx="36" class="green"/>
+    <circle cx="120" cy="68" r="9" class="brass"/>
+    <circle cx="125" cy="65" r="9" class="green"/>
+    <path d="M72 164 V100" class="line brassStroke" stroke-width="9"/>
+    <path d="M168 164 V100" class="line brassStroke" stroke-width="9"/>
+    <circle cx="72" cy="92" r="8" class="brass"/>
+    <circle cx="168" cy="92" r="8" class="brass"/>
+    <path d="M82 164 V126 Q82 88 120 88 Q158 88 158 126 V164" class="line brassStroke" stroke-width="9"/>
+    <circle cx="120" cy="130" r="23" class="brass"/>
+    <circle cx="120" cy="130" r="17" class="green"/>
+    <path d="M120 130 L108 121 M120 130 L134 119" class="line brassStroke" stroke-width="5"/>
+    <circle cx="120" cy="130" r="3" class="brass"/>
+    <path d="M62 164 H178" class="line brassStroke" stroke-width="8"/>
+    <text x="24" y="238" class="label">A. Refined mosque clock</text>
+    <text x="24" y="266" class="note">Best continuity with the app.</text>
+    <text x="24" y="286" class="note">Bolder, simpler, no grid.</text>
+  </g>
+
+  <!-- Option B: time pin -->
+  <g transform="translate(610 170)">
+    <rect class="card" width="240" height="310" rx="22"/>
+    <rect x="38" y="34" width="164" height="164" rx="36" fill="#1f3a2c"/>
+    <path d="M120 58 C92 58 70 80 70 108 C70 145 120 177 120 177 C120 177 170 145 170 108 C170 80 148 58 120 58 Z" class="brass"/>
+    <circle cx="120" cy="108" r="34" class="green"/>
+    <path d="M95 138 V113 Q95 89 120 89 Q145 89 145 113 V138" class="line brassStroke" stroke-width="7"/>
+    <path d="M83 138 H157" class="line brassStroke" stroke-width="7"/>
+    <circle cx="120" cy="118" r="12" class="brass"/>
+    <circle cx="120" cy="118" r="8" class="green"/>
+    <path d="M120 118 L115 113 M120 118 L127 111" class="line brassStroke" stroke-width="3"/>
+    <text x="24" y="238" class="label">B. Time-location pin</text>
+    <text x="24" y="266" class="note">Strongly says map + time.</text>
+    <text x="24" y="286" class="note">Good for directory use.</text>
+  </g>
+
+  <!-- Option C: first-row jamaat -->
+  <g transform="translate(880 170)">
+    <rect class="card" width="240" height="310" rx="22"/>
+    <rect x="38" y="34" width="164" height="164" rx="36" class="green"/>
+    <path d="M82 158 V118 Q82 84 120 84 Q158 84 158 118 V158" class="line brassStroke" stroke-width="8"/>
+    <path d="M70 158 H170" class="line brassStroke" stroke-width="8"/>
+    <g class="brass">
+      <circle cx="92" cy="116" r="7"/>
+      <circle cx="120" cy="106" r="8"/>
+      <circle cx="148" cy="116" r="7"/>
+      <rect x="84" y="128" width="16" height="32" rx="7"/>
+      <rect x="111" y="121" width="18" height="39" rx="8"/>
+      <rect x="140" y="128" width="16" height="32" rx="7"/>
+    </g>
+    <path d="M80 178 H160" class="line mutedStroke" stroke-width="4" opacity="0.9"/>
+    <text x="24" y="238" class="label">C. First-row jamaat</text>
+    <text x="24" y="266" class="note">Most aligned with purpose:</text>
+    <text x="24" y="286" class="note">catching the first takbeer.</text>
+  </g>
+
+  <!-- Option D: takbeer monogram -->
+  <g transform="translate(1150 170)">
+    <rect class="card" width="240" height="310" rx="22"/>
+    <rect x="38" y="34" width="164" height="164" rx="36" class="green"/>
+    <path d="M82 154 L119 117 L82 80 L103 59 L161 117 L103 175 Z" class="brass"/>
+    <path d="M73 117 L95 95 L153 153 L131 175 Z" fill="#f0d28a"/>
+    <path d="M98 74 Q120 50 142 74" class="line paper" stroke="#fdfaf3" stroke-width="7"/>
+    <path d="M88 168 H152" class="line paper" stroke="#fdfaf3" stroke-width="6"/>
+    <text x="24" y="238" class="label">D. Takbeer monogram</text>
+    <text x="24" y="266" class="note">Keeps the old abstract idea,</text>
+    <text x="24" y="286" class="note">but brings it on-brand.</text>
+  </g>
+
+  <!-- Recommendation row -->
+  <g transform="translate(70 540)">
+    <rect width="1260" height="245" rx="24" fill="#0f2a1e"/>
+    <text x="34" y="58" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" fill="#fdfaf3">Recommendation</text>
+    <text x="34" y="100" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="500" fill="#dfe9e1">Use A as the main launcher/store icon if you want trust, continuity, and immediate prayer-time recognition.</text>
+    <text x="34" y="136" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="500" fill="#dfe9e1">Use C if you want the logo to communicate the product promise more directly: be there for the first takbeer.</text>
+    <text x="34" y="172" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="500" fill="#dfe9e1">B is the best functional/iconic mark for "nearby masjids + timing"; D is the safest evolution of the old blue mark.</text>
+    <text x="34" y="214" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="500" fill="#d6b266">Next asset pass should unify Android adaptive icon, legacy PNGs, iOS AppIcon, Play Store 512/1024, favicon, and web topbar mark.</text>
+  </g>
+</svg>

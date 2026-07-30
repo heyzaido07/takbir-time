@@ -1,0 +1,13 @@
+App category: Lifestyle
+   (Tools is also defensible. Lifestyle matches Muslim-prayer apps in the same niche.)
+
+Tags:
+- prayer times
+- mosque finder
+- jamat
+- Islamic
+- community
+
+Application ID:   com.takbeertime.app
+Version code:     1     (bump in mobile/android/app/build.gradle before each upload)
+Version name:     1.0

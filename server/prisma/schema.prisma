@@ -1,0 +1,507 @@
+// Jamat - Prisma Schema
+// PostgreSQL with PostGIS extension
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis(version: "3.4.0"), pg_trgm, uuidOssp(map: "uuid-ossp")]
+}
+
+model User {
+  id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email       String  @unique @db.VarChar(255)
+  firebaseUid String? @unique @map("firebase_uid") @db.VarChar(255)
+  fullName    String? @map("full_name") @db.VarChar(255)
+  phoneNumber String? @map("phone_number") @db.VarChar(20)
+
+  // Email/password auth. Nullable because pre-existing users (and Google
+  // sign-in users) won't have a local password — they authenticate via
+  // Firebase ID token instead. bcrypt cost 12; the column stores the
+  // full bcrypt blob (~60 chars) so 200 is comfortable headroom.
+  passwordHash    String?   @map("password_hash") @db.VarChar(200)
+  // Set on first successful sign-in via a verification link, OR auto-set
+  // when sign-in goes through a verified IdP (Google). Informational
+  // for now; not yet gated.
+  emailVerifiedAt DateTime? @map("email_verified_at") @db.Timestamptz
+
+  // Reputation system
+  reputationPoints    Int     @default(0) @map("reputation_points")
+  verifiedContributor Boolean @default(false) @map("verified_contributor")
+
+  // Settings
+  preferredLanguage       String @default("en") @map("preferred_language") @db.VarChar(10)
+  notificationPreferences Json   @default("{\"prayer_reminders\": true, \"timing_updates\": true}") @map("notification_preferences") @db.JsonB
+
+  // Prayer reminder preferences
+  defaultMosqueId String? @map("default_mosque_id") @db.Uuid
+  defaultMosque   Mosque? @relation("DefaultMosque", fields: [defaultMosqueId], references: [id])
+
+  // Timestamps
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  lastLoginAt DateTime? @map("last_login_at") @db.Timestamptz
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz
+
+  // Relations
+  addedMosques        Mosque[]           @relation("MosqueCreator")
+  favorites           UserFavorite[]
+  prayerSchedules     PrayerSchedule[]   @relation("ScheduleSubmitter")
+  verifiedSchedules   PrayerSchedule[]   @relation("ScheduleVerifier")
+  timingSubmissions   TimingSubmission[] @relation("TimingSubmitter")
+  reviewedSubmissions TimingSubmission[] @relation("TimingReviewer")
+  reviews             MosqueReview[]
+  votes               Vote[]
+  activityLogs        ActivityLog[]
+  notifications       Notification[]
+  sentSuggestions     Suggestion[]       @relation("SuggestionFrom")
+  receivedSuggestions Suggestion[]       @relation("SuggestionTo")
+  qazaRecords         QazaRecord[]
+  darsGroupsAdmin     DarsGroup[]        @relation("DarsGroupAdmin")
+  darsMemberships     DarsGroupMember[]  @relation("DarsMembership")
+  darsSessions        DarsSession[]      @relation("DarsSessionCreator")
+
+  @@index([email])
+  @@index([reputationPoints(sort: Desc)])
+  @@map("users")
+}
+
+model Mosque {
+  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+
+  // Basic Information
+  name        String  @db.VarChar(255)
+  nameArabic  String? @map("name_arabic") @db.VarChar(255)
+  description String? @db.Text
+
+  // Location - Using Unsupported for PostGIS geography type
+  location      Unsupported("geography(Point, 4326)")
+  latitude      Float // For easier querying in application
+  longitude     Float
+  addressLine1  String?                               @map("address_line1") @db.VarChar(255)
+  addressLine2  String?                               @map("address_line2") @db.VarChar(255)
+  city          String                                @db.VarChar(100)
+  stateProvince String?                               @map("state_province") @db.VarChar(100)
+  country       String                                @db.VarChar(100)
+  postalCode    String?                               @map("postal_code") @db.VarChar(20)
+
+  // Contact
+  phoneNumber String? @map("phone_number") @db.VarChar(20)
+  email       String? @db.VarChar(255)
+  website     String? @db.VarChar(500)
+
+  // Metadata
+  capacity        Int?    @db.Integer
+  yearEstablished Int?    @map("year_established") @db.Integer
+  denomination    String? @db.VarChar(50)
+  madhab          String? @db.VarChar(50)
+
+  // Features & Amenities
+  amenities String[] @default([])
+
+  // Images
+  photos Json @default("[]") @db.JsonB
+
+  // External-source dedup (OSM bulk import)
+  osmId BigInt? @unique @map("osm_id")
+
+  // Status
+  verified Boolean @default(false)
+  status   String  @default("active") @db.VarChar(20)
+
+  // Statistics
+  viewCount        Int @default(0) @map("view_count")
+  favoriteCount    Int @default(0) @map("favorite_count")
+  contributorCount Int @default(0) @map("contributor_count")
+
+  // Contribution tracking
+  addedById String? @map("added_by") @db.Uuid
+  addedBy   User?   @relation("MosqueCreator", fields: [addedById], references: [id])
+
+  // Timestamps
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz
+
+  // Relations
+  prayerSchedules   PrayerSchedule[]
+  timingSubmissions TimingSubmission[]
+  favorites         UserFavorite[]
+  reviews           MosqueReview[]
+  defaultForUsers   User[]             @relation("DefaultMosque")
+  suggestions       Suggestion[]
+
+  @@index([location], map: "idx_mosques_location", type: Gist)
+  @@index([name(ops: raw("gin_trgm_ops"))], map: "idx_mosques_name_trgm", type: Gin)
+  @@index([city])
+  @@index([country])
+  @@index([status, verified])
+  @@map("mosques")
+}
+
+model PrayerSchedule {
+  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  mosqueId String @map("mosque_id") @db.Uuid
+  mosque   Mosque @relation(fields: [mosqueId], references: [id], onDelete: Cascade)
+
+  // Schedule metadata
+  scheduleName String? @map("schedule_name") @db.VarChar(100)
+  isActive     Boolean @default(true) @map("is_active")
+
+  // Date range
+  validFrom  DateTime  @map("valid_from") @db.Date
+  validUntil DateTime? @map("valid_until") @db.Date
+
+  // Prayer times as JSONB
+  timings Json @db.JsonB
+
+  // Calculation method
+  calculationMethod String? @map("calculation_method") @db.VarChar(50)
+  calculationParams Json?   @map("calculation_params") @db.JsonB
+
+  // Notes
+  notes String? @db.Text
+
+  // Contribution tracking
+  submittedById String? @map("submitted_by") @db.Uuid
+  submittedBy   User?   @relation("ScheduleSubmitter", fields: [submittedById], references: [id])
+
+  verifiedById String? @map("verified_by") @db.Uuid
+  verifiedBy   User?   @relation("ScheduleVerifier", fields: [verifiedById], references: [id])
+
+  verificationStatus String @default("pending") @map("verification_status") @db.VarChar(20)
+
+  // Community feedback
+  upvotes   Int @default(0)
+  downvotes Int @default(0)
+
+  // Timestamps
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz
+
+  @@index([mosqueId, isActive])
+  @@index([validFrom, validUntil])
+  @@map("prayer_schedules")
+}
+
+model TimingSubmission {
+  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  mosqueId String @map("mosque_id") @db.Uuid
+  mosque   Mosque @relation(fields: [mosqueId], references: [id], onDelete: Cascade)
+
+  submittedById String @map("submitted_by") @db.Uuid
+  submittedBy   User   @relation("TimingSubmitter", fields: [submittedById], references: [id])
+
+  // Submitted timings
+  timings Json    @db.JsonB
+  notes   String? @db.Text
+
+  // Verification
+  verified         Boolean @default(false)
+  isVerifiedOnsite Boolean @default(false) @map("is_verified_onsite")
+
+  // Proof photos
+  proofPhotos Json @default("[]") @map("proof_photos") @db.JsonB
+
+  // Status
+  status       String  @default("pending") @db.VarChar(20)
+  reviewedById String? @map("reviewed_by") @db.Uuid
+  reviewedBy   User?   @relation("TimingReviewer", fields: [reviewedById], references: [id])
+  reviewNotes  String? @map("review_notes") @db.Text
+
+  // Community voting
+  upvotes   Int @default(0)
+  downvotes Int @default(0)
+  reports   Int @default(0)
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([mosqueId, status])
+  @@index([submittedById])
+  @@index([status, createdAt(sort: Desc)])
+  @@map("timing_submissions")
+}
+
+// A user suggests a timing update directly to a specific time keeper they
+// follow. The keeper sees it in their inbox top-bar and can accept (which
+// creates a TimingSubmission *as the keeper* with the suggested values, then
+// runs the normal recompute/promote pipeline) or decline (just dismissed).
+model Suggestion {
+  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  mosqueId String @map("mosque_id") @db.Uuid
+  mosque   Mosque @relation(fields: [mosqueId], references: [id], onDelete: Cascade)
+
+  fromUserId String @map("from_user_id") @db.Uuid
+  fromUser   User   @relation("SuggestionFrom", fields: [fromUserId], references: [id])
+
+  toUserId String @map("to_user_id") @db.Uuid
+  toUser   User   @relation("SuggestionTo", fields: [toUserId], references: [id])
+
+  // Same shape as TimingSubmission.timings — fajr/dhuhr/asr/isha HH:MM,
+  // jummah array, maghribOffset number.
+  timings Json    @db.JsonB
+  notes   String? @db.Text
+
+  // pending → accepted | declined
+  status        String    @default("pending") @db.VarChar(20)
+  respondedAt   DateTime? @map("responded_at") @db.Timestamptz
+  respondedNote String?   @map("responded_note") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([toUserId, status, createdAt(sort: Desc)])
+  @@index([fromUserId])
+  @@index([mosqueId])
+  @@map("suggestions")
+}
+
+model UserFavorite {
+  id     String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  mosqueId String @map("mosque_id") @db.Uuid
+  mosque   Mosque @relation(fields: [mosqueId], references: [id], onDelete: Cascade)
+
+  // Custom notes/tags
+  notes String?  @db.Text
+  tags  String[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@unique([userId, mosqueId])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([mosqueId])
+  @@map("user_favorites")
+}
+
+model MosqueReview {
+  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  mosqueId String @map("mosque_id") @db.Uuid
+  mosque   Mosque @relation(fields: [mosqueId], references: [id], onDelete: Cascade)
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Rating (1-5)
+  rating               Int  @db.Integer
+  timingAccuracyRating Int? @map("timing_accuracy_rating") @db.Integer
+  cleanlinessRating    Int? @map("cleanliness_rating") @db.Integer
+  accessibilityRating  Int? @map("accessibility_rating") @db.Integer
+
+  // Review text
+  title      String? @db.VarChar(200)
+  reviewText String? @map("review_text") @db.Text
+
+  // Helpful votes
+  helpfulCount Int @default(0) @map("helpful_count")
+
+  // Status
+  status String @default("published") @db.VarChar(20)
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@unique([userId, mosqueId])
+  @@index([mosqueId, status, createdAt(sort: Desc)])
+  @@index([rating(sort: Desc)])
+  @@map("mosque_reviews")
+}
+
+model Vote {
+  id     String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Polymorphic reference
+  votableType String @map("votable_type") @db.VarChar(50)
+  votableId   String @map("votable_id") @db.Uuid
+
+  // Vote type
+  voteType     String  @map("vote_type") @db.VarChar(10)
+  reportReason String? @map("report_reason") @db.VarChar(100)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@unique([userId, votableType, votableId])
+  @@index([votableType, votableId])
+  @@index([userId])
+  @@map("votes")
+}
+
+model ActivityLog {
+  id     String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId String? @map("user_id") @db.Uuid
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Activity details
+  activityType String  @map("activity_type") @db.VarChar(50)
+  entityType   String? @map("entity_type") @db.VarChar(50)
+  entityId     String? @map("entity_id") @db.Uuid
+  metadata     Json    @default("{}") @db.JsonB
+
+  // IP and user agent
+  ipAddress String? @map("ip_address") @db.Inet
+  userAgent String? @map("user_agent") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([activityType, createdAt(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@map("activity_logs")
+}
+
+model Notification {
+  id     String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Notification details
+  type    String  @db.VarChar(50)
+  title   String  @db.VarChar(255)
+  message String? @db.Text
+
+  // Related entity
+  entityType String? @map("entity_type") @db.VarChar(50)
+  entityId   String? @map("entity_id") @db.Uuid
+
+  // Status
+  read   Boolean   @default(false)
+  readAt DateTime? @map("read_at") @db.Timestamptz
+
+  // Delivery
+  sentVia Json @default("{\"push\": false, \"email\": false, \"sms\": false}") @map("sent_via") @db.JsonB
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([userId, read, createdAt(sort: Desc)])
+  @@map("notifications")
+}
+
+model QazaRecord {
+  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId   String @map("user_id") @db.Uuid
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Client-generated id lets existing local records sync once without
+  // creating duplicates every time the app opens.
+  clientId String @map("client_id") @db.VarChar(160)
+
+  prayer     String   @db.VarChar(20)
+  prayerDate DateTime @map("prayer_date") @db.Date
+  recordedAt DateTime @default(now()) @map("recorded_at") @db.Timestamptz
+  prayedAt   DateTime? @map("prayed_at") @db.Timestamptz
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@unique([userId, clientId])
+  @@index([userId, prayedAt, prayerDate])
+  @@index([userId, recordedAt(sort: Desc)])
+  @@map("qaza_records")
+}
+
+// ─── DARS (Islamic lessons) ─────────────────────────────────────────
+// A Dars group is a small study circle led by an admin (the creator).
+// People join via a shareable code that deep-links into the app
+// (#dars/join/<code>) — the link is only actionable inside Takbeer Time.
+// The admin schedules upcoming lessons and can fire a "reminder" push to
+// every member. Fan-out is via an FCM topic — `dars-group-<id>` — that
+// members' devices subscribe to on join, mirroring the keeper-follow model
+// (no device-token table needed; the topic IS the group mailing list).
+model DarsGroup {
+  id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name        String  @db.VarChar(120)
+  description String? @db.Text
+
+  // Short, URL-safe, human-shareable join code (e.g. "a1b2c3d4"). Unique so
+  // a code resolves to exactly one group. Distinct from the UUID id — keeps
+  // the share link short and non-enumerable-looking.
+  shareCode String @unique @map("share_code") @db.VarChar(32)
+
+  // The admin is the creator: they own scheduling, member management, and
+  // reminder sends. Single-admin for now; the role also lives on the
+  // membership row, so promoting a co-admin later is purely additive.
+  adminId String @map("admin_id") @db.Uuid
+  admin   User   @relation("DarsGroupAdmin", fields: [adminId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz
+
+  members  DarsGroupMember[]
+  sessions DarsSession[]
+
+  @@index([adminId])
+  @@map("dars_groups")
+}
+
+model DarsGroupMember {
+  id      String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  groupId String    @map("group_id") @db.Uuid
+  group   DarsGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation("DarsMembership", fields: [userId], references: [id], onDelete: Cascade)
+
+  // 'admin' | 'member'. The admin gets a membership row too so member lists
+  // and topic subscriptions are uniform.
+  role     String   @default("member") @db.VarChar(20)
+  joinedAt DateTime @default(now()) @map("joined_at") @db.Timestamptz
+
+  @@unique([groupId, userId])
+  @@index([userId])
+  @@map("dars_group_members")
+}
+
+model DarsSession {
+  id      String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  groupId String    @map("group_id") @db.Uuid
+  group   DarsGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  title       String?  @db.VarChar(160)
+  scheduledAt DateTime @map("scheduled_at") @db.Timestamptz
+
+  createdById String @map("created_by") @db.Uuid
+  createdBy   User   @relation("DarsSessionCreator", fields: [createdById], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([groupId, scheduledAt])
+  @@map("dars_sessions")
+}
+
+// Public-form account deletion requests. Submitted via /delete-account.html
+// (no authentication required) and reviewed manually. Cheap and safe:
+// processing turns into a server-side DELETE /api/users/me equivalent
+// once we've verified the requester actually owned the email — usually
+// by an out-of-band reply asking them to confirm. The endpoint is
+// rate-limited and intentionally does not reveal whether the email
+// matches an account.
+model AccountDeletionRequest {
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email     String   @db.VarChar(255)
+  reason    String?  @db.Text
+  ipAddress String?  @map("ip_address") @db.Inet
+  userAgent String?  @map("user_agent") @db.Text
+
+  // pending → processed | discarded
+  status      String    @default("pending") @db.VarChar(20)
+  processedAt DateTime? @map("processed_at") @db.Timestamptz
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([email, createdAt(sort: Desc)])
+  @@index([status, createdAt])
+  @@map("account_deletion_requests")
+}

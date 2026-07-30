@@ -1,0 +1,4 @@
+• Redesigned home masjid card — see Jamat, Start and End times for every prayer at a glance, with quick directions and one-tap time-keeper switching.
+• Full translations and right-to-left polish across all 10 languages (Arabic, Urdu, Persian and more) — including correctly displayed prayer times.
+• Notification and location permissions are now requested at first launch, so reminders and "masjids near me" work from day one.
+• More reliable, on-time prayer reminders.
