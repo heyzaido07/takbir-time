@@ -28,4 +28,4 @@ Disallow: /index-enhanced.html
 Disallow: /index.legacy.html
 Disallow: /*.md$
 
-Sitemap: https://takbeertime.com/sitemap-index.xml
+Sitemap: https://heyzaido07.github.io/takbir-time/sitemap-index.xml
