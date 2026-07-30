@@ -604,4 +604,5 @@ Source: commit after `0377aeb` in this working tree. Files: `.github/workflows/c
 
 - 🆕 **GitHub Pages fallback**: the heyzaido07.github.io deployment automatically uses the browser-only demo data, and Dars invite links retain the repository path when shared.
 
+- GitHub Pages Google sign-in completes directly with Firebase instead of calling its unavailable /api/auth/google endpoint; server-only actions still require the production backend.
 *End of master list. For canonical commit-by-commit history see `git log origin/main`; for per-feature deep-dives see `FEATURES.md`.*

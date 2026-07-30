@@ -691,9 +691,15 @@
     if (btn) btn.disabled = true;
     try {
       const credential = await window.auth.signInWithGoogle();
-      // Firebase popup result has .user with getIdToken().
-      const idToken = await credential.user.getIdToken();
-      const data = await window.authExchange.exchangeFirebaseToken(idToken);
+      // GitHub Pages has no Express /api endpoint. On that static deployment
+      // Firebase is the identity provider, while production exchanges the
+      // Firebase ID token for the app's longer-lived server JWT.
+      const data = window.JAMAT_CONFIG?.staticHosting
+        ? { user: { email: credential.user?.email } }
+        : await window.authExchange.exchangeFirebaseToken(
+          await credential.user.getIdToken()
+        );
+      if (!data.user?.email) throw new Error('Google did not return an email address');
       // Mirror the email into the existing dev-auth slot so getEmail()
       // and the auth-btn UI both keep working without a refactor. The
       // app JWT in localStorage is what api.js actually sends.
@@ -714,6 +720,14 @@
       if (/not registered to use OAuth2\.0|package name and SHA-1/i.test(msg)) {
         console.error('Google sign-in Android OAuth configuration failed:', err);
         toast('Google sign-in is not configured for this Android build. Add this app signing SHA-1 in Firebase and reinstall.');
+        return;
+      }
+      if (code === 'auth/unauthorized-domain') {
+        toast('Google sign-in setup needed: add heyzaido07.github.io in Firebase Authentication ? Settings ? Authorized domains.');
+        return;
+      }
+      if (code === 'auth/operation-not-allowed') {
+        toast('Google sign-in setup needed: enable Google in Firebase Authentication ? Sign-in method.');
         return;
       }
       toast(`Google sign-in failed: ${err?.message || err}`);

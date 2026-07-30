@@ -40,6 +40,10 @@ window.JAMAT_CONFIG = {
     return false;
   })(),
 
+  // GitHub Pages is a static demo deployment. It has no /api backend, so
+  // Firebase Google sign-in must not attempt the server-side JWT exchange.
+  staticHosting: location.hostname === 'heyzaido07.github.io',
+
   // Local/test-only email impersonation fallback. Production must use a
   // bearer token from email/password or Google sign-in; the server also
   // refuses to boot with DEV_AUTH_USER_EMAIL set in NODE_ENV=production.
