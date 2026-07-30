@@ -60,11 +60,12 @@ window.JAMAT_CONFIG = {
   // Firebase web SDK config — fill in from your Firebase Console.
   // Auth stays disabled until apiKey + projectId are populated.
   firebase: {
-    apiKey: 'AIzaSyAJxvymGOB0c_AqXy7stOM1LzS53thUR_Y',
-    authDomain: 'takbeerapp.firebaseapp.com',
-    projectId: 'takbeerapp',
-    storageBucket: 'takbeerapp.firebasestorage.app',
-    messagingSenderId: '797230147137',
-    appId: '',
+    apiKey: 'AIzaSyAGrlhfJ4Oak6OGV5A3No52hR9l6nX2WM8',
+    authDomain: 'takbirtime.firebaseapp.com',
+    projectId: 'takbirtime',
+    storageBucket: 'takbirtime.firebasestorage.app',
+    messagingSenderId: '352495885848',
+    appId: '1:352495885848:web:1c0f7dadcdcc55bc3aed60',
+    measurementId: 'G-R99GVMWSB8',
   },
 };
